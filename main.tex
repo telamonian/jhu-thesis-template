@@ -28,13 +28,15 @@
 \raggedbottom
 \newdimen \jot \jot=5mm
 \brokenpenalty=10000
- 
- \include{thesis_header}
 
+ \include{thesis_header}
+ 
 %\usepackage[utf8]{inputenc} % Seems to cause a conflict with fontenc and lmodern
 %\DeclareUnicodeCharacter{00A0}{ }
-%\usepackage[T1]{fontenc}
-%\usepackage{lmodern} % load a font with all the characters
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\DeclareUnicodeCharacter{0302}{ }
+\usepackage{lmodern} % load a font with all the characters
 %\usepackage{hyperref}
 \usepackage{tocbibind} % need this to contents adding for TOC
 \usepackage{setspace}
@@ -138,26 +140,40 @@
 % End KNITR STUFF
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% use symbols instead of numbers for footnotes, so they don't conflict with bibtex citations
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+%\usepackage{perpage}
+%\MakePerPage{footnote}
 
-%\usepackage[
-%citestyle = reading, 
-%sorting = none, 
-%dashed = false,
-%maxbibnames = 999,
-%backend = bibtex,
+\usepackage[
+style = numeric,
+citestyle = numeric, 
+sorting = none, 
+maxbibnames = 99,
+backend = bibtex,
 %natbib = true
-%]{biblatex}
+]{biblatex}
 
-%\renewcommand{\cite}[1]{\supercite{#1}}
+%\bibliography{CT_Skull_Stripping_Bib}
+%\bibliography{CT_ICH_Segmentation}
+%\bibliography{extra_bibs_addon}
+%\bibliography{fslr/muschelli}
+%\AtEveryBibitem{
+%\clearfield{note}
+%\clearfield{month}
+%}
+
+%\renewcommand{\cite}[1]{\citep{#1}}
 %\renewcommand{\citet}[1]{\citep{#1}}
 
-\usepackage[superscript,biblabel]{cite}
+%\usepackage[superscript,biblabel]{cite}
 \usepackage{enumitem}
 
 
 %\tolerance=10000
 
 %\makeglossary % enable the glossary
+\graphicspath{{thesis_intro/}{eces_chapter/}}
 %\graphicspath{{rnw_chapter/figure/}{rnw_chapter/}} % change it accordingly!
 
 
@@ -176,21 +192,21 @@
 \thispagestyle{empty}
 \begin{center}
 \vspace*{.25in}
-{\bf\LARGE{ JHU Thesis Template title }}\\ % change it accordingly!
+{\bf\LARGE{ Simplifying and optimizing the stochastic simulation of rare biochemical events }}\\ % change it accordingly!
 \vspace*{.75in}
 {\bf by} \\*[18pt]
 \vspace*{.2in}
-{\bf Your Name}\\ % change it accordingly!
+{\bf Max C Klein}\\ % change it accordingly!
 \vspace*{1in}
 {\bf A dissertation submitted to The Johns Hopkins University\\
 in conformity with the requirements for the degree of\\
 Doctor of Philosophy }\\
 \vspace*{.75in}
 {\bf Baltimore, Maryland} \\
-{\bf June, 2016} \\     % change it accordingly!
+{\bf January, 2019} \\     % change it accordingly!
 \vspace*{.5in}
 \begin{small}
-{\bf \copyright{ }2016 by Your Name} \\ % change the year if needed!
+{\bf \copyright{ }2019 by Max C Klein} \\ % change the year if needed!
 {\bf All rights reserved}
 \end{small}
 \end{center}
@@ -201,7 +217,7 @@ Doctor of Philosophy }\\
 \pagenumbering{roman}
 \setcounter{page}{2}
 \include{abstract/abstract}
-\include{committee/committee}
+%\include{committee/committee}
 \include{acknowledgments/acknowledgments}
 
 %\cleardoublepage
@@ -214,8 +230,8 @@ Doctor of Philosophy }\\
 %\addtocontents{toc}{\protect\contentsline{chapter}{\protect\numberline{}Table of Contents}{iii}}
 %\addtocontents{toc}{\protect\contentsline{chapter}{\protect\numberline{}List of Tables}{iv}}
 %\addtocontents{toc}{\protect\contentsline{chapter}{\protect\numberline{}List of Figures}{v}}
-\listoftables
-\listoffigures
+%\listoftables
+%\listoffigures
 
 \cleardoublepage % Needed because our intro chapter doesn't really have anything
 \pagenumbering{arabic}
@@ -231,11 +247,17 @@ Doctor of Philosophy }\\
 %% TeX files or Rnw files (see rnw_chapter as an example) and please
 %% remember to update the makefile accordingly.
 
-%\begin{refsection}[bib/thesis_intro.bib]
+\begin{refsection}[bib/thesis_intro.bib]
 \include{thesis_intro/thesis_intro}
 \cleardoublepage
-%\printbibliography[title={References}]
-%\end{refsection}
+\printbibliography[title={References}]
+\end{refsection}
+
+\begin{refsection}[bib/error_control_of_enhanced_sampling.bib]
+\include{eces_chapter/error_control_of_enhanced_sampling}
+\cleardoublepage
+\printbibliography[title={References}]
+\end{refsection}
 
 %% If using Overleaf, you'll have to upload the resulting tex file & figures
 %% since Overleaf does not support Rnw files right now (April 13, 2016)
@@ -244,12 +266,12 @@ Doctor of Philosophy }\\
 %\cleardoublepage
 %\printbibliography[title={References}]
 %\end{refsection}
-%
-%\begin{refsection}[conclusion_chapter/conclusion_chapter.bib]
-%\include{conclusion_chapter/conclusion_chapter}
-%\cleardoublepage
-%\printbibliography[title={References}]
-%\end{refsection}
+
+\begin{refsection}[bib/error_control_of_enhanced_sampling.bib]
+\include{conclusion_chapter/conclusion_chapter}
+\cleardoublepage
+\printbibliography[title={References}]
+\end{refsection}
 
 
 % CV PDF file downloaded from the moderncv template available at Overleaf
@@ -257,9 +279,9 @@ Doctor of Philosophy }\\
 %\includepdf[pages={-}, pagecommand={\thispagestyle{plain}}]{moderncv-2015.pdf}
 
 
-\newpage
-\footnotesize
-\bibliographystyle{unsrt}
-\bibliography{bib/error_control_of_enhanced_sampling,bib/thesis_intro}
+%\newpage
+%\footnotesize
+%\bibliographystyle{unsrt}
+%\bibliography{bib/error_control_of_enhanced_sampling,bib/thesis_intro}
 
 \end{document}
