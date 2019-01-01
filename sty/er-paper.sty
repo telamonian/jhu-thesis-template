@@ -1,0 +1,174 @@
+% 2009-07-07; Elijah Roberts: created
+% 2009-07-16; Elijah Roberts: added hr command
+% 2009-11-30; Elijah Roberts: added geometry, bootabs, and natbib; helvetica font
+% 2010-01-06; Elijah Roberts: changed sci to remove math font style
+% 2010-05-03; Elijah Roberts: changed to use \color instead of \textcolor for text coloring
+% 2010-07-12; Elijah Roberts: added figure and table specific referencing macros
+
+%%\usepackage[justification=justified,singlelinecheck=false]{caption}
+%\usepackage{comment}
+%\usepackage{bm}
+%
+%% Define some colors.
+%\usepackage[usenames]{color}
+%\definecolor{orange}{rgb}{1,0.65,0}
+%
+%% Set helvetica as the document font.
+%\usepackage{fontspec}
+%\setmainfont{Helvetica}
+%\usepackage{helvet}
+%\renewcommand{\familydefault}{\sfdefault}
+%
+%% Set the page size.
+%\usepackage[left=1.0in,top=1.0in,right=1.0in,bottom=1.0in,nohead,foot=0.5in]{geometry}
+%%\usepackage[doublespacing]{setspace}
+
+% tabular stuff for revtex
+\usepackage{dcolumn}
+\usepackage{longtable}
+%\usepackage{multirow}
+\usepackage{tabularx}
+
+% hacks for tabular stuff for revtex
+\newcolumntype{C}{>{$}c<{$}}    % centering math mode column type
+\newcolumntype{Y}{D..{1.2}}    % like `d` columns, but intercolumn spacing works better for some reason
+\newcommand{\cc}[1]{\multicolumn{1}{c}{$#1$}}    % alias for temporarily escaping weird revtex column types
+\newcommand{\ccl}[1]{\multicolumn{1}{c|}{$#1$}}
+% alias for helping to squeeze footnotes into nicely formatted tables
+\newcommand{\fnm}[1]{\footnotemark[#1]}
+
+% Set the section styles.
+%\usepackage{sectsty}
+%\sectionfont{\normalsize}
+%\subsectionfont{\normalsize}
+%\subsubsectionfont{\normalfont\normalsize\itshape}
+%\paragraphfont{\normalfont\normalsize\itshape}
+
+% Affiliation commands.
+\newcommand{\affl}[1]{$\mathrm{^{#1}}$}
+
+% Editing commands.
+\newcommand{\ed} [1] {{\color{blue}#1}}
+\newcommand{\cmt} [1] {{\color{red}#1}}
+\newcommand{\editnote} [1] {{\color{red}#1}}
+\newcommand{\gr} [1] {{\color{orange}#1}}
+%\newcommand{\todo} [1] {\textcolor{green}{(TODO: #1)}}
+
+% Make latex more likely to put figures and text on the same page.
+%\renewcommand\floatpagefraction{1.0}
+%\renewcommand\topfraction{1.0}
+%\renewcommand\bottomfraction{1.0}
+%\renewcommand\textfraction{0.0}   
+%\setcounter{totalnumber}{50}
+%\setcounter{topnumber}{50}
+%\setcounter{bottomnumber}{50}
+
+% Set the table and figure label style.
+%\newcommand{\tablesize}{\small}
+%\renewcommand\tablename{Table}
+%\newcommand{\Table}[1]{Table \tref{#1}}
+%\newcommand{\tref}[1]{\ref{#1}}
+%\makeatletter
+%\def\fnum@table{\tablesize{\bf\tablename\nobreakspace\thetable}}
+%\makeatother
+%\newcommand{\figuresize}{\small}
+%\renewcommand\figurename{Figure}
+%\newcommand{\Figure}[1]{Figure \fref{#1}}
+%\newcommand{\fref}[1]{\ref{#1}}
+%\newcommand{\SIFigure}[1]{Figure \sifref{#1}}
+%\newcommand{\sifref}[1]{S\ref{#1}}
+%\makeatletter
+%\def\fnum@figure{\figuresize{\bf\figurename\nobreakspace\thefigure}}
+%\makeatother
+%\newcommand{\Algorithm}[1]{Algorithm \aref{#1}}
+%\newcommand{\aref}[1]{\ref{#1}}
+
+% Load natbib and set the default behavior of the cite command. (Enable EITHER natbib OR cite).
+%\usepackage[numbers,super,comma,sort&compress]{natbib}
+%\usepackage[numbers,square,comma,sort&compress]{natbib}
+%\renewcommand{\cite}[1]{\citep{#1}}
+%\renewcommand{\citet}[1]{\citep{#1}}
+
+% Load cite and set the default behavior of the cite command. (Enable EITHER natbib OR cite).
+%\usepackage{cite}
+
+% load booktab and set the default spacing above booktab tables.
+\usepackage{booktabs}
+\renewcommand\abovetopsep{0.14in}
+
+% A horizontal rule.
+\newcommand{\hr}{\noindent\rule{\textwidth}{1pt}\\}
+
+% Include the ulem package for strikeout.
+\usepackage[normalem]{ulem}
+
+% inlinelegend command that allows for inclusion of legend patches in line with caption text
+\DeclareRobustCommand{\inlinelegend}[1]{%
+  \begingroup\normalfont
+    $\left(\vcenter{\hbox{\includegraphics[height=\baselineskip - 3pt, width=\baselineskip - 3pt]{#1}}}\right)$%
+  \endgroup
+}
+
+% beginsupplemental command. Place at start of supplement section to  start labeling all sections, figures, etc as S1, S2, etc
+\newcommand{\beginsupplemental}{%
+    \setcounter{figure}{0}%
+    %\setcounter{page}{0}%
+    \setcounter{section}{0}%
+    \setcounter{table}{0}%
+    \continuesupplemental%
+}
+     
+% continuesupplemental command. If you have multiple separate .tex files in your supplement, the first .tex file should have the \beginsupplement command in its header, and the remainder should have this \continuesupplement command in their headers
+\newcommand{\continuesupplemental}{%
+    \renewcommand{\thefigure}{S\arabic{figure}}%
+    %\renewcommand{\thepage}{S\arabic{section}}%
+    \renewcommand{\thesection}{S\arabic{section}}%
+    \renewcommand{\thetable}{S\arabic{table}}%
+}
+     
+% jumpul command. Underlines that jump over descenders (like the bottom parts of lowercase p's)
+\usepackage{soul}
+
+\makeatletter
+\newcommand*{\whiten}[1]{\llap{\textcolor{white}{{\the\SOUL@token}}\hspace{#1pt}}}
+\DeclareRobustCommand*\jumpul{%
+    \def\SOUL@everyspace{\underline{\space}\kern\z@}%
+    \def\SOUL@everytoken{%
+        \setbox0=\hbox{\the\SOUL@token}%
+        \ifdim\dp0>\z@
+            \raisebox{\dp0}{\underline{\phantom{\the\SOUL@token}}}%
+            \whiten{1}\whiten{0}%
+            \whiten{-1}\whiten{-2}%
+            \llap{\the\SOUL@token}%
+        \else
+            \underline{\the\SOUL@token}%
+        \fi
+    }%
+\SOUL@}
+\makeatother
+
+% package for adding notes amongst the bibliography
+%\usepackage{notes2bib}
+
+% for pretty chemistry arrows
+\usepackage[version=3]{mhchem}
+
+% todos for texpad (and possibly other stuff)
+\usepackage[disable]{todonotes}
+
+% for subplot labels in captions (eg a) b) etc.)
+\newcommand{\subplotcap}[1]{(#1)}
+
+% chapquote env for inspirational quotes. Use like:
+% \begin{chapquote}{author, \textit{book}} ... quote ... \end{chapquote}
+\makeatletter
+\newenvironment{chapquote}[2][2em]
+  {\setlength{\@tempdima}{#1}%
+   \def\chapquote@author{#2}%
+   \parshape 1 \@tempdima \dimexpr\textwidth-2\@tempdima\relax%
+   \itshape}
+  {\par\normalfont\hfill--\ \chapquote@author\hspace*{\@tempdima}\par\bigskip}
+\makeatother
+
+\usepackage{tikz}
+\usetikzlibrary{snakes,arrows,shapes}

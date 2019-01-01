@@ -1,0 +1,120 @@
+% with respect to
+\newcommand{\wrt}{w.r.t.}
+
+% time intervals
+\newcommand{\dt}{dt}
+\newcommand{\timeint}{\left( t, t + \dt \right]}
+\newcommand{\timeintp}{\left( t + t', t + t' + \dt \right]}
+
+% concentration brackets on
+%\newcommand{\con}[1]{\left[ #1 \right]}
+
+% concentration brackets off
+\newcommand{\con}[1]{#1}
+
+% ensemble average brackets
+\newcommand{\eavg}[1]{\left\langle #1 \right\rangle}
+
+% notation for total count of chemical species and index of ith species
+\newcommand{\spsI}{N}
+\newcommand{\spsi}{j}
+\newcommand{\spsj}{k}
+
+% notation for total count of reactions and index of ith reaction
+\newcommand{\rxnI}{M}
+\newcommand{\rxni}{i}
+\newcommand{\rxnj}{j}
+
+% notation for arbitrary species
+\newcommand{\spssymb}{X}
+\newcommand{\spsx}[1]{\spssymb_{#1}}
+\newcommand{\sps}{\spsx{\spsi}}
+
+\newcommand{\spsmat}{\spsx{}}
+
+% notation for arbitrary reaction
+\newcommand{\rxnsymb}{R}
+\newcommand{\rxnx}[1]{\rxnsymb_{#1}}
+\newcommand{\rxn}{\rxnx{\rxni}}
+
+% complete present state -> (t, X)
+\newcommand{\cstateallsymb}{ t, \spsmat }
+\newcommand{\cstateall}{\left( \cstateallsymb \right)}
+
+% present state -> (X)
+\newcommand{\cstatesymb}{ \spsmat }
+\newcommand{\cstate}{\left( \cstatesymb \right)}
+
+% notation for the 5 matrices of a Petri net
+\newcommand{\placemat}{P}
+\newcommand{\transitionmat}{T}
+\newcommand{\markmat}{M}
+\newcommand{\premat}{Pre}
+\newcommand{\postmat}{Post}
+
+% shortcut for 5 Petri net matrices written together
+\newcommand{\petrimats}{\left(\placemat \comma \transitionmat \comma \markmat \comma \premat \comma \postmat \right)}
+
+% notation for shorthand of Pre and Post matrices
+\newcommand{\preshort}{p}
+\newcommand{\postshort}{o}
+
+% notation for the derived stoichiometry matrix
+\newcommand{\stoichmat}{S}
+\newcommand{\stoichmatxj}[2]{\stoichmat_{#1 #2}}
+\newcommand{\stoichmatx}[1]{\stoichmatxj{#1}{*}}
+\newcommand{\stoichmatj}[1]{\stoichmatxj{*}{#1}}
+
+% notation for deterministic rate laws
+\newcommand{\rlawsymb}{r}
+\newcommand{\rlawx}[1]{\rlawsymb_{#1} \cstate}
+\newcommand{\rlaw}{\rlawx{\rxni}}
+
+% deterministic rate laws short
+\newcommand{\rlawshortx}[1]{\rlawsymb_{#1}}
+\newcommand{\rlawshort}{\rlawshortx{\rxni}}
+
+\newcommand{\rlawmat}{\rlawshortx{}}
+
+% notation for deterministic and stochastic reaction constants
+\newcommand{\condetsymb}{k}
+\newcommand{\condetx}[1]{\condetsymb_{#1}}
+\newcommand{\condet}{\condetx{\rxni}}
+
+\newcommand{\constochsymb}{c}
+\newcommand{\constochx}[1]{\constochsymb_{#1}}
+\newcommand{\constoch}{\constochx{\rxni}}
+
+% propensity
+\newcommand{\hazsymb}{a}
+\newcommand{\hazx}[1]{\hazsymb_{#1} \cstate}
+\newcommand{\haz}{\hazx{\rxni}}
+
+% propensity short
+\newcommand{\hazshortx}[1]{\hazsymb_{#1}}
+\newcommand{\hazshort}{\hazshortx{\rxni}}
+
+\newcommand{\hazmat}{\hazshortx{}}
+
+% sum propensity
+\newcommand{\hazsumsymb}{A}
+\newcommand{\hazsum}{\hazsumsymb \cstate}
+\newcommand{\hazshortsum}{\hazsumsymb}
+
+% molecule combination count
+\newcommand{\mcombsymb}{h}
+\newcommand{\mcombx}[1]{\mcombsymb_{#1} \cstate}
+\newcommand{\mcomb}{\mcombx{\rxni}}
+
+% molecule combination short
+\newcommand{\mcombshortx}[1]{\mcombsymb_{#1}}
+\newcommand{\mcombshort}{\mcombshortx{\rxni}}
+
+% transition probability
+\newcommand{\transpsymb}{p}
+\newcommand{\transpx}[1]{\transpsymb_{#1}}
+
+\newcommand{\transp}{\transpx{} \left( t', \rxni | \cstatesymb \right)}
+\newcommand{\transpone}{\transpx{1} \left( t' | \cstatesymb \right)}
+\newcommand{\transptwo}{\transpx{2} \left( \rxni | t', \cstatesymb \right)}
+

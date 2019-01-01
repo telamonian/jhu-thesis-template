@@ -1,0 +1,80 @@
+% estimator notation
+\newcommand{\est}[1]{\widehat{#1}}
+
+% symbols for lower and upper confidence bounds
+\newcommand{\lboundsymb}{lb}
+\newcommand{\uboundsymb}{ub}
+
+\newcommand{\lboundx}[1]{\lboundsymb_{#1}}
+\newcommand{\lbound}{\lboundx{\alpha}}
+\newcommand{\uboundx}[1]{\uboundsymb_{#1}}
+\newcommand{\ubound}{\uboundx{\alpha}}
+
+\newcommand{\lboundxfunc}[2]{\lboundx{#1} \left[ #2 \right]}
+\newcommand{\lboundfunc}[1]{\lboundxfunc{\alpha}{#1}}
+\newcommand{\uboundxfunc}[2]{\uboundx{#1} \left[ #2 \right]}
+\newcommand{\uboundfunc}[1]{\uboundxfunc{\alpha}{#1}}
+
+% symbol for zscore
+\newcommand{\zscoresymb}{z}
+
+\newcommand{\zscorex}[1]{\zscoresymb_{#1}}
+\newcommand{\zscore}{\zscorex{\alpha}}
+
+\newcommand{\zscoresqx}[1]{\zscorex{#1} {}^2}
+\newcommand{\zscoresq}{\zscoresqx{\alpha}}
+
+% symbol for margin of error function
+\newcommand{\moesymb}{\zeta}
+
+\newcommand{\moex}[1]{{\moesymb}_{#1}}
+\newcommand{\moe}{\moesymb}
+
+\newcommand{\moefuncx}[2]{\moex{#1} \left[ #2 \right]}
+\newcommand{\moefunc}[1]{\moe \left[ #1, \alpha \right]}
+
+\newcommand{\moesqx}[1]{\moex{#1} {}^2}
+\newcommand{\moesq}{\moe {}^2}
+
+\newcommand{\moefuncsqx}[2]{\moex{#1} {\left[ #2 \right]}^2}
+\newcommand{\moefuncsq}[1]{\moe {\left[ #1, \alpha \right]}^2}
+
+% sqrt n consistency
+\newcommand{\ncon}{$\sqrt{n}$-consistent\xspace}
+\newcommand{\ncony}{$\sqrt{n}$-consistency\xspace}
+
+% expected value, variance, and generalized variance (variance/(expected^2))
+\newcommand{\expectedsymb}{E}
+\newcommand{\varsymb}{V}
+\newcommand{\gvarsymb}{G}
+
+\newcommand{\sqbrackets}[2]{#1 \left[ #2 \right]}
+\newcommand{\Eval}[1]{\sqbrackets{\expectedsymb}{#1}}
+\newcommand{\V}[1]{\sqbrackets{\varsymb}{#1}}
+\newcommand{\GVAR}[1]{\sqbrackets{\gvarsymb}{#1}}
+
+% estimators of expected value, variance, and generalized variance (variance/(expected^2))
+\newcommand{\sqbracketsest}[2]{\widehat{#1} \left[ #2 \right]}
+\newcommand{\Eest}[1]{\sqbracketsest{\expectedsymb}{#1}}
+\newcommand{\Vest}[1]{\sqbracketsest{\varsymb}{#1}}
+\newcommand{\Gest}[1]{\sqbracketsest{\gvarsymb}{#1}}
+
+% standard deviation
+\newcommand{\stdx}[1]{\sigma_{#1}}
+
+% probability and conditional probability
+\newcommand{\prob}[1]{P\left( #1 \right)}
+\newcommand{\probest}[1]{\est{P}\left( #1 \right)}
+
+\newcommand{\condprob}[2]{\prob{ #1 \mid #2 }}
+\newcommand{\condprobest}[2]{\probest{ #1 \mid #2 }}
+
+% formal notation for a normal distribution
+\newcommand{\normdist}[2]{\mathcal{N}\left( #1 , #2 \right)}
+
+% symbol for a mixture of bernoulli random variables
+\newcommand{\bernmix}{\Beta}
+
+% uniform random vars
+\newcommand{\urandsymb}{u}
+\newcommand{\urandx}[1]{\urandsymb_{#1}}

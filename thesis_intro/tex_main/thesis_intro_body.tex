@@ -1,0 +1,608 @@
+\chapter{Introduction}
+
+\begin{chapquote}{Richard Rhodes, \textit{Making of the Atomic Bomb}\cite{Rhodes:1986ux}}
+One of the great arguments of the day was vitalism versus mechanism, a disguised form of the old and continuing debate between those, including the religious, who believe the world has purpose and those who believe it operates automatically and by chance... The German chemist who scoffed in 1895 at the ``purely mechanical world" of ``scientific materialism" that would allow a butterfly to turn back into a caterpillar was disputing the same issue, an issue as old as Aristotle.
+\end{chapquote}
+
+Are living organisms special? Are biological molecules inherently unique, or do they obey the same laws of chemistry and physics as every other molecule? Since the time of Mendel\cite{Johannsen:2014iv} and Cajal\cite{hellman2001great} the scientific consensus has been converging towards the latter view: that life is made of the same material as the rest of the world. In other words, that the information encoded in an organism’s genotype and (more broadly) biochemical state defines the organism’s phenotype (\ie it’s appearance and behavior). Over the course of the 20th century this materialistic viewpoint has become an implicit assumption that underlies all current work done in the life sciences. However, this view is largely taken on faith, as a complete mechanistic link between biochemistry and behavior has been established for only a small subset of cellular systems. Though there is now an extensive (and ever growing) catalog of the biochemical elements from which living systems are formed, the mechanisms by which they interact remain in general unexplained. The aim of this thesis is to present work towards a general method of mechanistically linking biochemistry to phenotype.
+
+\section{Models of biochemistry}
+
+The question at hand is one of dynamics. How does the biochemistry of a cell "unfold" over time to produce a phenotype\footnote{Equivalently, imagine that you are given a perfect description of the contents of a cell at one moment in time. What can you then say about the contents of that cell at some moment in the future? What can you say about the cell's behavior during all of the moments in between?}? Models, and modeling, form the cornerstone of a workable approach for explaining large-scale biological phenomena in terms of what goes on at the smallest scale. First, we need to establish a theoretical framework in which to reason about biochemistry. Any chemical reaction can be written in the form:
+\begin{equation}\label{eq:reaction_general_form}
+	\alpha_1 a_1 + \alpha_2 a_2 + \ldots \ce{->} \beta_1 b_1 + \beta_2 b_2 + \ldots,
+\end{equation}  
+where $\{a_1, a_2, \ldots \}$ and $\{b_1, b_2, \ldots \}$ are the reactants and products, and $\{\alpha_1, \alpha_2, \ldots \}$ and $\{\beta_1, \beta_2, \ldots \}$ are their respective stoichiometries. In some cases, a chemical species may appear on both sides of the reaction with the same stoichiometry, as so:
+\begin{equation*}
+    X \ce{->} X + Y.
+\end{equation*}
+This implies that $X$ is required for the reaction, but is not consumed by it.
+
+To give a concrete example, consider protein expression from a gene. A simple model of this process can be derived from the central dogma\cite{Crick:1958ws,Crick:1970wb}: say there is a segment of DNA that comprises the gene $g_p$. $g_p$ is transcribed to produce an RNA $rna_p$. In turn, $rna_p$ is then translated to a protein $p$. Both $rna_p$ and $p$ also degrade. The reactions that describe this system can be written in terms of \eqref{eq:reaction_general_form} as so:
+\begin{align}\label{eq:simple_expression}
+    \begin{split}
+        g_p &\ce{->} g_p + rna_p \\
+        rna_p &\ce{->} rna_p + p \\
+        rna_p &\ce{->} \varnothing \\
+        p &\ce{->} \varnothing
+    \end{split}.
+\end{align}
+In a sense, a list of reactions like \eqref{eq:simple_expression} give a complete description of a system. This level of description can be thought of as forming a qualitative model. Qualitative models can be used to answer questions about what is possible in a system, or how a particular event occurs.
+
+The same approach used to come up with \eqref{eq:simple_expression} can also be used to build more complex, regulated models of expression. For example, say that $p$ is able to dimerize, and that $p_2$ dimers are able to bind back to $g_p$ and repress further transcription. The reactions that describe the system would then be:
+\begin{align}\label{eq:self_regulating_expression}
+    \begin{split}
+        g_p &\ce{->} g_p + rna_p \\
+        rna_p &\ce{->} rna_p + p \\
+        p + p &\ce{<->} p_2 \\
+        p_2 + g_p &\ce{<->} p_2 \cdot g_p \\
+        rna_p &\ce{->} \varnothing \\
+        p &\ce{->} \varnothing
+    \end{split}.
+\end{align}
+
+\section{Epigenetic landscapes and phenotypes}
+
+Low-level models of biochemistry such as \eqref{eq:simple_expression} can be linked to higher-level phenomena via the concept of the epigenetic landscape. Waddington introduced his idea of the epigenetic landscape\cite{Waddington:1965wf,Waddington:1957ub} by first asking the reader to imagine a cell as represented by a high-dimensional space. We call this space the cell's state space. Each dimension of the state space has a one-to-one correspondence with one of the species of metabolites or biomolecules present in the cell. The (non-negative, integer valued) coordinate along each dimension is the count of the corresponding molecule. Thus, each point in the complete state space uniquely defines a possible state of the cell. Just as there can be thousands, or tens of thousands\todo{add cite/clarify}, of distinct chemical species present in a cell, so too can a state space have thousands of dimensions.
+
+%\footnote{Notice the implicit assumption made here: that a cell's state is completely defined by the counts of the molecules within it. In reality, under the right conditions many other factors can be significant in terms of a determining a cell's state. Much work has been done to extend the fundamental methods that will be discussed in this thesis to cover these factors. A complete exploration is well outside the scope of this work, but consider, for example, the positions of each molecule in a cell in 3D space. It has been shown that spatial location does not play a significant role in the dynamics of the \abr{Ecoli} \todo{finish footnote, and add refs about elijah's lac operon and rati's schmoo}}
+
+The possible states of a cell are combinatorially vast. Simply enumerating them all would be a herculean computational task. Thus, it is legitimate to ask: what insight about a cell can actually be gained by thinking about it in terms of its state space? An analogy to the study of protein folding is useful here. Levinthal's paradox\cite{Levinthal:1969uy} says that there are more possible states for a protein to be in than atoms in the universe. Yet somehow proteins still fold. Similarly, cells tend to remain in homeostasis with respect to a particular phenotype (or sometimes to transition from one phenotype to another in an orderly fashion). In both cases, physical forces conspire to limit the occupied states to restricted regions. The epigenetic landscape is a description of the states that tend to be occupied, and of the forces that drive a cell to those states. A single ``neighborhood" of states on the landscape constitutes a phenotype.
+
+Waddington originally developed the idea of epigenetic landscapes as a way to explain the constrained diversity he observed in developing organisms. ``Diversity" in the sense that embryonic cells have many possible end states (in terms of the cell type of their lineage in the mature organism), and ``constrained" in the sense that even harsh chemical perturbations often shift those end states only slightly. As he described it, the landscape of a developing cell is like rough, hilly terrain that is covered in divots connected by valleys. The divots represent the various possible phenotypes, and the valleys the transition pathways in between them. The developing cell, then, is like a ball that starts at a a high point on this terrain (see \figref{fig:waddington_landscape}). The robustness of the development process at any given moment can be thought of as analogous to the steepness of the landscape in the cell's immediate vicinity. As the cell (or its lineage) travels downhill, it proceeds through various phenotypes and the branching paths in-between. Eventually it reaches the bottom of the hill, along with its terminal cell type.
+
+In the decades since Waddington first proposed it, much work has gone into filling in the details of the theory behind epigenetic landscapes. In the modern view\cite{Xu:2016dw,Wu:2014gf,Wu:2013dx}, the epigenetic landscape is a representation of the physics of a non-equilibrium system. It can be (approximately) split into two parts: a potential surface (analogous to the potential energy surface of an equilibrium system) and a probability flux. If the potential surface is equivalent to Waddington's rough terrain, then the probability flux is like a strong wind blowing across it. Because of this ``wind", a cell's fate is not determined by its potential surface alone. In recent years epigenetic landscapes of various cellular systems, such as the cell cycle\cite{Li:2014iw,Luo:2017iw} and oncogenesis\cite{Li:2014ho,ArandaAnzaldo:2018bf}, have been constructed. These high-dimensional landscapes can be plotted (via projection) in terms of one or more species of interest. This gives a quantitative picture of how transitions in the population count of any given species drives transitions between phenotypes (see figure \figref{fig:wang_cell_cycle_landscape}).
+
+\section{Quantitative models and networks}
+\label{sec:quant_models}
+
+Given that an epigenetic landscape can be used to link biochemistry to phenotype, the question then is how to calculate one. A qualitative model is not enough. What is needed is a quantitative model, one that can reproduce the actual species counts. In order to build a quantitative model of biochemical state and behavior, 4 pieces of information are required:
+\begin{enumerate}
+    \item\label{item:species} The identity of the distinct interacting biochemical elements. These are often referred to as chemical species, or just species.
+    \item The list of reactions in which the chemical species participate.
+    \item The rate laws that describe how quickly each reaction occurs. \todo{caveats of rate laws}
+    \item The quantity of each species present in the system. These are dynamical systems under consideration, so precise quantities can only be spoken of with respect to a particular moment in time (such as an initial time $t=0$).
+\end{enumerate}
+Once these 4 pieces have been determined, the next step is to combine them into a cohesive, mathematically tractable model. The standard way to do so is to build a network.
+
+There are many different representations of biochemical networks, each with their own strengths and weaknesses. A simple network representation of our protein expression model can be seen in \figref{fig:simple_expression_digraph}. Here, the protein expression model is shown as a digraph (directed graph). Like any network, a digraph consists of a set of nodes and the set of edges which connect them. Additionally, each edge in a digraph encodes a direction, such that they start at a reactant node and end at a product node.
+
+Simple digraph representations are useful since they offer an intuitable picture of the lists of species and reactions that make up a model. Another useful network representation is the Petri net. Originally developed by Petri in the 1960's\cite{Petri:1966vs} to model linked chemical reactions, Petri nets offer a natural way to model agent-based processes in general\footnote{When applying Petri nets to biochemical systems, the chemical species are the agents. This is in the sense that each molecule acts independently.\todo{develop the idea in this footnote or delete}}. Petri nets were first applied to problems in systems biology around the turn of the century\cite{Goss:1998tf}, and have since been extensively developed for biological applications\cite{Pinney:2003tz,Hardy:2004tq,Haas:2006ts}. Though less easy to understand at a glance than simple digraphs, Petri nets have the virtue of being able to encode unambiguous descriptions of biochemical systems. Due to this formal rigor, once set up they can be mechanically transcribed into various mathematical forms that can then be used as input for many different simulation techniques.
+
+Petri nets are bipartite digraphs.``Bipartite" refers to the fact that every Petri net contains two distinct sets of nodes: one set, called the places, represent chemical species, and the other, called the transitions, represent chemical reactions. For every reaction that a species participates in as a reactant there is an edge that starts at the corresponding place and ends at the corresponding reaction. Similarly, for every reaction product there is an edge that starts at the corresponding transition and ends at the corresponding place. The weight of each edge is the stoichiometry of the attached species (whether as product or reactant) with respect to the attached reaction. Additionally, a Petri net has a marking, a list that contains the initial quantities of each species.
+
+Figure \ref{fig:simple_expression_petri_net} shows a Petri net representation of the simple expression model of \eqref{eq:simple_expression}. In addition to the graphical representation, a Petri net can be uniquely specified as a set of matrices $\left\{P,\ T,\ M,\ Pre,\ Post \right\}$\cite{Wilkinson:2012tt}. For the simple expression model these matrices would be:
+\begin{gather}\label{eq:simple_expression_matrices}
+\begin{split}
+    P = \left( \begin{array}{c}
+        g_p \\
+        rna_p \\
+        p
+    \end{array} \right),\;
+%
+    T = \left( \begin{array}{c}
+        \textrm{transcription} \\
+        \textrm{translation} \\
+        rna_p \textrm{ decay} \\
+        p \textrm{ decay}
+    \end{array} \right),\;
+%
+    M = \left( \begin{array}{c}
+        1 \\
+        0 \\
+        0 \\
+    \end{array} \right),\\
+%
+Pre = \left( \begin{array}{ccc}
+        1 & 0 & 0 \\
+        0 & 1 & 0 \\
+        0 & 1 & 0 \\
+        0 & 0 & 1   
+\end{array} \right),\;
+%
+    Post = \left( \begin{array}{ccc}
+        1 & 1 & 0 \\
+        0 & 1 & 1 \\
+        0 & 0 & 0 \\
+        0 & 0 & 0
+    \end{array} \right),\;
+\end{split}
+\end{gather}
+where $P$ is the list of places/species, $T$ is the list of transitions/reactions, $M$ is the list of markings corresponding to $P$, $Pre$ is a $\rxnI \times \spsI$ matrix (where $\rxnI$ is the count of reactions, and $\spsI$ is the count of unique species) in which $Pre_{ij}$ gives the weight of the edge connecting the $i$th species to the $j$th reaction (equivalently, the reactant stoichiometry), and $Post$ is the same thing as $Pre$ except that $Post_{ij}$ gives the weight of the edge connecting the $j$th reaction to the $i$th species.
+
+For the more complex regulated expression system described in \eqref{eq:self_regulating_expression}, the equivalent $\left\{P,\ T,\ M,\ Pre,\ Post \right\}$ matrices would be:
+\begin{gather}\label{eq:self_regulating_expression_matrices}
+\begin{split}
+    P = \left( \begin{array}{c}
+        g_{p} \\
+        rna_{p} \\
+        p \\
+        p_{2} \\
+        p_{2}g_{p}
+    \end{array} \right),\;
+%
+    T = \left( \begin{array}{c}
+        \textrm{transcription} \\
+        \textrm{translation} \\
+        rna_p\ \textrm{decay} \\
+        p\ \textrm{decay} \\
+        p\ \textrm{dimerization} \\
+        p\ \textrm{dedimerization} \\
+        p_{2} + g_{p}\ \textrm{binding} \\
+        p_{2}g_{p}\ \textrm{unbinding}
+    \end{array} \right),\;
+%
+    M = \left( \begin{array}{c}
+        1 \\
+        0 \\
+        0 \\
+        0 \\
+        0
+    \end{array} \right),\\
+%
+    Pre = \left( \begin{array}{ccccc}
+         1 &  0 &  0 &  0 &  0 \\
+         0 &  1 &  0 &  0 &  0 \\
+         0 &  1 &  0 &  0 &  0 \\
+         0 &  0 &  1 &  0 &  0 \\
+         0 &  0 &  2 &  0 &  0 \\
+         0 &  0 &  0 &  1 &  0 \\
+         1 &  0 &  0 &  1 &  0 \\
+         0 &  0 &  0 &  0 &  1
+    \end{array} \right),\;
+%
+    Post = \left( \begin{array}{ccccc}
+         1 &  1 &  0 &  0 &  0 \\
+         0 &  1 &  1 &  0 &  0 \\
+         0 &  0 &  0 &  0 &  0 \\
+         0 &  0 &  0 &  0 &  0 \\
+         0 &  0 &  0 &  1 &  0 \\
+         0 &  0 &  2 &  0 &  0 \\
+         0 &  0 &  0 &  0 &  1 \\
+         1 &  0 &  0 &  1 &  0
+    \end{array} \right).\;
+\end{split}
+\end{gather}
+\figref{fig:self_regulating_expression_petri_net} shows a plot of the actual Petri net that the above matrices describe.
+
+\section{Deterministic simulation}
+\subsection{ODE models of biochemistry}
+\label{sec:ode_models}
+
+The traditional way to simulate biochemical systems begins with constructing a set of \abrs{ODE}. This type of simulation is commonly referred to as deterministic simulation (as opposed to stochastic simulation, which is discussed later in \secref{sec:stochastic_simulation}). If there are $\spsI$ chemical species in a system, for each distinct species $X_{\spsi}$ there will be an equation of the form:
+\begin{equation*}
+    \ddt{\con{X_{\spsi}}} = f_{\spsi}\left(\con{X_1}, \con{X_2}, ..., \con{X_{\spsI}}\right).
+\end{equation*}
+On the right hand side of the equation is a derivative that represents the rate in change over time in the quantity of $X_{\spsi}$. On the left hand side is a function of the quantity of every species (including $X_{\spsi}$). The exact form of $f_{\spsi}$ will depend on the type (and precise mathematical formulation) of the chemical kinetics being modeled.
+
+Given the Petri net representation of a system, it is straightforward to construct the set of \abrs{ODE}. Say that the system involves $\spsI$ species participating in $\rxnI$ reactions. First one constructs the $\rxnI$ rate laws $\rlaw$. The rate law $\rlaw$ tells you how quickly each reaction $\rxni$ is occurring. Traditionally, the $\rlaw$ are given a form based on mass action kinetics (which can be traced back to a set of papers published in the 1860s\cite{Waage:1986bf}). In the mass action view, the rate at which any reaction occurs is directly proportional to the quantity of each reactant. This implies that every reaction has an associated rate law $\rlaw$ of the form:
+\begin{equation}\label{eq:ratelaw_general_formula}
+    \rlaw = \condet \con{X_1}^{\preshort_{\rxni 1}} \con{X_2}^{\preshort_{\rxni 2}} ... \con{X_{\spsI}}^{\preshort_{\rxni \spsI}} = \prod_{\spsi = 1}^{\spsI} \con{X_{\spsI}}^{\preshort_{\rxni \spsi}},
+\end{equation}
+where $\condet$ is a rate constant, and $\preshort_{\rxni \spsi}$ is a shorthand for the $\rxni \spsi$th entry of the $\premat$ matrix.
+
+Next, one determines the stoichiometry matrix $\stoichmat$. Essentially, the stoichiometry matrix is the difference of the $\postmat$ and $\premat$ matrices. The exact definition of $\stoichmat$ varies in the literature, but for our purposes it will be convenient to define $\stoichmat$ as the transpose of the difference:
+\begin{equation*}\label{eq:s_definition}
+    \stoichmat = \left( Post - Pre \right)^{\intercal}.
+\end{equation*}
+Thus, $\stoichmat$ will be a $\spsI \times \rxnI$ matrix. With the rate laws $\rlaw$ and the stoichiometry matrix $\stoichmat$ in hand, the entire set of $\spsI$ \abrs{ODE} can be written as a single matrix equation:
+\begin{equation}\label{eq:petri_net_odes}
+    \ddt{\placemat} = \stoichmat \rlawmat,
+\end{equation}
+where $\placemat$ is the places matrix, $\ddt{\placemat}$ is a column vector of the \abrs{ODE}, and $\rlawmat$ is a column vector in which the $i$th entry is the rate law $\rlaw$. 
+
+The nature of the compact form given in \eqref{eq:petri_net_odes} is most easily explained with an example. For our simple expression system (described in \eqref{eq:simple_expression} and given in Petri net matrix form in \eqref{eq:simple_expression_matrices}), the column vector of rate laws $\rlawmat$ can be found from \eqref{eq:ratelaw_general_formula}:
+\begin{gather*}
+    \rlawmat = 
+%
+    \left( \begin{array}{c}
+        \condetx{1} \cdot \con{g_p}^{1} \cdot \con{rna_p}^{0} \cdot \con{p}^{0} \\
+        \condetx{2} \cdot \con{g_p}^{0} \cdot \con{rna_p}^{1} \cdot \con{p}^{0} \\
+        \condetx{3} \cdot \con{g_p}^{0} \cdot \con{rna_p}^{1} \cdot \con{p}^{0} \\
+        \condetx{4} \cdot \con{g_p}^{0} \cdot \con{rna_p}^{0} \cdot \con{p}^{1}
+    \end{array} \right) =
+%
+    \left( \begin{array}{c}
+        \condetx{1} \cdot \con{g_p} \\
+        \condetx{2} \cdot \con{rna_p} \\
+        \condetx{3} \cdot \con{rna_p} \\
+        \condetx{4} \cdot \con{p}
+    \end{array} \right)
+\end{gather*}
+
+and the stoichiometry matrix $\stoichmat$ is:
+
+\begin{gather*}
+    \stoichmat = 
+%
+    \left[
+        \left( \begin{array}{ccc}
+                1 & 1 & 0 \\
+                0 & 1 & 1 \\
+                0 & 0 & 0 \\
+                0 & 0 & 0
+        \end{array} \right) -
+        \left( \begin{array}{ccc}
+                1 & 0 & 0 \\
+                0 & 1 & 0 \\
+                0 & 1 & 0 \\
+                0 & 0 & 1   
+        \end{array} \right)
+    \right]^{\intercal} =
+%
+    \left( \begin{array}{ccc}
+            0 & 1 & 0 \\
+            0 & 0 & 1 \\
+            0 & -1 & 0 \\
+            0 & 0 & -1
+    \end{array} \right)^{\intercal} =
+%
+    \left( \begin{array}{cccc}
+         0 & 0 & 0 & 0 \\
+         1 & 0 & -1 & 0 \\
+         0 & 1 & 0 & -1
+    \end{array} \right).
+\end{gather*}
+The set of \abrs{ODE} that describe the system is then:
+\begin{gather*}\label{eq:simple_expression_ode}
+    \left( \begin{array}{c}
+        \ddt{}\con{g_p} \\
+        \ddt{}\con{rna_p} \\
+        \ddt{}\con{p}
+    \end{array} \right) =
+%
+    \left( \begin{array}{cccc}
+         0 & 0 & 0 & 0 \\
+         1 & 0 & -1 & 0 \\
+         0 & 1 & 0 & -1
+    \end{array} \right)
+    \left( \begin{array}{c}
+        \condetx{1} \con{g_p} \\
+        \condetx{2} \con{rna_p} \\
+        \condetx{3} \con{rna_p} \\
+        \condetx{4} \con{p}
+    \end{array} \right) =
+%
+    \left( \begin{array}{c}
+        0 \\
+        \condetx{1} \con{g_p} - \condetx{3} \con{rna_p} \\
+        \condetx{2} \con{rna_p} - \condetx{4} \con{p}
+    \end{array} \right).
+\end{gather*}
+Solving\footnote{The complete details of solving a system of ODEs is outside of the scope of this thesis. In general, it suffices that a solution can easily be obtained using a computational algebra system such as Mathematica\cite{Wolfram:11Mat}.} the above system of \abrs{ODE} yields:
+\begin{gather}\label{eq:simple_expression_ode_solution}
+    \left( \begin{array}{c}
+        \con{g_p} \\
+        \con{rna_p} \\
+        \con{p}
+    \end{array} \right) =
+%
+    \left( \begin{array}{c}
+        \markmat_1 \\
+        \frac{\condetx{1} \markmat_1}{\condetx{3}} + e^{-t \condetx{3}}\left( \markmat_2-\frac{\condetx{1} \markmat_1}{\condetx{3}} \right) \\
+        \frac{\condetx{1} \condetx{2} \markmat_1}{\condetx{3} \condetx{4}} + e^{-t \condetx{3}}\frac{\left(\condetx{2} \left(\condetx{1} \markmat_1-\condetx{3} \markmat_2\right)\right)}{\condetx{3} \left(\condetx{3}-\condetx{4}\right)} + e^{-t \condetx{4}} \left(\markmat_3 + \frac{\condetx{2} \left(\condetx{4} \markmat_2-\condetx{1} \markmat_1\right)}{\condetx{4} \left(\condetx{3}-\condetx{4}\right)}\right)
+    \end{array} \right),
+\end{gather}
+where $\markmat_\spsi$ is the initial marking (\ie quantity) of species $\spsi$. For any given marking $\markmat$ and set of rate constants $\condet$, the expressions of \eqref{eq:simple_expression_ode_solution} can be used to find the quantity of each species at any given time $t$.
+
+Often, a modeler is not concerned with the initial behavior of a system\footnote{As far as reproducing experimental results go, the initial behavior of a system is usually irrelevant. When studying biological systems, it is typical for the system to preexist any experimental observation (though an obvious exception would be any stop-flow experiment).}, but only with the behavior of the system over long periods of time. In these cases, solutions such as those found in \eqref{eq:simple_expression_ode_solution} can be simplified by considering their value in the limit $t \rightarrow \infty$, also called the steady state limit. The only terms in \eqref{eq:simple_expression_ode_solution} that explicitly depend on time are exponential decay terms of the form $e^{-t x}$. These exponential decay terms quickly approach $0$ as $t$ increases, yielding:
+\begin{gather*}\label{eq:simple_expression_ode_solution_ss}
+    \left( \begin{array}{c}
+        \con{g_p} \\
+        \con{rna_p} \\
+        \con{p}
+    \end{array} \right) \approx
+%
+    \left( \begin{array}{c}
+        \markmat_1 \\
+        \frac{\condetx{1} \markmat_1}{\condetx{3}} \\
+        \frac{\condetx{1} \condetx{2} \markmat_1}{\condetx{3} \condetx{4}}
+    \end{array} \right).
+\end{gather*}
+
+\subsection{The benefits and shortcomings of deterministic simulations}
+
+Deterministic, \abr{ODE} based approaches such as the one given in the previous section were first used to model biological systems during the early 1900's\cite{Lotka:1909ho,Lotka:1925tu,Dublin:1925hj,Volterra:1926cl}. Since then, \abrs{ODE} have seen wide use in the simulation of biological systems. Most such systems of \abrs{ODE} do not have a closed-form solution as in \eqref{eq:simple_expression_ode_solution}. Instead, numerical integration\cite{Turing:1952df} can be used to determine the quantity of each species up to a finite time. Even when numerical integration is required, \abr{ODE} based methods tend to be some of the most computationally efficient and easy to implement techniques, contributing to their popularity.
+
+\figref{fig:simple_expression_timeseries_deterministic} shows a realization of an ODE simulation of our simple expression system. The expression in \eqref{eq:simple_expression_ode_solution} was used to find the concentration of protein at every time point up to ten hours. On the right hand side of the figure is a histogram of the count of protein along the time series. This can be thought of as an empirical estimation of the epigenetic landscape of the simple expression system. Thus, the \abr{ODE} simulation predicts that the landcape of this system effectively consists of a single state at protein count $= 50$.
+
+If we were to repeat this simulation, the exact same result would be produced. This highlights a key feature of \abr{ODE} simulations: they're deterministic, in the sense that, given a particular system and set of initial conditions, the method will always produce exactly the same result (at least up to numerical accuracy, in the cases where numerical integration is required). It is because of this reproducibility of outcome that \abr{ODE} simulations are also called deterministic simulations.
+
+%Like all modeling methods, \abr{ODE} simulations rely on a particular set of simplifications and approximations. This is not an inherently bad thing. These kinds of assumptions are necessary in order to reduce the complexity of the natural world into something formally tractable\todo{add a citation to some philosopher of science}. However, all such sets of assumptions correspond to some particular physical regime. Outside of that regime, the assumptions can longer be considered reasonable, and the approximations that rely on them will no longer be accurate.
+
+The theoretical formulation of the \abr{ODE} approach relies on a number of assumptions\cite{Gillespie:2007bx}. In particular, every chemical species involved in a reaction is assumed to be distributed across the reaction volume in a completely homogenous fashion. The concentration of any given species at any point in space is equal to the concentration of that species at any other point. This is in effect a continuum view, in which chemical species are not made of discrete particles but instead can be treated as infinitely divisible interacting fluids.
+
+In the words of van Kampen, at the scale of test tubes the continuum assumptions are "actually better obeyed than might be expected"\cite{VanKampen:2011vs}. At significantly smaller scales, such as those of a single cell, these assumptions break down. At some point it becomes no longer reasonable to assume that a chemical substance is an infinitely divisible fluid. Instead, one begins to have to account for effects\cite{Goutsias:2013gz} arising from the influence of the single molecules of which chemical substances are truly made. In addition to small scales, these single molecule effects also become prominent when a substance is present in a very low concentration. In this type of situation it becomes more appropriate (and more accurate) to measure quantities in terms of particle count, also sometimes called copy number.
+
+The assumptions of ODE modeling break down to some extent when applied to any gene expression system. This is due to the fact that the DNA of each gene is typically present at very low copy numbers (just 2-4 for most genes in a diploid organism) in each cell. Moreover, many of the other components of expression systems, such as specific RNAs and proteins, also have low copy number. Thus ODE models cannot recapitulate the full behavior of gene expression. Even for our simple expression model, deterministic simulation fails to reproduce many of its details (as shown in \figref{fig:simple_expression_timeseries_stochastic} and discussed in \secref{sec:deterministic_vs_stochastic}). Alternative methods have to be used in order to capture the full dynamics through which the information encoded in genes becomes proteins.
+
+%Because many of the underlying assumptions of deterministic simulation rely on a dilute state
+
+%For complex systems, such as those with rare events or multiple states, deterministic simulation cannot be relied upon to reproduce even the correct average behavior.
+
+\section{Stochastic simulation}\label{sec:stochastic_simulation}
+
+\begin{chapquote}{Daniel T Gillespie, \textit{A General Method for Numerically Simulating the Stochastic Time Evolution
+of Coupled Chemical Reactions}\cite{Gillespie:1976bj}}
+The justification for using the stochastic approach, as opposed to the mathematically simpler deterministic approach, was that the former presumably took account of fluctuations and correlations, whereas the latter did not... in the deterministic formulation no distinction is made between the average of a product and the product of the averages; \ie, it is automatically assumed that $ \eavg{x_{i} x_{j}} = \eavg{x_i} \eavg{x_j}$. For $i \neq j$ this assumption nullifies the effects of \textit{correlations}, and for $i = j$ it nullifies the effects of \textrm{fluctuations}. 
+\end{chapquote}
+
+Stochastic simulation is a particularly robust method for recreating the behavior of interacting biomolecules. The stochastic simulation method stems from work done by Gillespie. In his seminal 1976 paper ``A general method for numerically simulating the stochastic time evolution of coupled chemical reactions"\cite{Gillespie:1976bj}, Gillespie laid out the theoretical framework of stochastic chemical kinetics (which was still in its infancy\cite{McQuarrie:2016cc,Oppenheim:1969hr,Kurtz:2003gz} at that point) and proposed the first practical algorithm for simulating stochastic chemical systems.
+
+\subsection{The theory of stochastic simulation}
+
+The essential assumption of stochastic chemical kinetics is that for every reaction $\rxn$ there exists a constant $\constoch$ such that:
+\begin{align}\label{eq:stoch_essential_assumption}
+    \constoch \dt \equiv&\, \parbox[t]{0.63\linewidth}{average probability that any set of competent\footnote{A set of molecules is ``competent" \wrt{} $\rxn$ if is equivalent to the minimum set of reactants.} molecules react per $\rxn$ during the time interval $\timeint$.}
+\end{align}
+It can be shown\cite{Gillespie:1992gb} that for any well stirred system that is also at thermal equilibrium, the condition in \eqref{eq:stoch_essential_assumption} will be true for any reaction that follows mass-action kinetics\todo{come up with something more clever to say about mass action here}.
+
+The continuum chemical kinetics used in deterministic simulations assumes that each chemical species is homogeneously distributed across the reaction volume under study. In this view, each substance is in some sense spread infinitely finely over the volume. In stochastic kinetics, this homogeneity assumption is recast as the well-stirred assumption, in order to account for the existence of discrete molecules. Now it is assumed that only the probability distribution of each species is uniformly distributed over the volume. This means that in the stochastic view, at any given moment each particle of each species in a volume is equally likely to be anywhere within that volume. It is reasonable to assume that a system is well-stirred if it is small enough and if non-reactive collisions greatly outnumber collisions that result in a reaction. This description happens to describe most cellular compartments reasonably well. The fact that water molecules tend to vastly outnumber all other kinds within a cell is enough to satisfy the "non-reactive collisions" assumption\cite{Gillespie:1976bj}.
+
+Building on \eqref{eq:stoch_essential_assumption}, a propensity function (referred to by some sources as a hazard equation\cite{Wilkinson:2012tt}) can be defined for each reaction $\rxn$:
+\begin{align}\label{eq:hazard_definition}
+    \haz \dt \equiv&\, \parbox[t]{0.63\linewidth}{probability that during the time interval $\timeint$ an $\rxn$ reaction will take place,}
+\end{align}
+where $\spsmat$ is a vector of the species counts $\seqvec{\spssymb}{\spsI}$. The propensity function of any reaction following mass action kinetics can be defined as:
+\begin{equation}\label{eq:hazard_elementary_definition}
+    \haz = \constoch \mcomb,
+\end{equation}
+where $\mcomb$ is the count of sets of molecules that can participate in reaction $\rxn$. Given the relevant Petri net matrices, a propensity function from the family defined by \eqref{eq:hazard_elementary_definition} can be constructed for each of the $\rxnI$ reactions of a system with $\spsI$ species by means of a general formula\cite{Wilkinson:2012tt}:
+\begin{equation}\label{eq:hazard_general_formula}
+    \haz = \constoch \prod_{\spsi=1}^{\spsI} \binom{\sps}{\preshort_{\rxni \spsi}},
+\end{equation}
+where $\preshort_{\rxni \spsi}$ is the $\rxni \spsi$th element of the Petri net matrix $\premat$.
+
+In theory, all systems can be modeled using the propensity functions for these four elementary reaction types:
+\begin{equation}\label{eq:hazard_elementary}
+    \begin{aligned}
+        \haz &= \constoch, &\qquad & \varnothing \ce{->[\constoch]} \textrm{product} & \textrm{(zeroth order),} \\
+%
+        \haz &= \constoch \sps, &\qquad & \sps \ce{->[\constoch]} \textrm{product} & \textrm{(first order),} \\
+%
+        \haz &= \constoch \spsx{\spsi} \spsx{\spsj}, &\qquad & \spsx{\spsi} + \spsx{\spsj} \ce{->[\constoch]} \textrm{product} & \textrm{(second order),} \\
+%
+        \haz &= \constoch \frac{\sps \left( \sps - 1 \right)}{2}, &\qquad & 2 \sps \ce{->[\constoch]} \textrm{product} & \textrm{(second order self),}
+    \end{aligned}
+\end{equation}
+where the actual formulae in the left column were derived from \eqref{eq:hazard_general_formula}. Other reactions, such as those of order three or above, are considered nonphysical, since an instantaneous collision of any three molecules is extremely rare. Given a unit volume\footnote{see Wilkinson\cite{Wilkinson:2012tt}, chapter 6, for full details on converting between deterministic rate laws and stochastic propensities when dealing with real volumes.}, the first three propensity functions above are identical to the corresponding deterministic rate laws, \ie $\haz = \rlaw$ and $\constoch = \condet$. There is no deterministic rate law equivalent to the second order self propensity function. For large enough $\sps$ there is a reasonable approximation:
+\begin{equation}\label{eq:deterministic_second_order_self}
+    \begin{aligned}
+        \rlaw \approx  \frac{\constoch}{2} \sps^{2} = \condet \sps^{2}, &\qquad && \textrm{(deterministic second order self),}
+    \end{aligned}
+\end{equation}
+where we've set $\condet = \frac{\constoch}{2}$ above.
+
+Technically, any reaction not in \eqref{eq:hazard_elementary} should be considered a compound reaction, and modeled by decomposition into 2 or more elementary reactions. In practice, however, it is not uncommon for modelers to use propensity functions with a wide variety of forms, such as Hill equations:
+ \begin{equation*}
+     \begin{aligned}
+        \haz = \frac{\sps^{h}}{\kappa^{h} + \sps^h}, &\qquad & \sps \ce{->} \textrm{product} && \textrm{(Hill equation),} \\
+    \end{aligned}
+ \end{equation*}
+ where $h$ and $\kappa$ are arbitrary constants. The use of such alternative propensity functions are then justified on an empirical basis (\eg they reproduce a particular feature of the modeled system), rather than on the basis of stochastic kinetics per se\cite{Gillespie:1992wf}.
+
+\subsection{The stochastic simulation algorithm}
+
+The Gillespie algorithm, or (as Gillespie himself refers to it\cite{Gillespie:2013kk}) the \abr{SSA}, was first proposed by Gillespie in 1976\cite{Gillespie:1976bj}. Though there have been many improvements developed for the implementation\cite{Gibson:2000jqa,Cao:2004cua,Lok:2005ii,McCollum:2006hj} of the algorithm, the basic algorithm (specifically the \abr{DM} variant) itself remains 40 plus years later the gold standard of stochastic simulation.\todo{add something here about matrices and constructing the vector of hazards.}
+
+\abr{SSA} treats the underlying chemical system as a Markov process. This means that the next state that a system occupies is determined (in a probabilistic sense) solely by its present state\footnote{Although the framework is also flexible enough to allow factors that are explicitly time-dependent, such as externally applied chemical driving forces}. The probability of each possible next state can be calculated by means of probability expressions of the form:
+\begin{align}\label{eq:stoch_transition_dist}
+    \transp \dt \equiv&\, \parbox[t]{0.63\linewidth}{probability that the next reaction in the system takes place in the instantaneous interval $\timeintp$ and is of the type $\rxn$.}
+\end{align}
+The goal of \abr{SSA} is to generate trajectories (\ie time series) of the underlying stochastic chemical system by means of successively calculating and then drawing a random sample from the probability distribution $\transp$ described in \eqref{eq:stoch_transition_dist}.
+ 
+The \abr{DM} variant of \abr{SSA} is based on the fact that $\transp$ can be split into two independent distributions:
+\begin{equation*}
+    \transp = \transpone \cdot \transptwo
+\end{equation*}
+Stochastic kinetic theory and basic probability can be used to derive expressions\cite{Gillespie:1976bj} for $\transpx{1}$ and $\transpx{2}$:
+\begin{align}\label{eq:ds_probs}
+    \begin{split}
+        \transpone &= \hazshortsum e^{-\hazshortsum t} \\
+        \transptwo &= \frac{\hazshort}{\hazshortsum},
+    \end{split}
+\end{align}
+where
+\begin{align*}
+    \begin{split}
+        \hazshort &= \haz \\
+        \hazshortsum &= \sum_{\rxni=1}^{\rxnI}\haz,
+    \end{split}
+\end{align*}
+The actual \abr{DM} algorithm can be though of as a ``kinetic" Monte Carlo method\cite{Gillespie:2007bx} that works based on the generation of two uniform random numbers in each loop:
+\begin{enumerate}
+    \item\label{it:ds_update_state} Calculate the current value of the propensity functions $\haz$ and their sum $\hazsum$, given the current state $\cstateall$ where $t$ is the current time and $X$ is a vector of the current species counts.
+    \item Sample $\transpx{1}$ and $\transpx{2}$ by drawing two uniform random numbers $\urandx{1}$ and $\urandx{2}$ from the unit interval:
+    \begin{enumerate}
+        \item Calculate $t'$ as:
+        \begin{equation*}
+            t' = \frac{1}{\hazshortsum} \loge{\frac{1}{\urandx{1}}}
+        \end{equation*}
+        \item Calculate $\rxni$ as:
+        \begin{equation*}
+            \rxni = \textrm{the first value of $\rxni$ such that } \sum_{\rxnj=1}^{\rxni} \hazshortx{\rxnj} > \urandx{2} \hazshortsum
+        \end{equation*} 
+    \end{enumerate}
+    \item Update the current time as $t + t'$, update the current species counts as $\spsx{} + \stoichmatx{\rxni}$, where $\stoichmatx{\rxni}$ is the $\rxni$th column of the stoichiometry matrix $\stoichmat$ (see \secrefTwo{sec:quant_models}{sec:ode_models}).
+    \item Write out any desired information about the state, then either terminate the simulation (given an appropriate condition has been met), or continue by returning to step \ref{it:ds_update_state}.
+\end{enumerate}
+After running (and recording) many such iterations, the data collected can be thought of as an exact realization of one replicate from the ensemble of the modeled system. In real computational experiments, typically many such replicates are run and the data from them are combined to produce a final analysis. For example, the epigenetic landscape of a system can be calculated by simply binning (\ie into a histogram) the species count data of one or more replicates.
+
+%Further, stochastic simulation does not directly compute the quantities of substances. At every time point the probability of each possible reaction (including no reaction) is calculated. The next reaction that happens is then chosen based on those probabilities. Once that reaction "fires", it's reactants and products are increased or decreased (in whole number increments) as appropriate.
+
+\section{Deterministic vs stochastic}\label{sec:deterministic_vs_stochastic}
+
+In general, deterministic simulation requires less computational effort than stochastic. So why should a computational scientist bother using stochastic simulation? The theoretical justifications discussed in the previous few sections can be put into concrete terms by comparing deterministic and stochastic simulations performed on the same model. Even for very simple \abrs{GRN} the difference in the level of detail captured by each simulation type is clear.
+
+A comparison of deterministic and stochastic simulations of our simple expression system (see \eqref{eq:simple_expression}) can be seen in \figref{fig:simple_expression_timeseries_stochastic}. The top panel shows results from a version of the simple expression system with a relatively high average protein expression level (around ${\sim}5 \cdot 10^{3}$). Under these conditions, the time series produced by the deterministic and stochastic simulations (shown in the top left panel) are in reasonably good agreement. As well, the epigenetic landscape predicted by stochastic simulation (shown in the top right panel) is in good agreement with the landscape predicted by deterministic simulation (which will just be a single peak around ${\sim}5 \cdot 10^{3}$). 
+
+On the other hand, the deterministic and stochastic simulations diverge in the limit of low protein expression. The bottom two panels of \figref{fig:simple_expression_timeseries_stochastic} show simulations of low expression variants of the simple expression system. Though the mean expression levels of the different simulation methods match (all are around ${\sim}50$ counts), the moment-to-moment behavior of the simulated systems do not. The deterministic simulations predict that the protein count will be constant. On the other hand, the stochastic simulations predict (correctly) that the protein count will fluctuate significantly about the mean. Further, the deterministic simulations predict that there is no difference between the systems depicted in the middle and bottom panels, while the stochastic simulations again correctly show that the fluctuations in the bottom variant will be significantly larger. This agrees with the analysis of Ozbudak and coworkers\cite{Ozbudak:2002iq}. They defined the fluctuation strength in terms of the Fano factor $\frac{\sigma^{2}_{p}}{\eavg{p}}$, then showed that it will be equal to:
+\begin{equation}\label{eq:simple_expression_noise_strength}
+    \frac{\sigma^{2}_{p}}{\eavg{p}} = 1 + \frac{\condetx{2}}{\condetx{3} + \condetx{4}}
+\end{equation}
+
+The simulations in \figref{fig:simple_expression_timeseries_stochastic} are clear examples of one of the key weaknesses of deterministic simulation: it does not capture fluctuations correctly. These kinds of species count fluctuations are often referred to in the literature as ``noise"\cite{Elowitz:2002hb}. This is something of a misnomer, as cellular noise has been found to play an important role in (and sometimes be a primary driver of\cite{Jaruszewicz:2013fe,Ahrends:2014bm}) a wide variety of decision making\cite{Andrews:2007gu,Balazsi:2011bw} and developmental processes\cite{Pujadas:2012dj}. On a more immediately visible note, the bottom two panels of \figref{fig:simple_expression_timeseries_stochastic} show the dominant role that noise can play in moulding the epigenetic landscape. Most of the landscapes of the simple expression system variants are roughly symmetrical. Alternatively, the large fluctuations present in the noisiest variant (at the bottom of the figure) skew its landscape towards larger counts, giving it a long tail. This long tail is a nice illustration of the complex, non-symmetrical behaviors that can emerge in the limit of low copy number, demonstrating the need for a stochastic approach to the simulation of even the simplest \abrs{GRN}.
+
+If a system includes at least one nonlinear reaction (\ie a reaction for which the corresponding rate law/propensity is nonlinear), it becomes possible for the results of deterministic and stochastic simulation to diverge completely. When working with nonlinear systems, deterministic simulation is in general unable to reproduce even the correct mean behavior\cite{Hahl:2016ib}. Both the $p$ dimerization and the $p_{2} + g_{p}$ binding reactions of our self regulating expression system (see \eqref{eq:self_regulating_expression}) are second order, and thus nonlinear. \figref{fig:self_regulating_expression_timeseries_stochastic} shows the results from a deterministic and a stochastic simulation of this system. The deterministic and stochastic means do indeed differ signficantly, by ${\sim} 15\%$.
+
+Regardless of the ability of deterministic simulation to reproduce the correct mean behavior, a larger issue remains. The self regulating expression system depicted in \figref{fig:self_regulating_expression_timeseries_stochastic} has more than one metastable (\ie long-lived) state. Evidence for this can be seen in both the time series (\eg the long stretch around hour 6 during which the protein count stays fixed near 0) and via the fact that its epigenetic landscape has more than one mode/peak. Deterministic simulation cannot be used effectively to map the various states of this kind of multi-stable system, nor to calculate the dynamics of the transitions in between them. Thus, in order to construct the epigenetic landscape of a complex, nonlinear system with multiple possible states, stochastic simulation is required.
+
+\todo{The Applications of stochastic simulation with the Roberts lab cites}
+%\section{Applications of stochastic simulation}
+%\cite{Sharma:2016gw,Roberts:2011cs}
+
+\section{Rare events, statistics, and the limits of stochastic simulation}
+
+With respect to a particular system, an event is rare\cite{Baron:2017tf} if it occurs at a much slower rate than the fastest event\footnote{How much slower? There is no formal definition of a rare event, but as a rule of thumb assume that in order to qualify as rare, an event must occur at least 3 orders of magnitude less often than the system's most frequent event}. In a multi-stable system, switching between states tends to be a rare event since it often requires the co-occurrence of specific fluctuations in two or more noisy reaction channels. For example, in order for the self regulating expression system shown in \figref{fig:self_regulating_expression_timeseries_stochastic} to switch from active to repressed, first a $p$ dimerization reaction (itself a rare event) must occur. Then the $p_{2} + g_{p}$ binding reaction must happen before the $p_{2}$ dedimerization reaction has a chance to fire. 
+
+The existence of a rare event implies a large separation between the signficant timescales of  a system. This timescale separation can prove challenging\cite{Shampine:1979em,Petzold:1983if} for many different simulation techniques. Theoretically, \abr{SSA} simulation can exactly reproduce the behavior of any system, regardless of the presence of rare events. In practice however, it can be difficult, or even impossible, to produce an accurate simulation of a rare event systems using \abr{SSA}. This apparent paradox can be understood by considering the error statistics of \abr{SSA}. 
+
+%The raw output of a stochastic simulation is a set of one or more replicate trajectories. Each of these trajectories can be thought of as one run of an experiment in which the system of interest is first initialized to a specified starting state, then is allowed to evolve freely as observations are taken. Typically, the actual data consists of samples taken of the species counts at a regular interval.  
+
+When studying a rare event, it is standard practice to first determine its \abr{MFPT}, the mean waiting time before the event occurs. Given a rare event, stochastic simulation can be used to determine its \abr{MFPT}. The procedure is equivalent to estimating the mean of a random variable $\phrvx{}$ (in this case, $\phrvx{}$ is the waiting time in between occurrences of the event). A single sample $\phrv$ is drawn from $\phrvx{}$ by running a trajectory until the first occurrence of the rare event, then recording the final simulation time. $\samplecountx{}$ samples are drawn by running $\samplecountx{}$ such replicates. The mean of these samples: 
+\begin{equation*}
+    \frac{1}{\samplecountx{}} \sum_{i=1}^{\samplecountx{}} \phrv, 
+\end{equation*}
+is then an estimator of \abr{MFPT}.
+
+The accuracy of the \abr{MFPT} calculated by \abr{SSA} depends on the size of the sample count $\samplecountx{}$. The exact form of the dependence depends in turn on the exact form of $\phrvx{}$ (though it can in general be said that the accuracy increases along with the $\samplecountx{}$). For a rare switching event (\eg a transition that takes a system between two well separated states $\statea$ and $\stateb$), $\phrvx{}$ will tend towards an exponential distribution{\cite{Aldous:1982ev}}, assuming that there are no intervening states. In the limit of large sample sizes, the margin of error of the stochastic \abr{MFPT} calculation is then given by a simple formula (see \secref{sec:moe_from_simulation_params} for derivations and a complete discussion):
+\begin{equation*}
+    \frac{\zscore}{\sqrt{\samplecountx{}}},
+\end{equation*}
+where $\zscore$ is the z score for confidence level $\alpha$ (\ie $\zscorex{.95} \approx 1.96$). \figref{fig:sampling_error_mean_of_exponential} shows the margins of error for a wide range of sample count values. In particular, it shows that a very large (38415) sample count is required in order to ensure that a simulation produces an accurate (\ie no more than $1\%$ error) \abr{MFPT} value.
+
+For simple enough systems with few enough components, the computational cost (in terms of CPU time) required for accurate stochastic simulation is merely an inconvenience. For complex systems involving rare events, the computational cost can be prohibitive. Very roughly, the cost of sampling a rare event using standard \abr{SSA} will scale as: 
+\begin{equation}\label{eq:ssa_rare_event_cost}
+    \frac{\fluxx{\textrm{fastest}}}{\fluxx{\textrm{rare}}}, 
+\end{equation}
+the quotient of the fluxes of the fastest event and the rare event. This means that for a rare enough event, the computational requirements of accurate simulation will easily eclipse the resources provided by any single computer. When a single computer is insufficient, one approach is to scale up your simulations to make use of HPC/cluster resources (an example of this is shown in \figref{fig:gts_theta_1en1_landscape_2d_comparison_samples}). A better approach is to make use of enhanced sampling. Enhanced sampling is a family of simulation methods that scale more efficiently than \eqref{eq:ssa_rare_event_cost} with respect to rare events.
+
+%One way to work around this kind of computational limitation is to scale up simulations to make use of HPC/cluster resources. The \abr{SSA} is embarassingly parallel (each replicate trajectory can be run completely independently), to the extent that a quality implementation 
+
+%One way around this computational limitation is to use make use of HPC/cluster resources and a parallelized implementation of \abr{SSA}. From left to right, each panel of \figref{fig:gts_theta_1en1_landscape_2d_comparison_samples} shows the epigenetic landscape of $\GTSSLOWEST$ as calculated by simulations of increasing length. All of the simulations were run in parallel using several thousand CPU cores. $\GTSSLOWEST$ is a system with a very slow switching event ($\mfpttrue \approx 7 \cdot 10^{7}$, see \secref{sec:gts}), that were run using 1000s of CPU cores. From left to right, epigenetic landscapes 
+
+
+%calculated using a number of different version  the cost of thoroughly sampling the landscape of transition region demonstrate that thorough sampling of any switching events turns out to be important for the accurate calculation of many values beyond the \abr{MFPT}. For example, say that you want to construct the epigenetic landscape a system that has two metastable states, $\statea$ and $\stateb$. When collecting samples of species counts in order to construct an epigenetic landscape
+
+
+
+%A well optimized implementation of \abr{SSA} can execute tens of millions of simulation steps every second\cite{Roberts:2013cu}. 
+
+%When estimating a property of a rare event, the level of error 
+
+% cold storage for unused citations
+%\cite{Moradi:2014cr,Moradi:2014fv,Becker:2012ej}
+
+\section{Enhanced sampling}
+
+\begin{chapquote}{Kahn and Harris, \textit{Estimation of particle transmission by random sampling}\cite{Kahn:1951es}}
+We are here concerned with essentially the same problem that some of the other speakers have spoken about. We wish to estimate the probability that a particle is transmitted through a shield, when this probability is of the order of $10-6$ to $10^8$, and we wish to do this by sampling about a thousand life histories. It's clear that a straightforward approach will not give the results desired.
+\end{chapquote}
+
+So begins the first paper ever written on the topic of enhanced sampling\footnote{Technically, Kahn et al., 1951\cite{Kahn:1951es} is one of two papers about enhanced sampling that were published in the same conference proceedings. However, Kahn starts on an earlier page than von Neumann, 1951\cite{vonNeumann:1951fe}, so I'll call Kahn the first.}. The family of enhanced sampling methods can be traced back to work done by von Neumann\cite{vonNeumann:1951fe} and a few others\cite{Kahn:1953az,Forsythe:1972cf} in the 1950s, during the early days of Monte Carlo nuclear physics simulations.
+
+Given that a researcher is interested in a rare event, stochastic simulation, though potentially more rigorous and accurate than the alternatives, is grossly inefficient. The trajectories of stochastic simulations are bound to follow the probability distributions of their underlying systems, and so by definition waste all but a slim minority of their time fluctuating around the high-likelihood regions of state space. Many researchers (both in systems biology and in many related fields\cite{Huber:1996dn,Dellago:1998kw,vanErp:2005jua,Bernardi:2015ij}) over the years have asked themselves, ``why can't I just confine my simulations to the part of state space I actually want to see?"
+
+The typical goal of running a stochastic simulation is to collect samples, and then use those samples to estimate the value of some system property that cannot be calculated directly. Certainly it is technically feasible to simply bias or confine a simulation so that it remains within a region of interest, producing more relevant samples more quickly. However, any artificial bias added to the simulation will also bias the samples, and thereby distort the statistics of the estimation process. It is possible to both have your cake (confine your simulation to a region) and eat it too (produce an unbiased sample) by applying bias in a controlled fashion, while at the same time keeping track of any distortion you cause via bookkeeping. With the right information the collected samples can then be unbiased, producing the desired result. This is the essence of the enhanced sampling methods.
+
+In the broadest terms, all enhanced sampling methods follow the same basic script:
+\begin{enumerate}
+    \item Generate a biased version of the original system.
+    \item Draw samples from the biased system.
+    \item Based on bookkeeping information recorded during the preceding steps, recover an unbiased sample by applying statistical methods to the biased sample. 
+\end{enumerate}
+There are now dozens (if not hundreds) of different enhanced sampling methods, and while some of them may not strictly follow these steps, each and every one of them performs the 3 actions listed above in some fashion.\todo{Maybe?: put something here discussing how EH for nonequilibrium is a recent thing. You don't have to}
+
+\section{Enhanced sampling methods for stochastic simulation of biochemistry}
+
+Beginning with the proposal of \abr{FFS} in 2005\cite{Allen:2005wy}, a number of different enhanced sampling methods have been developed for use in stochastic simulations of biochemical systems. Along with \abr{FFS}, \abr{NEUS} and \abr{WE} are also highly cited methods.
+
+\abr{FFS}, \abr{NEUS} and \abr{WE} have a number of features in common. Each method requires the user to specify a function of their system's complete state to use as an order parameter:
+\begin{equation*}
+    \oparamx{} \cstateall = \left( \opvalx{0}, \opvalx{1}, \cdots \right)
+\end{equation*}
+Additionally, each requires the user to specify a region of interest in terms of a set of bins that span an interval along the order parameter. Taken together, the order parameter and the tiling define a constraint that will be used to bias the user's system. The order parameter defines the degrees of freedom of the constraint, while the tiling defines one or more bounded regions along those degrees of freedom. Ultimately this constraint is used to guide the system into and along the region of interest, though the actual implementation of the constraint varies from method to method.
+
+\subsection{Forward flux sampling}
+
+The first step of \abr{FFS} is to define two points of interest in your system's state space (we'll call these $\statea$ and $\stateb$), a 1D order parameter that can unambiguously differentiate those two points, and a 1D sequence $\seqvecz{\ifacex{}}{\Phase}$ of ``interfaces'' (\ie bins) that lie along the order parameter in between $\statea$ and $\stateb$. If a trajectory passes below $\ifacex{\statea} = \ifacez$ it is said to be in the $\statea$ state, and if it passes above $\ifacex{\stateb} = \ifaceI$ it is said to be in the $\stateb$ state. \abr{FFS} also requires the user to manually specify a maximum simulation time $T$ and a set of trajectory counts $\seqvec{\samplecountx{}}{\Phase}$, the significance of which are discussed in the following paragraphs.
+
+Given the above setup, the goal of an \abr{FFS} simulation is to calculate $\fluxab$, the flux from state $\statea$ into $\stateb$. $\fluxab$ can be decomposed into a smaller flux and a probability term:
+\begin{equation*}
+    \fluxab = \fluxxy{\statea}{0} \fluxprobxy{\stateb}{0},
+\end{equation*}
+where $\fluxxy{\statea}{0}$ is the flux from the vicinity of $\statea$ to the initial interface $\ifacez$, and $\fluxprobxy{\stateb}{0}$ is the probability that a trajectory will reach $\stateb$ before it falls below $\ifacez$, given that the trajectory is currently at $\ifacez$. The probability can be further decomposed into a sequence of probabilities along the interfaces:
+\begin{equation}\label{eq:ffs_flux_decomp}
+    \fluxab = \fluxxy{\statea}{0} \prod_{\phase=1}^{\Phase} \fluxprob.
+\end{equation}
+The actual \abr{FFS} simulation consists of an ordered sequence of $\Phase + 1$ distinct phases. A schematic illustration of these phases is shown in \figref{fig:fflux_stages}. Each phase produces an estimate of one of the terms on the left hand side of \eqref{eq:ffs_flux_decomp}. 
+
+The simulation begins with phase $0$, at the start of which a single unbiased trajectory is initialized at $\statea$ and allowed to run until the user-specified simulation time $T$. Whenever this trajectory crosses $\ifacez$ while traveling forward (\ie towards $\stateb$) the species counts at the point of crossing are recorded in a list $C_0$. If the trajectory ever leaves state $\statea$ (\eg by crossing into $\stateb$), the simulation time is paused, and doesn't resume incrementing until the trajectory reenters $\statea$. The phase $0$ trajectory is terminated once it reaches time $T$, and the flux term in \eqref{eq:ffs_flux_decomp} is then estimated as:
+\begin{equation*}
+    \fluxxy{\statea}{0} = \frac{\successcountz}{T},
+\end{equation*}
+where $\successcountz$ is the count of entries in $C_0$. Phase $0$ then ends, and phase $1$ begins.
+
+During each phase $\phasegz$, a user-defined number $\samplecount$ of trajectories are run. Each trajectory is initialized at a randomly chosen point from $C_{\phasemo}$, the list of crossing points from the previous phase. The trajectory is run until it either falls below $\ifacez$ or passes above $\ifacei$. If the trajectory passed above $\ifacei$ its species count at the point of crossing is recorded in $C_{\phase}$, and in either case the trajectory is terminated. Once $\samplecount$ trajectories have run, the corresponding probability term in \eqref{eq:ffs_flux_decomp} is then estimated as:
+\begin{equation*}
+    \fluxprob = \frac{\successcount}{\samplecount}.
+\end{equation*}
+Phase $\phase$ then ends, and $\phasepo$ begins. Once phase $\Phase$ finishes, the \abr{FFS} simulation is over. The flux $\fluxab$ can be calculated from \eqref{eq:ffs_flux_decomp}, and the \abr{MFPT} can be calculated as the inverse flux, ${\fluxab}^{-1} = \mfpttrue$.
+
+Various extensions for the \abr{FFS} method have been developed. One of the more useful ones is from a follow-up paper\cite{Valeriani:2007hv} that showed how \abr{FFS} can be used to calculate a wide variety of values beyond flux and \abr{MFPT}. They define a set of weights that can be used to combine biased data collected during the individual phases into a single set of unbiased results, equivalent to those that could be gained from an unconstrained \abr{SSA} simulation. Among other things, this enables the use of \abr{FFS} to rapidly construct the epigenetic landscape of a system.
+
+%Extension for non-stationary systems\cite{Becker:2012fl}
+
+A more complete description of \abr{FFS} (including a including a step-by-step listing of the algorithm) is given later in this thesis in \secref{sec:ds_es_description}. The version given in \secref{sec:ds_es_description} differs somewhat from the original implementation of \abr{FFS}, with each change made either for the sake of parallelizing the algorithm, or to make one of the method's outputs more amenable to statistical analysis. On the other hand, the description given above is faithful to the version from the originating papers\cite{Allen:2005wy,Allen:2006cp,Allen:2009kb}.
+
+\subsection{Nonequilibrium umbrella sampling}
+\abr{NEUS} was first proposed\cite{Warmflash:2007dz} in 2007, a couple of years after \abr{FFS} was introduced, and bears it a number of similarities.  \cite{Dickson:2009gt,Dickson:2009fua}
+
+\figref{fig:dickson_2009_fig2}
+
+\subsection{Weighted ensemble}
+\abr{WE} is a method that originated\cite{Huber:1996dn} in the molecular dynamics community. More than a decade after it was first proposed, a paper\cite{Bhatt:2010df} was published that showed how \abr{WE} could be adapted for use with stochastic biochemical simulations. 
+\cite{Donovan:2013gz,Donovan:2016bi,Zuckerman:2017eq}
+
+\figref{fig:donovan_2013_fig1}
+
+Interestingly, \abr{WE} turns out to be nearly identical to the ``splitting technique" attributed to von Neumann in the first enhanced sampling paper\cite{Kahn:1951es}. Thus, \abr{WE} can be thought of as an accidental rediscovery of the splitting method\cite{Chong:2017bv}.
+
+%\section{The "catch" of enhanced sampling}
+%The most immediate drawback of using enhanced sampling methods is the added complexity they introduce into simulation protocols. The use of enhanced sampling makes simulations more complicated in three distinct ways. First, every enhanced sampling method requires that the user input a number of extra parameters beyond those needed to describe their models. For example, all of the methods require the user to specify an order parameter and an arrangement of bins. \todo{finish this gripe list} Second, much more complex simulation plan. Third, more difficult to get answers of interest from the output at the end of the simulation, since it requires statistical deconvolution. The work in this thesis seeks to address all of these issues through further development and refinement of enhanced sampling methods.
+%
+%A deeper issue, though, is that in many ways enhanced sampling seems too good to be true. It seems kind of like something for nothing, or a free lunch. Though the developers of various enhanced sampling methods have claimed that they are faster than direct sampling while introducing no extra approximations or errors\cite{Zhang:2010kfa,Allen:2006ch}, it remains to be definitely proven one way or the other. Thus it is reasonable to ask ``does enhanced sampling actually work? Will it actually produce an answer of equivalent accuracy in less time than the established methods?" This is one of the questions that this thesis attempts to answer.
+
+%One of the conclusions of this thesis is that, in fact, forward flux is provably faster than direct sampling. However, we also found that forward flux introduces a type of correlation error 
+
+\section{Simplifying and optimizing forward flux}
+The original formulation of \abr{FFS}\cite{Allen:2005wy} left a great of room for improvement. Specifically, \abr{FFS} adds a large number of unspecified degrees of freedom to a system, in the form of a large set of extra simulation parameters. When a computational scientist sets up a \abr{FFS} simulation, she must specify two points of interest, a 1D order parameter, a set of interfaces $\ifacei$, the phase $0$ maximum simulation time $T$, and the set of phase $\phasegz$ trajectory counts $\samplecount$. These simulation parameters are required in addition to all of the model data required for a standard \abr{SSA} simulation. In theory, the choice of \abr{FFS} parameters will not have an effect on simulation outcome\cite{Allen:2009kb}, only on simulation efficiency. 
+
+The additional simulation parameters present several challenges to users. For new users, the \abr{FFS} parameters can be an imposing hurdle. They are likely one of the stumbling blocks preventing wider adoption of \abr{FFS} methods. In particular, the order parameter and the interfaces are conceptually complicated. It takes time for a beginner to learn how to find reasonable values for these parameters. Even for an experienced user it can take a significant amount of trial and error\cite{Kratzer:2013fs} to find good values when working with a novel system. Further, for most systems there exists an optimal\cite{Ma:2005jh} set of \abr{FFS} parameters that will maximize their efficiency and minimize their runtime.
+
+It is possible to devise automated methods that can find and set the optimal \abr{FFS} parameters values without user input. Several examples are discussed in the paragraphs below. These optimization routines kill two birds with one stone: they simplify the setup of an \abr{FFS} simulation and make the method easier to use, while also speeding the simulation up. Between the published optimization methods and the work presented in this thesis (see \secref{sec:intro_ffpilot}), it is possible to find optimized values of every \abr{FFS} parameter (even the order parameter\cite{Borrero:2007eq}). Thus, it should be possible to devise a method that can automatically set an optimal method of every parameter all at once, though none has yet been published.%Ideally, a user should only have to enter the two points of interest in addition to their model. 
+
+Along this vein, Borrero and coworkers devised a number of different optimization routines\cite{Borrero:2008il} for \abr{FFS}. These routines are designed around the concept that the user's computational resources are limited. Thus, they require the user to input a quantity of computational effort, given in terms of the total number of trajectories that will be run during a single \abr{FFS} simulation. The routines then find an optimal set of parameters that minimizes overall simulation error while holding the computational effort fixed at the user-specified level. For standard \abr{FFS}, they devised one routine that can be used to find the optimal choice of $\samplecount$ (the number of trajectories to run in each phase $\phasegz$), and another that can be used to find the optimal choice of $\ifacei$ (the placement of the interfaces along the 1D order parameter). Since computational effort is held fixed, Borrero's optimization methods will not speed a simulation up, but will instead decrease the level of error in the simulation's results. Indeed, they found that their optimization methods could reduce simulation error by as much as $40\%$.
+
+Borrero's interface optimization method generates an initial rough guess of $\ifacei$ and then using iterative rounds of \abr{FFS} simulation in order to refine it. Kratzer and coworkers developed a more elegant alternative approach\cite{Kratzer:2013fs} to optimizing $\ifacei$ that avoids the need to perform entire extra simulations. Instead, they figured out a way to dynamically generate an optimal placement of interfaces, one at a time, during an otherwise standard \abr{FFS} simulation. Kratzer describes two different variants of his method, but both follow roughly the same script: at the start of a simulation only the first and last interfaces, $\ifacez$ and $\ifaceI$, are defined. At the start of each phase $\phasegz$, a fixed number of trial trajectories are launched from $\ifaceimo$ under controlled conditions. Based on the outcomes of these trial trajectories, a location for $\ifacei$ is chosen, and the \abr{FFS} simulation proceeds as normal (until the start of the next phase). Kratzer found that his dynamic interface optimization methods were able to speed simulations up by as much as 2X, relative to a simulation run with manually placed interfaces.
+
+The optimization schemes of both Borrero and Kratzer ignore the contribution of phase $0$ to the simulation error. Technically, they both treat the outcome of phase $0$ as deterministic, causing it to ``fall out" of their analyses of the simulation variances and errors. This is standard practice\cite{Allen:2006ch} in analyses of the error statistics of \abr{FFS}. We devised a novel approach to the analysis of \abr{FFS} error that allows the contribution of phase $0$ to be calculated directly (see \secref{sec:phase_weight_moments}). Contrary to previous claims\cite{Allen:2009kb} in the literature, it can be shown that phase $0$ can be a large contributor to overall simulation error (see \secrefTwo{sec:srg}{sec:gts}).
+
+\section{Forward flux pilot sampling}\label{sec:intro_ffpilot}
+In many ways enhanced sampling seems too good to be true. It seems kind of like something for nothing, or a free lunch. Though the developers of various enhanced sampling methods have claimed that they are faster than direct sampling while introducing no extra approximations or errors\cite{Zhang:2010kfa,Allen:2006ch}, it remains to be definitely proven one way or the other. Thus it is reasonable to ask ``does enhanced sampling actually work? Will it actually produce an answer of equivalent accuracy in less time than the established methods?" More prosaically, when performing \abr{FFS} simulations, a researcher might wonder ``how many trajectories should I run in each phase in order to get a result without too much error?" All of these are questions that the work presented in the subsequent chapters of this thesis attempts to answer.
+
+In the next chapter we present a new analysis of the error in the output of \abr{FFS} simulations. Using a novel derivation, we find a more general form of the \abr{FFS} error relation (\ie simulation error as a function of the simulation parameters) than has been presented in the literature\cite{Allen:2006ch,Borrero:2008il,Allen:2009kb}. In particular, this allows us to calculate the previously unconsidered error arising from phase $0$. We show that this phase $0$ error can indeed be a significant contribution to the overall simulation error.
+
+Next, we derive an equation that gives the optimal (in terms of computational cost) number of trajectories to run in each phase, given a user-defined desired maximum level of error in the simulation results, which we call an error goal. Based on this optimizing equation, we develop a novel variant of the \abr{FFS} enhanced sampling method which we call \abr{FFPilot}. \abr{FFPilot} replaces the $T$ and the entire set of $\samplecount$ parameters of standard \abr{FFS} (\ie the parameters that determine the computational effort expended during each phase) with a single error goal parameter. Given that error goal, \abr{FFPilot} will plan out and run the fastest possible \abr{FFS} simulation. Thus, \abr{FFPilot} is both a simplification and an optimization of the \abr{FFS} approach. We wrote an optimized, fully parallelized implementation of the \abr{FFPilot} alogorithm in C++. This implementation of \abr{FFPilot} was added to the Lattice Microbes\cite{Roberts:2013cu}, a stochastic simulation software package published by the Roberts Lab.
+
+The remainder of the chapter is dedicated to a thorough validation and exploration of \abr{FFPilot}. In simulations of 1D biochemical systems (\ie systems with only a single chemical species), we show that \abr{FFPilot} is indeed able to control error in the final simulation results as expected. In fact, \abr{FFPilot} controls error so well that it is able to uncover a previously invisible problem in all existing analyses of \abr{FFS} error, including my own. The published error analyses\cite{Allen:2006ch,Borrero:2008il,Allen:2009kb} all assume that sampling error (\ie error due to running too few trajectories) is the sole source of simulation error. However, when using \abr{FFS} to simulate a complex system with a rough, multidimensional epigenetic landscape, it turns out that other sources of error can become significant. Results from \abr{FFPilot} simulations of multidimensional systems show that while sampling error is still the dominant source of error, there is an anomalous extra error that \abr{FFPilot} is unable to control. We demonstrate that the anomalous error is due to correlations between the trajectory starting point distributions along different interfaces.
+
+The final chapter of the thesis is a tutorial that explains in detail how to use the \abr{FFPilot} implementation in Lattice Microbes. Complete examples are given that show how to use \abr{FFPilot} to calculate both the \abr{MFPT} and the epigenetic landscape of a system.
+
+%Stochastic simulation is an ideal tool for mapping the epigenetic landscapes of complex systems. \abr{SSA} is capable of exactly reproducing the behavior of any biochemical system, regardless of its complexity. Paradoxically, that level of accuracy makes \abr{SSA} unsuitable for the simulation of rare event systems. By design, a stochastic simulation will end up spending orders of magnitude more computational effort reproducing common events than it will on reproducing rare ones. As discussed in previous sections, the limitations of \abr{SSA} with respect to rare events can be worked around by combing stochastic simulation with enhanced sampling methods. 
+
+
+
+
+
+

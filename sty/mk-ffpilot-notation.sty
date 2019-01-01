@@ -1,0 +1,361 @@
+\usepackage[mathscr]{euscript}
+
+% define xits math font, used for some symbols
+%\newfontfamily{\xitsmath}{xits-math.otf}
+
+% define cambria math font, used for some symbols
+%\newfontfamily{\cambriamath}{Cambria Math}
+
+% symbol for general value of interest
+\newcommand{\voisymb}{\mathbb{X}}
+\newcommand{\voitrue}{\voisymb}
+\newcommand{\voiest}{\est{\voisymb}}
+
+% symbols for subscript indices of indeterminate value
+\newcommand{\ix}{i}
+\newcommand{\jx}{j}
+\newcommand{\kx}{k}
+
+% symbol for the simulation total computational cost
+\newcommand{\Costsymb}{\mathcal{C}}
+\newcommand{\Cost}{\Costsymb}
+
+\newcommand{\Costds}{{\Cost}_{\textrm{ds}}}
+\newcommand{\Costffs}{{\Cost}_{\textrm{ffs}}}
+\newcommand{\Costffsopt}{{\Cost}_{\textrm{ffs-opt}}}
+\newcommand{\Costffpilot}{{\Cost}_{\textrm{ffpilot}}}
+\newcommand{\Costffpilotover}{{\Cost}_{\textrm{ffpilot-over}}}
+
+% symbol for per phase computational cost
+%\DeclareRobustCommand\costsymb{%
+%    \mathrel{\text{\normalfont\cambriamath\symbol{119992}}}%
+%}
+\newcommand{\costsymb}{\mathfrak{c}}
+
+\newcommand{\costx}[1]{\costsymb_{#1}}
+\newcommand{\cost}{\costsymb}
+
+% symbol for simulation time
+\newcommand{\simtimesymb}{\tau}
+
+\newcommand{\simtimex}[1]{\simtimesymb_{#1}}
+\newcommand{\simtime}{\simtimex{\phase}}
+\newcommand{\Simtime}{\simtimesymb}
+\newcommand{\Simtimeatoz}{\simtimesymb_{\statea}}
+\newcommand{\Simtimeatozest}{\est{\simtimesymb}_{\statea}}
+\newcommand{\Simtimefixed}{T}
+
+% symbol for the random variable associated with the overall simulation process
+\newcommand{\strv}{\mathfrak{W}}
+
+% symbol for the random variable associated with the individual phase processes
+\newcommand{\phzrv}{\tau}
+
+%\DeclareRobustCommand\phrvsymb{%
+%    \mathrel{\text{\normalfont\xitsmath\symbol{120168}}}%
+%}
+\newcommand{\phrvsymb}{\mathfrak{w}}
+
+\newcommand{\phrvx}[1]{\phrvsymb_{#1}}
+\newcommand{\phrv}{\phrvx{\ix}}
+\newcommand{\phrvz}{\phrvx{0}}
+\newcommand{\phrvgz}{\phrvx{\ix > 0}}
+
+% random var symbol with two subscripts
+
+\newcommand{\phrvsampley}[1]{\phrvx{\ix #1}}
+\newcommand{\phrvsample}{\phrvx{\ix \jx}}
+
+% symbol for the phase weight and the phase weight estimator
+\newcommand{\pwsymb}{w}
+
+\newcommand{\pwtruex}[1]{\pwsymb_{#1}}
+\newcommand{\pwtrue}{\pwtruex{\phase}}
+\newcommand{\pwtruegz}{\pwtruex{\phase > 0}}
+
+\newcommand{\pwtruesqx}[1]{\pwtruex{#1} {}^2}
+\newcommand{\pwtruesq}{\pwtruesqx{\phase}}
+
+\newcommand{\pwestx}[1]{\est{\pwsymb}_{#1}}
+\newcommand{\pwest}{\pwestx{\phase}}
+\newcommand{\pwestgz}{\pwestx{\phase > 0}}
+
+\newcommand{\pwestsqx}[1]{\pwestx{#1} {}^2}
+\newcommand{\pwestsq}{\pwestsqx{\phase}}
+
+\newcommand{\pwtrueinvx}[1]{\pwsymb_{#1} {}^{-1}}
+\newcommand{\pwtrueinv}{\pwtrueinvx{\phase}}
+
+\newcommand{\pwtrueinvsqx}[1]{\pwsymb_{#1} {}^{-2}}
+\newcommand{\pwtrueinvsq}{\pwtrueinvsqx{\phase}}
+
+\newcommand{\pwestinvx}[1]{\est{\pwsymb}_{#1}{}^{-1}}
+\newcommand{\pwestinv}{\pwestinvx{\phase}}
+
+\newcommand{\pwestinvsqx}[1]{\est{\pwsymb}_{#1}{}^{-2}}
+\newcommand{\pwestinvsq}{\pwestinvsqx{\phase}}
+
+% symbol for phase weight vector and phase weight estimator vector
+\newcommand{\pwtruevec}{\bm{\pwtruex{}}}
+\newcommand{\pwestvec}{\bm{\pwestx{}}}
+
+% symbol for the phase weight function and the phase weight function estimator
+\newcommand{\PWsymb}{W}
+
+\newcommand{\PWtrue}{\PWsymb}
+
+\newcommand{\PWtruesq}{\PWtrue {}^2}
+
+\newcommand{\PWest}{\est{\PWsymb}}
+
+\newcommand{\PWestsq}{\PWest {}^2}
+
+\newcommand{\PWtrueinv}{\PWsymb {}^{-1}}
+
+\newcommand{\PWtrueinvsq}{\PWsymb {}^{-2}}
+
+\newcommand{\PWestinv}{\est{\PWsymb} {}^{-1}}
+
+\newcommand{\PWestinvsq}{\est{\PWsymb} {}^{-2}}
+
+% symbol for the phase weight function/estimator expanded
+\newcommand{\PWtrueexp}{\frac{\pwtruex{0}}{\prod_{\phasegz} \pwtrue}}
+\newcommand{\PWtrueexpinv}{\pwtruex{0} \prod_{\phasegz} \pwtrueinv}
+
+\newcommand{\PWtrueexpsq}{\frac{\pwtruesqx{0}}{\prod_{\phasegz} \pwtruesq}}
+\newcommand{\PWtrueexpinvsq}{\pwtruesqx{0} \prod_{\phasegz} \pwtrueinvsq}
+
+
+\newcommand{\PWtrueexpalt}{\frac{\pwtruex{0}}{\prod_{\phasealtgz} \pwtruex{\phasealt}}}
+\newcommand{\PWtrueexpaltinv}{\pwtruex{0} \prod_{\phasealtgz} \pwtrueinvx{\phasealt}}
+
+\newcommand{\PWtrueexpaltsq}{\frac{\pwtruesqx{0}}{\prod_{\phasealtgz} \pwtruesqx{\phasealt}}}
+\newcommand{\PWtrueexpaltinvsq}{\pwtruesqx{0} \prod_{\phasealtgz} \pwtrueinvsqx{\phasealt}}
+
+
+\newcommand{\PWestexp}{\frac{\pwestx{0}}{\prod_{\phasegz} \pwest}}
+\newcommand{\PWestexpinv}{\pwestx{0} \prod_{\phasegz} \pwestinv}
+
+% symbol for the gradient of the phase weight function
+\newcommand{\PWtruegrad}{\nabla_{\pwtruevec}}
+\newcommand{\PWtruegradtrans}{\nabla_{\pwtruevec}^{T}}
+
+% symbol for per-phase sample cost
+\newcommand{\pcsymb}{\costsymb}
+
+\newcommand{\pctruex}[1]{\pcsymb_{#1}}
+\newcommand{\pctrue}{\pctruex{\phase}}
+
+\newcommand{\pcestx}[1]{\est{\pcsymb}_{#1}}
+\newcommand{\pcest}{\pcestx{\phase}}
+
+% symbol for variance of phase sample distribution and the estimator of the variance of phase sample distribution
+\newcommand{\pwvtruex}[1]{\V{\phrvx{#1}}}
+\newcommand{\pwvtrue}{\pwvtruex{\phase}}
+
+\newcommand{\pwvestx}[1]{\Vest{\phrvx{#1}}}
+\newcommand{\pwvest}{\pwvestx{\phase}}
+
+\newcommand{\pwvshortsymb}{V}
+
+% short variants
+%\newcommand{\pwvtrueshortx}[1]{\pwvshortsymb_{#1}}
+%\newcommand{\pwvtrueshort}{\pwvtrueshortx{\phase}}
+%
+%\newcommand{\pwvestshortx}[1]{\est{\pwvshortsymb}_{#1}}
+%\newcommand{\pwvestshort}{\pwvestshortx{\phase}}
+
+% set short variants to long
+\newcommand{\pwvtrueshortx}[1]{\pwvtruex{#1}}
+\newcommand{\pwvtrueshort}{\pwvtrueshortx{\phase}}
+
+\newcommand{\pwvestshortx}[1]{\pwestx{#1}}
+\newcommand{\pwvestshort}{\pwvestshortx{\phase}}
+
+% symbol for per trajectory, per phase, etc probability
+\newcommand{\probsymb}{p}
+
+\newcommand{\probtrajxy}[2]{\probsymb_{#1 #2}}
+\newcommand{\probtraj}{\probtrajxy{\phase}{\sample}}
+
+\newcommand{\probphasex}[1]{\probsymb_{#1}}
+\newcommand{\probphase}{\probphasex{\phase}}
+
+\newcommand{\probphaseestx}[1]{\est{\probsymb}_{#1}}
+\newcommand{\probphaseest}{\probphaseestx{\phase}}
+
+\newcommand{\probbernx}[1]{\probsymb_{#1}}
+\newcommand{\probbern}{\probphasex{\sample}}
+
+% symbol for sample
+\newcommand{\samplesymb}{j}
+\newcommand{\sample}{\samplesymb}
+
+% symbol for Sample
+\newcommand{\Samplesymb}{n}
+\newcommand{\Sample}{\Samplesymb}
+
+% symbol for samplecount
+\newcommand{\samplecountsymb}{n}
+
+\newcommand{\samplecountx}[1]{\samplecountsymb_{#1}}
+\newcommand{\samplecountz}{\samplecountx{0}}
+\newcommand{\samplecountgz}{\samplecountx{\phase > 0}}
+\newcommand{\samplecount}{\samplecountx{\phase}}
+\newcommand{\samplecountds}{\samplecountsymb}
+\newcommand{\samplecountpilot}{\samplecountx{\textrm{pilot}}}
+
+\newcommand{\samplecountbern}{\samplecountsymb}
+
+% symbol for sample count multiplier
+\newcommand{\samplecountmultsymb}{x}
+\newcommand{\samplecountmultx}[1]{\samplecountmultsymb_{#1}}
+\newcommand{\samplecountmult}{\samplecountmultx{\phase}}
+
+
+% symbol for successcount
+\newcommand{\successcountsymb}{n}
+
+\newcommand{\successcountx}[1]{\successcountsymb_{#1}^{s}}
+\newcommand{\successcountz}{\successcountx{0}}
+\newcommand{\successcountgz}{\successcountx{\phase > 0}}
+\newcommand{\successcount}{\successcountx{\phase}}
+
+% symbol for phasecount
+\newcommand{\phasecountsymb}{N}
+
+\newcommand{\phasecountx}[1]{\phasecountsymb_{#1}}
+\newcommand{\phasecount}{\phasecountsymb}
+
+% first passage time
+\newcommand{\mfptsymb}{MFPT}
+
+\newcommand{\mfpttrue}{\mfptsymb}
+\newcommand{\mfptest}{\est{\mfpttrue}}
+
+\newcommand{\mfptestds}{\mfptest_{\text{ds}}}
+\newcommand{\mfptestffs}{\mfptest_{\text{ffs}}}
+
+% alias for transition from state A to state B
+\newcommand{\statea}{\mathcal{A}}
+\newcommand{\stateb}{\mathcal{B}}
+\newcommand{\atob}{\statea \rightarrow \stateb}
+\newcommand{\btoa}{\stateb \rightarrow \statea}
+
+%% FFS notation, non-function symbols
+
+% symbol for arbitrary phase
+\newcommand{\phasesymb}{i}
+\newcommand{\phase}{\phasesymb}
+
+\newcommand{\phasepo}{\phase+1}
+\newcommand{\phasemo}{\phase-1}
+\newcommand{\phasegz}{\phase>0}
+
+% alt symbol for arbitrary phase
+\newcommand{\phasealtsymb}{j}
+\newcommand{\phasealt}{\phasealtsymb}
+
+\newcommand{\phasealtpo}{\phasealt+1}
+\newcommand{\phasealtmo}{\phasealt-1}
+\newcommand{\phasealtgz}{\phasealt>0}
+
+
+% symbol for maximum phase
+\newcommand{\Phasesymb}{N}
+\newcommand{\Phase}{\Phasesymb}
+
+% alias for fflux interface
+\newcommand{\ifacesymb}{\lambda}
+\newcommand{\ifacex}[1]{{\ifacesymb}_{#1}}
+
+\newcommand{\iface}{\ifacex{}}
+\newcommand{\ifacez}{\ifacex{0}}
+\newcommand{\ifacei}{\ifacex{\phase}}
+\newcommand{\ifaceimo}{\ifacex{\phase - 1}}
+\newcommand{\ifaceipo}{\ifacex{\phase + 1}}
+\newcommand{\ifaceI}{\ifacex{\Phase}}
+\newcommand{\ifaceImo}{\ifacex{\Phase - 1}}
+
+% alias for flux
+\newcommand{\fluxsymb}{\Phi}
+\newcommand{\fluxx}[1]{\fluxsymb_{#1}}
+\newcommand{\fluxatoz}{\fluxx{\statea}}
+
+\newcommand{\fluxxy}[2]{\fluxsymb_{#1, #2}}
+\newcommand{\fluxab}{\fluxxy{\statea}{\stateb}}
+\newcommand{\fluxba}{\fluxxy{\stateb}{\statea}}
+
+\newcommand{\parallelcount}{m}
+
+\newcommand{\statex}{\mathcal{X}}
+
+\newcommand{\fluxprobxy}[2]{\condprob{\ifacex{#1}}{\ifacex{#2}}}
+\newcommand{\fluxprob}{\condprob{\ifacei}{\ifaceimo}}
+\newcommand{\fluxprobest}{\condprobest{\ifacei}{\ifaceimo}}
+
+
+% alias for Rare Event Model abbreviations
+\newcommand{\remname}{Rare Event Model}
+\newcommand{\remabbrev}{REM}
+\newcommand{\REM}{\text{REM}}
+
+% alias for Self Regulating Gene abbreviations
+\newcommand{\srgname}{Self Regulating Gene}
+\newcommand{\srgabbrev}{SRG}
+\newcommand{\SRG}{\text{SRG}}
+\newcommand{\SRGSLOWEST}{\text{SRG}_\text{h=2.4}}
+\newcommand{\SRGSLOWER}{\text{SRG}_\text{h=2.3}}
+\newcommand{\SRGSLOW}{\text{SRG}_\text{h=2.2}}
+
+% alias for Self Regulating Gene species abbreviations
+\newcommand{\srga}{A}
+\newcommand{\srgoparam}{A}
+
+% alias for Self Regulating Gene parameter abbreviations
+\newcommand{\srgklow}{k_{low}} 
+\newcommand{\srgkhigh}{k_{high}} 
+\newcommand{\srgkmid}{k_{50}}
+
+% alias for Self Regulating Gene state abbreviations
+\newcommand{\srglowtohigh}{\text{low} \srga \rightarrow \text{high} \srga}
+
+% alias for Genetic Toggle Switch abbreviations
+\newcommand{\gtsname}{Genetic Toggle Switch}
+\newcommand{\gtsabbrev}{GTS}
+\newcommand{\GTS}{\text{GTS}}
+\newcommand{\GTSSLOWEST}{\text{GTS}_{\theta=.1}}
+\newcommand{\GTSSLOWER}{\text{GTS}_{\theta=1}}
+\newcommand{\GTSSLOW}{\text{GTS}_{\theta=10}}
+
+% alias for Genetic Toggle Switch order parameters
+\newcommand{\gtsbma}{\Delta}
+\newcommand{\gtsbpa}{\Sigma}
+\newcommand{\gtsostate}{\Omega}
+
+% alias for Genetic Toggle Switch species abbreviations
+\newcommand{\gtsa}{A}
+\newcommand{\gtsb}{B}
+\newcommand{\gtsaa}{A_2}
+\newcommand{\gtsbb}{B_2}
+\newcommand{\gtsoaa}{OA_2}
+\newcommand{\gtsobb}{OB_2}
+\newcommand{\gtso}{O}
+
+% names for the optimizing equation
+\newcommand{\opteq}{FFPilot optimizing equation}
+\newcommand{\Opteq}{FFPilot Optimizing Equation}
+
+% abstract order parameter notation
+\newcommand{\oparamsymb}{\mathcal{O}}
+\newcommand{\oparamx}[1]{\oparamsymb_{#1}}
+\newcommand{\oparam}{\oparamx{}}
+\newcommand{\oparamfunc}[1]{\oparamx{} \left( #1 \right)}
+
+% order parameter value notation
+\newcommand{\opvalsymb}{o}
+\newcommand{\opvalx}[1]{\opvalsymb_{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%other stuff
+

@@ -29,11 +29,12 @@
 \newdimen \jot \jot=5mm
 \brokenpenalty=10000
  
+ \include{thesis_header}
 
 %\usepackage[utf8]{inputenc} % Seems to cause a conflict with fontenc and lmodern
 %\DeclareUnicodeCharacter{00A0}{ }
-\usepackage[T1]{fontenc}
-\usepackage{lmodern} % load a font with all the characters
+%\usepackage[T1]{fontenc}
+%\usepackage{lmodern} % load a font with all the characters
 %\usepackage{hyperref}
 \usepackage{tocbibind} % need this to contents adding for TOC
 \usepackage{setspace}
@@ -56,6 +57,8 @@
 \usepackage{dcolumn}
 % A math shortcut frequently used by John Muschelli
 \newcommand{\bbeta}{\mbox{\boldmath $\beta$}}
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % DOI from Segmentation
@@ -136,28 +139,26 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\usepackage[
-style = authoryear, 
-sorting = none, 
-dashed = false,
-maxbibnames = 99,
-backend = bibtex,
-natbib = true
-]{biblatex}
+%\usepackage[
+%citestyle = reading, 
+%sorting = none, 
+%dashed = false,
+%maxbibnames = 999,
+%backend = bibtex,
+%natbib = true
+%]{biblatex}
 
-% If you want to exclude some portions from the bibliography
-\AtEveryBibitem{
-\clearfield{note}
-\clearfield{month}
-}
+%\renewcommand{\cite}[1]{\supercite{#1}}
+%\renewcommand{\citet}[1]{\citep{#1}}
 
+\usepackage[superscript,biblabel]{cite}
+\usepackage{enumitem}
 
-\usepackage{enumerate}
 
 %\tolerance=10000
 
 %\makeglossary % enable the glossary
-\graphicspath{{rnw_chapter/figure/}{rnw_chapter/}} % change it accordingly!
+%\graphicspath{{rnw_chapter/figure/}{rnw_chapter/}} % change it accordingly!
 
 
 \setcounter{tocdepth}{4}
@@ -230,30 +231,35 @@ Doctor of Philosophy }\\
 %% TeX files or Rnw files (see rnw_chapter as an example) and please
 %% remember to update the makefile accordingly.
 
-\begin{refsection}[intro_chapter/intro_chapter.bib]
-\include{intro_chapter/intro_chapter}
+%\begin{refsection}[bib/thesis_intro.bib]
+\include{thesis_intro/thesis_intro}
 \cleardoublepage
-\printbibliography[title={References}]
-\end{refsection}
+%\printbibliography[title={References}]
+%\end{refsection}
 
 %% If using Overleaf, you'll have to upload the resulting tex file & figures
 %% since Overleaf does not support Rnw files right now (April 13, 2016)
-\begin{refsection}[rnw_chapter/rnw_chapter.bib]
-\include{rnw_chapter/rnw_chapter}
-\cleardoublepage
-\printbibliography[title={References}]
-\end{refsection}
-
-\begin{refsection}[conclusion_chapter/conclusion_chapter.bib]
-\include{conclusion_chapter/conclusion_chapter}
-\cleardoublepage
-\printbibliography[title={References}]
-\end{refsection}
+%\begin{refsection}[rnw_chapter/rnw_chapter.bib]
+%\include{rnw_chapter/rnw_chapter}
+%\cleardoublepage
+%\printbibliography[title={References}]
+%\end{refsection}
+%
+%\begin{refsection}[conclusion_chapter/conclusion_chapter.bib]
+%\include{conclusion_chapter/conclusion_chapter}
+%\cleardoublepage
+%\printbibliography[title={References}]
+%\end{refsection}
 
 
 % CV PDF file downloaded from the moderncv template available at Overleaf
 % https://www.overleaf.com/latex/templates/modern-cv-and-cover-letter-2015-version/sttkgjcysttn#.Vw6PFRMrL65
-\includepdf[pages={-}, pagecommand={\thispagestyle{plain}}]{moderncv-2015.pdf}
+%\includepdf[pages={-}, pagecommand={\thispagestyle{plain}}]{moderncv-2015.pdf}
 
+
+\newpage
+\footnotesize
+\bibliographystyle{unsrt}
+\bibliography{bib/error_control_of_enhanced_sampling,bib/thesis_intro}
 
 \end{document}

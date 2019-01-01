@@ -1,0 +1,88 @@
+% Settings for debugging
+%\tracinggroups=1
+%\tracingnesting=2
+
+% standalone package, "simplifies" compilations of multi-source document
+%\usepackage{standalone}
+
+% custom packages
+\usepackage{sty/er-abbrev}
+\usepackage{sty/er-math}
+\usepackage{sty/er-paper}
+\usepackage{sty/mk-outline}
+\usepackage{sty/mk-chem-notation}
+\usepackage{sty/mk-ffpilot-notation}
+\usepackage{sty/mk-stats-notation}
+
+% some geometry setting stuff. Useful if not done elsewhere
+%\usepackage[top=0.85in,left=0.75in,footskip=0.75in]{geometry}
+
+% for bib file and bibliography support
+%\usepackage[numbers,sort&compress]{natbib}
+
+%\usepackage{amsmath,amssymb}
+%\usepackage{mathtools}
+
+% Use Unicode characters when possible
+\usepackage[utf8]{inputenc}
+
+% for acronyms
+%\usepackage[nolist]{acronym}
+
+% line numbers
+\usepackage[right]{lineno}
+
+% don't remember what this is for
+\usepackage{calc}
+
+% Load any custom macros or abbreviations from abbreviations.tex
+\input{abbreviations}
+
+% use symbols instead of numbers for footnotes, so they don't conflict with bibtex citations
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+\usepackage{perpage}
+\MakePerPage{footnote}
+
+% don't split long footnotes across several pages
+\interfootnotelinepenalty=10000
+
+\usepackage[export]{adjustbox}[2011/08/13]
+
+%%%% DEPRECATED STUFF %%%%
+
+%% Use nameref to cite supporting information files (see Supporting Information section for more info)
+%\usepackage{nameref,hyperref}
+%
+%% line numbers
+%\usepackage[right]{lineno}
+%
+%% ligatures disabled
+%\usepackage{microtype}
+%\DisableLigatures[f]{encoding = *, family = * }
+%
+%% color can be used to apply background shading to table cells only
+%\usepackage[table]{xcolor}
+%
+%% array package and thick rules for tables
+%\usepackage{array}
+
+% markdown option 1 (including the enumitem stuff)
+%\usepackage{markdown}
+%\markdownSetup{
+%    hashEnumerators,
+%    definitionLists,
+%    footnotes,
+%    hybrid,
+%    smartEllipses,
+%    renderers = {
+%        emphasis = _#1,
+%    },
+%}
+
+%\usepackage{enumitem}
+%\setlistdepth{20}
+%\renewlist{compactitem}{itemize}{20}
+%\setlist[compactitem]{label=--}
+
+% markdown option 2
+%\usepackage[document]{latexmarkdn}

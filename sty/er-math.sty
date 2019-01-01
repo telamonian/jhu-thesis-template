@@ -1,0 +1,94 @@
+% amsmath, amssymb, etc packages, useful for mathematical formulas and symbols
+\usepackage{amsmath,amsthm,amssymb}
+%\usepackage{unicode-math}
+%\setmathfont{latinmodern-math.otf}
+%\setmathfont[range={\Bbbw}]{xits-math.otf}
+%{XITS Math}
+\usepackage{chemarr}
+\usepackage{textcomp}
+
+% support for (mostly) correct spacing after zero argument macros that are meant to be alias for some phrase
+\usepackage{xspace}
+
+% support for \x(right|left)arrow, an easy way to get text above an arrow
+\usepackage{mathtools}
+
+% 2009-07-07; Elijah Roberts: created
+% 2010-05-03; Elijah Roberts: added \mathpl
+
+% EZ reference formatting commands
+\newcommand{\xref}[2]{{#1} \ref{#2}}
+\newcommand{\xrefTwo}[3]{{#1} \ref{#2} and \ref{#3}}
+\newcommand{\xrefRange}[3]{{#1} \ref{#2}-\ref{#3}}
+\newcommand{\xrefThree}[4]{{#1} \ref{#2}, \ref{#3}, and \ref{#4}}
+
+\newcommand{\appendref}[1]{\xref{Appendix}{#1}}
+\newcommand{\appendrefTwo}[2]{\xrefTwo{Appendices}{#1}{#2}}
+\newcommand{\appendrefThree}[3]{\xrefThree{Appendices}{#1}{#2}{#3}}
+
+\renewcommand{\eqref}[1]{Eq \ref{#1}}
+\newcommand{\eqrefTwo}[2]{Eqs \ref{#1} and \ref{#2}}
+\newcommand{\eqrefTwoOr}[2]{Eqs \ref{#1} or \ref{#2}}
+\newcommand{\eqrefThree}[3]{Eqs \ref{#1}, \ref{#2}, and \ref{#3}}
+\newcommand{\eqrefThreeOr}[3]{Eqs \ref{#1}, \ref{#2}, or \ref{#3}}
+
+\newcommand{\figref}[1]{Fig \ref{#1}}
+\newcommand{\figrefTwo}[2]{Figs \ref{#1} and \ref{#2}}
+\newcommand{\figrefThree}[3]{Figs \ref{#1}, \ref{#2}, and \ref{#3}}
+
+\newcommand{\secref}[1]{\xref{Sec}{#1}}
+\newcommand{\secrefTwo}[2]{\xrefTwo{Secs}{#1}{#2}}
+\newcommand{\secrefRange}[2]{\xrefRange{Secs}{#1}{#2}}
+\newcommand{\secrefThree}[3]{\xrefThree{Secs}{#1}{#2}{#3}}
+
+\newcommand{\tableref}[1]{Table \ref{#1}}
+\newcommand{\tablerefTwo}[2]{Tables \ref{#1} and \ref{#2}}
+\newcommand{\tablerefThree}[3]{Tables \ref{#1}, \ref{#2}, and \ref{#3}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\ddt}[1]{\frac{d#1}{dt}} 
+\newcommand{\pd}[1]{\frac{\partial}{\partial #1}} 
+\newcommand{\pdd}[1]{\frac{\partial^2}{\partial #1^2}}
+\newcommand{\pdda}[2]{\frac{\partial^2}{\partial #1 \partial #2}}
+
+% math symbols with forced displaystyle
+\newcommand{\dprod}{\displaystyle\prod}
+
+% Ensemble average.
+\newcommand{\ens}[1]{\langle #1 \rangle}
+
+% Big O notation.
+\newcommand{\bigO}{{\mathcal O}}
+
+% Unit vectors.
+\newcommand{\iv}{\hat{i}}
+\newcommand{\jv}{\hat{j}}
+\newcommand{\kv}{\hat{k}}
+
+% Scientific notation.
+\newcommand{\sci}[2]{$\mathrm{\mathsf{#1{\times}10^{#2}}}$}
+\newcommand{\scimath}[2]{#1{\times}10^{#2}}
+
+% Math without font formatting.
+\newcommand{\mathpl}[1]{$\mathrm{\mathsf{#1}}$}
+
+% shortcut for inserting fancy math letters into normal text
+\newcommand{\mc}[1]{$\mathcal{#1}$}
+
+% shortcut for \textsubscript in math environment since markdown package does not play nicely with the normal _ symbol (it interprets it as emphasis)
+\newcommand{\sub}[1]{\textsubscript{#1}}
+
+% math mode comma, to be used in expressions such as {a, b, c, ...}
+\newcommand{\comma}{\,, \;}
+
+% floor and ceiling brackets
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+
+% natural log
+\newcommand{\loge}[1]{\ln \left( #1 \right)}
+
+% vector form of a sequence
+\newcommand{\seqvec}[2]{\left( {#1}_{1}, {#1}_{2}, \dots, {#1}_{#2} \right)}
+\newcommand{\seqvecz}[2]{\left( {#1}_{0}, {#1}_{1}, \dots, {#1}_{#2} \right)}

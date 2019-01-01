@@ -1,0 +1,37 @@
+\usepackage{ifthen}
+
+% 2009-02-23; Elijah Roberts: moved into LaTeX package
+
+% Abreviation commands.
+\newcommand\defineAbbreviation[2]{%
+    \newcounter{abrvused#1}%
+    \setcounter{abrvused#1}{0}%
+    \expandafter\def\csname abrva#1\endcsname{#2 (#1)}%
+    \expandafter\def\csname abrvb#1\endcsname{#1}%
+}
+\newcommand\defineAbbreviationPlural[3]{%
+    \expandafter\def\csname abrvc#1\endcsname{#3 (#2)}%
+    \expandafter\def\csname abrvd#1\endcsname{#2}%
+}
+\newcommand\defineAbbreviationStrict[3]{%
+    \newcounter{abrvused#1}%
+    \setcounter{abrvused#1}{0}%
+    \expandafter\def\csname abrva#1\endcsname{#3}%
+    \expandafter\def\csname abrvb#1\endcsname{#2}%
+}
+\newcommand\abr[2][none]{%
+    \ifthenelse{\equal{#1}{none}}%
+        {\ifthenelse{\value{abrvused#2} = 0}%
+            {\csname abrva#2\endcsname}%
+            {\csname abrvb#2\endcsname}%
+        }%
+        {#1}%
+    \addtocounter{abrvused#2}{1}%
+}
+\newcommand\abrs[1]{%
+    \ifthenelse{\value{abrvused#1} = 0}%
+        {\csname abrvc#1\endcsname}%
+        {\csname abrvd#1\endcsname}%
+    \addtocounter{abrvused#1}{1}%
+}
+

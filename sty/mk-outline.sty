@@ -1,0 +1,134 @@
+\usepackage{environ}
+\usepackage{enumitem}
+\usepackage{ifthen}
+\usepackage{outlines}
+
+\newlist{outlinelist}{enumerate}{4}
+\setlist[outlinelist]{label=--}
+
+%\setenumerate[1]{label=\Roman*.}
+%\setenumerate[2]{label=\Alph*.}
+%\setenumerate[3]{label=\roman*.}
+%\setenumerate[4]{label=\alph*.}
+
+%\setenumerate[1]{label=--}
+%\setenumerate[2]{label=--}
+%\setenumerate[3]{label=--}
+%\setenumerate[4]{label=--}
+
+% basic outline environments, for testing
+%\newenvironment{odone}{\begin{outline}[enumerate]}{\end{outline}}
+%\newenvironment{odraft}{\begin{outline}[enumerate]}{\end{outline}}
+%\newenvironment{ohline}{%
+%    \rule{\textwidth}{1pt} \\%
+%    \begin{outline}[enumerate]}%
+%    {\end{outline}%
+%    \rule{\textwidth}{1pt} \\}
+
+
+% new style outline environments, for testing
+%\NewEnviron{odone}{%
+%    \begin{outline}[enumerate]%  
+%        \BODY% 
+%    \end{outline}}
+%\NewEnviron{odraft}{%
+%    \begin{outline}[enumerate]%  
+%        \BODY% 
+%    \end{outline}}
+%\NewEnviron{ohline}{%
+%    \rule{\textwidth}{1pt} \\%
+%    \begin{outline}[enumerate]%
+%        \BODY%
+%    \end{outline}%
+%    \rule{\textwidth}{1pt} \\}
+
+
+% odone and odraft are separately hideable outline environments.
+% ohlines is an outline environment that inserts a horizontal rule at the start and end
+
+% define new variables for hiding the outline environments
+\newif\ifshowodone
+\newif\ifshowodraft
+\newif\ifshowohline
+
+% set some default values for hiding
+\showodonefalse
+\showodrafttrue
+\showohlinetrue
+
+% define (or not) the odone environment
+\ifshowodone
+    \NewEnviron{odone}{%
+    \begin{outline}[outlinelist]%  
+        \BODY% 
+    \end{outline}}
+\else
+    \NewEnviron{odone}{}
+\fi
+
+% define (or not) the odraft environment
+\ifshowodraft
+    \NewEnviron{odraft}{%
+    \begin{outline}[outlinelist]%  
+        \BODY% 
+    \end{outline}}
+\else
+    \NewEnviron{odraft}{}
+\fi
+
+% define (or not) the ohline environment
+\ifshowohline
+    \NewEnviron{ohline}{%
+    \rule{\textwidth}{1pt} \\%
+    \begin{outline}[outlinelist]%
+        \BODY%
+    \end{outline}%
+    \rule{\textwidth}{1pt} \\}
+\else
+    \NewEnviron{ohline}{}
+\fi
+
+
+
+
+%
+%\newenvironment{odraft}{\begin{outline}[enumerate]}{\end{outline}}
+%
+%\newcommand{\bo}{\begin{odraft}}
+%\newcommand{\eo}{\end{odraft}}
+
+% standard outline environment that can be switched off
+
+
+%\usepackage{comment}
+%\ifshow
+%    \newenvironment{mk-outline}{\begin{outline}[enumerate]}{\end{outline}}
+%\else
+%    \excludecomment{mk-outline}
+%\fi
+
+%\ifshow
+%    \NewEnviron{o}{\begin{outline}[enumerate]\\\BODY}{\end{outline}}
+%\else
+%    \NewEnviron{o}{}
+%\fi
+%
+%% outline environment offset from surrounding by h-lines
+%\newenvironment{mkhoh}{%
+%\rule{\textwidth}{1pt} \\%
+%\begin{mk-outline-always-on}}%
+%{\end{mk-outline-always-on}%
+%\rule{\textwidth}{1pt} \\}
+%
+%\newcommand{\bhoh}{\begin{mkhoh}}
+%\newcommand{\ehoh}{\end{mkhoh}}
+
+
+%\begin{document}
+%\begin{outline}[enumerate]
+%   \1 Level 1 
+%      \2 Level 2
+%         \3 Level 3
+%            \4 Level 4
+%\end{outline}
+%\end{document}
