@@ -1,0 +1,1 @@
+user@host:srg_mfpt$ lmes -fflux -f data/srg.lm > data/srg.log

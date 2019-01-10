@@ -1,0 +1,56 @@
+\chapter{FFPilot simulation: conceptual overview}
+\section{How to use FFPilot simulation}
+
+\subsection{Use cases}
+
+FFPilot can be used to greatly accelerate the simulation of a wide variety of systems. The primary use case for FFPilot is the simulation of systems with two (or more) well defined meta-stable states. With the correct setup, FFPilot will "ratchet" the simulation from one state to the other, yielding a great deal of information about the transition process and the probability landscape around and in-between the states.
+
+In general, FFPilot should have a speed advantage over standard replicate simulation for any system that has a rough probability landscape with at least some large energetic barriers (equivalently, for any system encompassing rare events). 
+
+\subsection{Non-use cases}
+
+In theory, FFPilot simulation should be faster (in terms of internal simulation time) than replicate sampling in all cases. However, for certain types of systems the benefit of using FFPilot is expected to be minor:
+\begin{description}[style=nextline]
+    \item [$\bullet$ Systems with flat landscapes/no rare events]
+    
+        Systems in which the probability landscape is nearly flat, in that it lacks any significant barriers. In other words, systems with 0 fixed points.
+    
+    \item [$\bullet$ One-state systems]
+    
+        Systems that spend virtually all of their time in the neighborhood of a single point in their state space. In other words, systems with 1 fixed point.
+
+\end{description}
+For these types of systems replicate simulation will likely be faster (in terms of wall clock time) than FFPilot, due to various optimizations in the current version of Lattice Microbes. Thus, it is better to avoid the extra setup involved with using FFPilot when modeling these types of systems.
+
+\section{FFPilot specific concepts}
+
+FFPilot simulation is straightforward to set up, given that you at least know the rough locations (in terms of your system's state space) of the steady states of interest.
+
+\subsection{Order parameters}
+
+FFPilot uses an order parameter to distinguish one stable state from another, and to measure progress along a transition path. If FFPilot is thought of as driving a system from one state to another, then the order parameter defines the direction in which that driving occurs.
+
+An order parameter is a function $\oparam: \left\{ \intnonnegs^\Speciescount \comma \realnonnegs \rightarrow \reals^\Oparamval \right\}$ of the species counts  and time of a system:
+\begin{equation*}
+    \oparamfunc{\speciescountx{0} \comma \cdots \comma \speciescountx{\Speciescount} \comma t} = \nseq{\oparamvalsymb}{\Oparamval}
+\end{equation*}
+
+An order parameters can thought of as a quantitative, mathematically defined version of a reaction coordinate.
+
+\subsection{Tilings}
+A tiling is a set of bins that spans the state space of a system. A tiling is defined in terms of an order parameter, a set of edges, and one or more initial basins (from which to start trajectories during phase zero). Multiple basins can be defined in order to carry out both forward and reverse simulation in a single run of \abr{LMES}.
+
+Tilings can be defined in terms of a set of bin edges (also sometimes referred to as a set of interfaces). An FFPilot simulation will have as many 
+
+
+- The edges are held in a 1D array called (appropriately enough) Edges.
+- The initial basins are held in an N x D array called Basins, where N is the count of basins and D is the total number of unique chemical species in your system.
+    - Each row in Basins represents a different basin, and each column in Basins holds the count of one particular chemical species in the model.
+        - In other words, a basin is a single coordinate in the state space of the model.
+    - Each initial basin should either be in front of the zeroth edge or behind the last edge.
+        - Mathemtically, this means that one of $$ \mathscr{O}(\text{basin}) < \mathscr{O}(\text{Edges}[0]) $$ or $$ \mathscr{O}(\text{basin}) > \mathscr{O}(\text{Edges}[-1]) $$ should be true, where $\mathscr{O}$ is the order parameter of the tiling.
+
+The rows in the `Basins` array determine where trajectories are started from during phase zero. A separate pilot and production stage (ie a whole separate FFPilot simulation) is run for each row in `Basins`. Thus, setting two different basins is a convenient way to run the simulations required to calculate the MFPT of both the forward switch (low A $\rightarrow$ high A) and the reverse switch (high A $\rightarrow$ low A) of the self regulating gene.
+
+%\section{Error and error goal}
+%An FFPilot simulation run at a 10\% error goal is mathematically guaranteed to produce MFPT estimates that are within 10\% of the true value 95\% (default value, this confidence level can be set as the user desires) of the time. This means that the MFPT estimates produced by two identical 10\% FFPilot simulations, or by the two symmetrical halves of a single 10\% error goal GTS simulation, should differ by no more than ${\sim}20\%$ relative to each other. However, FFPilot only directly controls for sampling error, so if there are other large sources of error

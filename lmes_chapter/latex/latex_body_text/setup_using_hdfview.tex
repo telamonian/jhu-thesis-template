@@ -1,0 +1,33 @@
+\chapter{Setting up FFPilot simulation input using the HDFView gui}
+
+\section{Overview}
+
+\section{Self regulating gene setup}
+\begin{enumerate}
+    \item Convert the \file{self_regulating_gene.sbml} file to the standard \file{.lm} simulation input format, following the instructions given in \todo{ref to converting from sbml in lmesgs}.
+    \item Use \file{HDFView} to manually add the FFPilot-specific simulation input to the resulting \\ \file{self_regulating_gene.lm} file:
+    \begin{enumerate}
+        \item Open \file{self_regulating_gene.lm} in \file{HDFView}. \file{HDFView} is the standard file browser for \file{.hdf5} files and is available on the \href{HDF Group's website}{https://support.hdfgroup.org/products/java/hdfview/}.
+        \item{Add the order parameter:}
+        \begin{enumerate}
+            \item\label{item:add_group} Right click on \file{self_regulating_gene.lm} in the column on the left, and then select \gui{New $\rightarrow$ Group}. Enter \code{OrderParameters} as the new group's name and then hit \gui{Ok}.
+            \item Right click on the new \code{OrderParameters} group and then repeat \ref{item:add_group} in order to create a new subgroup named \code{0000000}. NB: make sure the subgroup name is exactly seven zeros (internally, \code{LMES} uses a seven digit fixed-width format (c-style format \code{\%07d}) for this subgroup name). \todo{If it's quick, refactor the LMES hdf5 stuff to remove the fixed width requirement for input}.
+            \item Right click on \code{0000000}, choose \gui{Show Properties}, and then click on the \gui{Attributes} tab in the properties window. Add two attributes, \code{ID} and \code{Type}. Both should be 64-bit integer scalars, and both should have a value of 0.
+            \item Add a dataset called \code{SpeciesCoefficients} to the \code{0000000} group. It should be of type 64-bit float, and it should have a size of 1. Double click on \code{SpeciesCoefficients} to open it, and then set its single value to \code{1.0}.
+            \item Add another dataset to \code{0000000}. Name this one \code{SpeciesIDs}, set its type to 32-bit unsigned integer, and set its size to 1. Open \code{SpeciesIDs} and make sure that its single value is set to 0 (which it should be by default).
+        \end{enumerate}
+        \item{Add the tiling (also called the interfaces, or the bins):}
+        \begin{enumerate}
+            \item Add a \code{Tilings} group with a \code{0000000} subgroup, just as you did for \code{OrderParameters}.
+            \item Set three attributes on the \code{0000000} subgroup, \code{ID}, \code{OrderParameterID}, and \code{type}. All of them should be 64-bit integer scalars with a value of 0.
+            \item Add a dataset called \code{Basins} to \code{0000000}. It should be of size 1, of type 32-bit unsigned integer, and its single value should be set to 10.
+            \item Add a dataset called \code{Edges} to \code{0000000}. \code{Edges} should be of type 64-bit float, and should have a size of 13. The first value should be \code{23.0}, the last value should be \code{150.0}, and the remaining values should be evenly spaced in between. The easiest way to enter these values is to import them from \\ \file{files/self_regulating_gene_mfpt/edges.txt}, a plain text file that contains the needed values, one per line. To import the edges open \code{Edges}, select \\ \gui{Import Data from Text File} from the \gui{Table} menu in the upper left hand corner of \code{Edges}, select the \file{edges.txt} file, and then click okay on any prompts that pop up.
+        \end{enumerate}
+        \item No other data is required to run an FFPilot simulation. There are, however, a number of options that can be used to tweak FFPilot's execution. These options can be set by adding the appropriate attributes to the top level \code{Parameters} group in the input \file{.lm} file:
+        \begin{enumerate}
+            \item The overall accuracy of the simulation is controlled by the \code{errorGoal} option. Add an attribute to \code{Parameters} called \code{errorGoal} with a scalar float value of 0.05.
+            \item By default, the output of an FFPilot simulation will consist of a single record, of type \code{FFPilotStageOutput}, that contains the primary results from the FFPilot production stage. For the purposes of this example simulation, we'll turn on the output of the \code{FFPilotStageOutputRaw} record, which contains various intermediate data. Add a \code{Parameters} attribute called \code{ffpilotStageOutputRaw} with a string value of "True" \todo{add note about the hdf5 string length annoyance/trick}.
+            \item We'll also turn on the output of the \code{FFPilotStageOutput} and \code{FFPilotStageOutputRaw} for the pilot stage. Add a \code{Parameters} attribute called \code{ffpilotPilotOutput} with a string value of "True".
+        \end{enumerate}
+    \end{enumerate}
+\end{enumerate}

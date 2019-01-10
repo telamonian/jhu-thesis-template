@@ -1,0 +1,1 @@
+user@host:srg_mfpt$ watch tail -n 25 data/srg.log

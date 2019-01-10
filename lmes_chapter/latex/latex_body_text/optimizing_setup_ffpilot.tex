@@ -1,0 +1,18 @@
+\chapter{Tips and tricks for setting up an FFPilot simulation}
+
+\section{Setting up a de novo FFPilot simulation}
+
+There are no hard and fast rules for setting up the order parameter and tiling required for an \abr{FFPilot} simulation. The optimal choice for either of these will be very dependent upon the particular system being simulated. However, it is possible to generate a reasonable order parameter and tiling using a fixed procedure if the coordinates (in terms of a system's state space) of the states of interest are at least roughly known. In other words, although a truly de novo simulation is not possible with FFPilot (or any other forward flux-type method), given a small amount of prior knowledge (in the form of the approximate locations of the system's basins, \ie stable fixed points) it is possible to automatically derive the remaining input required for an FFPilot simulation.
+
+\subsection{Generating a simple linear order parameter}
+
+\subsection{Generating a simple linear tiling}
+Each initial basin should either be in front of the zeroth edge or behind the last edge. Mathemtically, this means that one of $$ \mathscr{O}(\text{basin}) < \mathscr{O}(\text{Edges}[0]) $$ or $$ \mathscr{O}(\text{basin}) > \mathscr{O}(\text{Edges}[-1]) $$ should be true, where $\mathscr{O}$ is the order parameter of the tiling.
+
+As a note, FFPilot will automatically recognize when a basin is located behind the last edge of the tiling. In this case, the tiling will be reversed (the last edge will be treated as the zeroth, the zeroth edge will be treated as the last, etc).
+
+\subsection{Caveats}
+This order parameter will likely be "naive", in the sense that it will be somewhat computationally inefficient to drive the system along it\footnote{Relative to some optimal order parameter that would drive the system along the true transition pathway.}. However, chances are it will be good enough for use during initial 
+
+\section{Tweaking and tuning an FFPilot simulation}
+\subsection{Useful FFPilot simulation options}

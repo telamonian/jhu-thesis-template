@@ -1,0 +1,1 @@
+user@host:srg_mfpt$ dumpSFile data/srg_-_out.sfile -l -i pilot

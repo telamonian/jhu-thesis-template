@@ -1,0 +1,5 @@
+data_worked/srg_-_out.sfile
+
+/Simulations/0/Tilings/0/Basins/0/Stages/Pilot    protobuf:lm.fflux.io.FFluxStageOutputSummary    426
+/Simulations/0/Tilings/0/Basins/1/Stages/Pilot    protobuf:lm.fflux.io.FFluxStageOutputSummary    426
+

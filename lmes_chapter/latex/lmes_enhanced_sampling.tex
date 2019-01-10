@@ -1,0 +1,112 @@
+% Setup the document.
+\documentclass[11pt]{report}
+
+
+% Import packages used in the document.
+\usepackage{latex_sty/mk-highlighting}
+\usepackage{latex_sty/mk-annotated-ref}
+\usepackage{latex_sty/er-tutorial}
+\usepackage{latex_sty/er-abbrev}
+\usepackage{latex_sty/er-math}
+\usepackage{latex_sty/mk-enhanced-sampling}
+
+\usepackage{upquote}
+\usepackage[disable]{todonotes}
+
+% Load any abbreviations.
+\input{abbreviations}
+
+% some top-level aliases shared amongst the chapters
+\newcommand{\sbmlimport}{\noss{lm_sbml_import}}
+
+% Start the document.
+\begin{document}
+
+%% Set the page numbering to be lowercase roman numerals for the front matter.
+%\newpage
+%\singlespacing
+%\normalsize
+%\setcounter{page}{1}
+%%\renewcommand{\thepage}{\roman{page}}
+%
+%% Title page.
+%\thispagestyle{empty}
+%\begin{center}{
+%\vspace*{0.85in}
+%{\huge LMES Enhanced Sampling Guide}\\
+%\vspace*{0.5in}
+%{\large \today}\\
+%\vspace*{0.9in}
+%{\large Authors:}\\
+%{\large Max Klein}\\
+%~\\
+%~\\
+%{\large Roberts Group}\\
+%{\large Johns Hopkins University}\\
+%{\large \color{blue} \url{http://biophysics.jhu.edu/roberts/}}\\
+%{\large \color{blue} \url{https://www.assembla.com/spaces/roberts-lab-public/wiki/Tutorials}}\\
+%{\large \color{blue} \url{https://www.assembla.com/spaces/roberts-lab-public/wiki/LMES}}\\
+%
+%\vspace*{1.45in}
+%{\Large Description}\\
+%}\end{center}
+%
+%The ``LMES Enhanced Sampling Guide'' describes how to run and analyze simulations accelerated by enhanced sampling.
+%
+%~\\
+%\begin{center}{
+%{\Large System Requirements}\\
+%}\end{center}
+%This document assumes you will be using the latest LMES virtual machine image available from the LMES website. If you are using a different configuration, you may need to adjust the instructions in some places.
+
+\setcounter{page}{132}
+
+% Table of contents
+\newpage
+\tableofcontents
+
+% List of tables
+%\newpage
+%\addcontentsline{toc}{chapter}{List of Tables}
+%\listoftables
+
+% List of figures
+%\newpage
+%\addcontentsline{toc}{chapter}{List of Figures}
+%\listoffigures
+
+% Set the page numbering to be arabic numerals for the text.
+\newpage
+\setcounter{chapter}{0}
+%\setcounter{page}{1}
+%\renewcommand{\thepage}{\arabic{page}}
+
+% Main text.
+\input{latex_body_text/ffpilot_overview}
+\input{latex_body_text/ffpilot_calculations_of_interest}
+\input{latex_body_text/self_regulating_gene_mfpt}
+\input{latex_body_text/self_regulating_gene_landscape}
+%\input{latex_body_text/optimizing_setup_ffpilot}
+\input{latex_body_text/genetic_toggle_switch}
+
+% appendices
+\newpage
+\appendix
+\setcounter{chapter}{0}
+\input{latex_body_text/setup_using_hdfview}
+
+% List of abbreviations
+\newpage
+\addcontentsline{toc}{chapter}{List of Abbreviations}
+\listofabbreviations
+
+
+% References
+\newpage
+\addcontentsline{toc}{chapter}{Bibliography}
+\bibliographystyle{latex_bib/inorder}
+\bibliography{latex_bib/error_control_of_enhanced_sampling}
+
+\end{document}
+
+
