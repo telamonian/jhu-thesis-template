@@ -1,0 +1,375 @@
+%\documentclass[class=article, float=false, crop=false]{standalone}
+%\documentclass[10pt,letterpaper]{article}
+%
+%\input{error_control_of_enhanced_sampling-header}
+%
+%\begin{document}
+%\vspace*{0.2in}
+
+\section{Theory and Methods}
+\label{sec:methods}
+
+\subsection{Simulation of Rare Events in Stochastic Processes}
+\label{sec:ds_es_description}
+%\begin{odone}
+%    \1 \abr{FFS} speeds up simulation by ratcheting state space along an order parameter
+%    \1 Proceeds in three steps
+%        \2 Choose order parameter
+%        \2 Choose tiling
+%        \2 Run one set of simulations per tile/phase
+%    \1 Outputs equivalent to those produced by DS can be obtained via statistical analysis of the trajectory ensembles produced in each phase
+%        \2 $\mfpttrue$
+%        \2 Probability Landscapes
+%\end{odone}
+
+The standard stochastic simulation protocol, here referred to as \abr{DS}, proceeds in two iterated steps: 1) increment the system time with the time of the next stochastic event, 2) update the system state according to the event. These two steps are repeated until some predetermined stopping condition (simulation steps, simulation time, etc.) is reached, at which point the simulation is terminated. Repeated \abr{DS} simulation produces a data set from which ensemble average quantities can be estimated by straightforward averaging. Running more \abr{DS} replicates leads to increased accuracy.
+	
+As discussed above, \abr{DS} has the disadvantage that it requires a long simulation time to sample each rare event. Therefore, calculating rare event statistics is computationally expensive. \abr[Enhanced sampling (ES)]{ES} methods use a combination of constraints on simulation trajectories and statistical unbiasing methods in order to enrich the sampling of rare events. \abr[Forward flux sampling (FFS)]{FFS} is a popular \abr{ES} method that was initially proposed by Allen and coworkers\supercite{Allen:2005wy}. We implemented the \abr{FFS} algorithm as follows:
+\begin{enumerate}    
+	\item Choose two points of interest in the state space of the model system, $\statea$ and $\stateb$. These will serve as an initial and a final state for the simulation.
+	\item Choose a one dimensional parameter $\oparam$ for which $\oparamfunc{\statea} \neq \oparamfunc{\stateb}$. If $\oparamfunc{\statea} > \oparamfunc{\stateb}$, swap $\statea \Leftrightarrow \stateb$.
+	\item Choose a set $\left \{ \ifacez \comma \cdots \comma \ifaceI \right \}$ of interface values of $\oparam$ such that $\oparamfunc{\statea} < \ifacei < \oparamfunc{\stateb}$ for every $\ifacei$. We say that a trajectory has fluxed forward with respect to a $\ifacei$ when it crosses the interface traveling in the direction of increasing $\oparam$, and that it has fluxed backward when it crosses traveling in the direction of decreasing $\oparam$.
+	\item Begin \abr{FFS} phase 0:
+        \begin{enumerate}
+            \item Execute a \abr{DS} trajectory initialized at $\statea$. If the trajectory fluxes forward across $\ifacez$, record the elapsed simulation time $\simtimesymb$ since the previous crossing event, and also record the state $\statex$. Multiple phase 0 trajectories can be executed in parallel.
+            \item If the trajectory ever crosses the final interface $\ifaceI$, pause the tracking of the waiting time until the trajectory moves backward across $\ifacez$.
+            \item Once $\samplecountx{0}$ samples of $\simtimesymb$ have been collected, terminate the trajectories and move to the next phase.
+        \end{enumerate}
+    \item Begin \abr{FFS} phase $\phase > 0$:
+        \begin{enumerate}
+            \item\label{item:ffs_phasegz_step1} Randomly choose a state $\statex$ from the collection of states at which any trajectory in the previous phase crossed $\ifaceimo$.
+            \item\label{item:ffs_phasegz_step2} Execute a \abr{DS} trajectory initialized at $\statex$. Allow the trajectory to run until it either crosses $\ifacez$ back into $\statea$ or moves forward across $\ifacei$. Terminate the trajectory and record a trajectory outcome value, either 0 or 1, depending on whether the trajectory moved backward or forward, respectively. If the trajectory moved forward, add the endpoint, which will lie along $\ifacei$, to the set of states that will be used to initialize trajectories during the next phase.
+            \item Repeat steps \ref{item:ffs_phasegz_step1}-b.
+            \item Once $\samplecount$ trajectory outcomes have been collected terminate the phase. Every phase $\phase$ trajectory can be executed in parallel.
+        \end{enumerate}
+    \item The procedure for \abr{FFS} phase $\phase$ is then repeated for phase $\phase + 1$ (during which trajectories are launched from $\ifacei$) until the final phase, phase $\Phase$, is reached. Trajectories in phase $\Phase$ begin at $\ifaceImo$ and may move forward across $\ifaceI$ and into $\stateb$.
+\end{enumerate}
+
+The overall aim of \abr{FFS} is to ratchet a simulation from $\atob$ across state space. The immediate goal of each phase is to estimate a phase weight. During phase $\phase$, samples are taken from an observable $\phrv$ that behaves as a random variable. $\phrvz$ is the waiting time in between forward flux events across $\ifacez$, and each $\phrvgz$ is the final outcome (0 for fall back or 1 for flux forward) of each trajectory launched in that $\phase$. The phase weight $\pwtrue$ is defined as the true expected value of the random variable $\phrv$:
+\begin{equation}
+    \label{eq:pw_definition}
+        \pwtrue = \E{\phrv} =
+        \begin{cases}
+            \Simtimeatoz & \text{if}\ i=0, \\
+            \fluxprob & \text{otherwise,}
+        \end{cases}
+    \end{equation}
+where $\Simtimeatoz$ is the expected waiting time in between $\ifacez$ crossing events, and $\fluxprob$ is the probability that a trajectory launched from $\ifaceimo$ (\ie launched during phase $\phase$) crosses forward past $\ifacei$ before it falls back behind the starting interface $\ifacez$. The phase weights can be used to reweight the output of an \abr{FFS} simulation so as to calculate unbiased statistics.
+
+%In the original version of \abr{FFS}\supercite{Allen:2005wy}, the phase 0 trajectories are terminated once a fixed simulation time $\Simtimefixed$ has elapsed. The number of forward flux events across $\ifacez$ during $\Simtimefixed$ are counted. We reformulated the algorithm in terms of $\samplecount$ instead of $\Simtimefixed$. This small change allows us to unify the sampling statistics of phase 0 with those of the other phases (see \secref{sec:phase_weight_moments}). We also found that the error in phase 0 inversely scales with the value of $\samplecount$ in a largely predictable fashion. Thus, the reformulation is also beneficial when running simulations of novel systems with unknown properties.
+
+\subsection{Estimating Values of Interest from DS and ES Stochastic Simulations}
+%\begin{odone}
+%    \1 \abr{DS}
+%        \2 the estimator of any ensemble average is the arithmetic mean of the appropriate observable taken over the appropriate time course or set of replicate simulations
+%        \2 Exact description of full $\mfpttrue$ estimation protocol
+%        \2 Exact description of full epigenetic landscape protocol
+%    \1 \abr{FFS}
+%        \2 The results of the biased and partitioned simulations carried out in \abr{FFS} can be recombined and reweighted into the unbiased ensemble averages using the appropriate weight factors
+%        \2 We call the end of phase values the phase weights
+%        \2 
+%\end{odone}
+As mentioned in the previous section, estimating values of interest from \abr{DS} simulation is straightforward. One valid estimator of any ensemble average quantity is simply the arithmetic mean taken across an appropriate set of direct observations. For example, in order to calculate the \abr{MFPT} of the switching process that takes some multistate system from $\atob$, $\samplecountds$ \abr{DS} simulations are initialized in $\statea$. Each of these $\samplecountds$ replicate simulations is allowed to run until the first time it enters $\stateb$, at which point it is terminated. The time that each simulation $\phase$ ran for is then a single sample $FPT_i$ of the first passage time of the switching process. The mean of these first passage time samples is an estimate of $\mfpttrue$\supercite{Gillespie:1981fo}:
+    \begin{equation}
+        \mfptestds = \frac{1}{\samplecountds} \sum^{\samplecountds}_{i=1} FPT_i,
+    \end{equation}
+where $\mfptestds$ is the estimator (\ie estimation function) of $\mfpttrue$ specific to \abr{DS} simulation. Throughout this paper, we place a $\;\widehat{}\;$ above a symbol to indicate that we are referring to an estimator of a value rather than to the value itself.
+
+%A similar \abr{DS} simulation protocol can be used to calculate the probability density function (PDF) of a system. To calculate the PDF using \abr{DS}, a large number of simulations are run. The state of each trajectory is sampled at regular uncorrelated intervals. The state samples from all of the trajectories are then binned and normalized. The resulting normalized histogram is an estimator of the PDF. The total number of state samples taken determines the minimum probability that can be resolved.
+
+Equivalent ensemble average estimators can be calculated using \abr{FFS}. Although the results of \abr{FFS} simulations are biased and partitioned, statistical protocols allow \abr{FFS} results to be recombined and reweighted so as to recapitulate the results of the unbiased ensemble. In order to perform these reweightings, we need estimates of the phase weights. During phase $\phase$ of \abr{FFS}, $\samplecount$ samples $\left\{ \phrvsampley{1} \comma \cdots \comma \phrvsampley{\samplecount} \right\}$ of an underlying random process $\phrv$ are taken. The mean of this sample can be used as an estimator $\pwest$ of phase weight $\phase$:
+    \begin{equation}
+    \label{eq:pwest_definition}
+        \pwest = \frac{\sum_{\sample=1}^{\samplecount} \phrvsample} {\samplecount} =
+        \begin{cases}
+            \frac{\sum_{\sample=1}^{\samplecountz} \simtime}{\samplecountz}    & \text{if}\ i=0, \\
+            \frac{\successcount}{\samplecount}    & \text{otherwise,}
+        \end{cases}
+    \end{equation}
+where each $\simtime$ is a sample of the waiting time in between phase 0 forward flux events and $\successcount$ is the total count of trajectories that successfully fluxed forward during phase $\phasegz$.
+
+In an idealized situation in which it were possible to know the exact values of the phase weights $\pwtrue$, the exact value of the $\mfpttrue$ could be found via a simple combination $\PWtrue$ of the phase weights:
+    \begin{equation}
+    \label{eq:PWtrue_definition}
+        \mfpttrue = \frac{\Simtimeatoz}{\prod_{\phasegz} \fluxprob} = \PWtrueexp = \PWtrue.
+    \end{equation}
+In reality, we only know the phase weight estimators $\pwest$, so we must instead estimate the value of the $\mfpttrue$ by way of the combination of estimators $\PWest$:
+    \begin{equation}
+    \label{eq:PWest_definition}
+        \mfptestffs = \PWestexp = \PWest.
+    \end{equation}
+where $\mfptestffs$ is the estimator of $\mfpttrue$ specific to \abr{FFS} simulation. Other quantities of interest, such as the stationary PDF, can also be calculated using the phase weights\supercite{Valeriani:2007hv}.
+
+%In general, \abr{FFS} simulation returns biased results that can be transformed into unbiased results  by multiplying them with the appropriate combination of phase weights.
+
+\subsection{Predicting Simulation Error in Terms of Margin of Error}
+%The observables of a stochastic simulations are not fixed, but are instead random variables, each with their own associated distributions. Each sample that is taken of an observable can be thought of as equivalent to taking a single draw from the distribution of possible observations. In order to calculate a statistic (eg mean, median, variance, etc.) of an observable, many samples are produced and then plugged into the appropriate estimator. These statistic estimates are in turn also random variables with distributions. Thus, error in the values of interest such as $\mfpttrue$ (which is the mean of a distribution of waiting times) can be quantified in terms of these estimate distributions.
+%
+%Often, stochastic simulations are run in order to calculate some statistic (eg mean, median, variance, etc.) of an observable of the system being modeled. Due to the nature of stochastic simulation, every time a set of simulations is run the calculated value of any statistic  value of, say, the $\mfpttrue$ (which is calculated as the mean of the waiting times) is produced,
+
+Stochastic simulation results are not single valued, but are instead estimators, random variables with associated distributions. For example, when attempting to calculate $\mfpttrue$, each complete round of simulations can be thought of as performing a single draw from the distribution of possible $\mfptest$ values. A prediction about the likely level of error in any given set of simulations can be made based on the characteristics of this estimate distribution. One way to quantify confidence in this prediction is in terms of the margin of error. The margin of error of a random variable $X$ is defined as the ratio of half the width of a specified confidence interval and its expected value:
+    \begin{equation}
+    \label{eq:moe_definition}
+        \moefunc{X} = \frac{\uboundfunc{X} - \lboundfunc{X}}{2 \E{X}},
+    \end{equation}
+where $\moefunc{X}$ is the margin of error of $X$ at confidence level $\alpha$, $\E{X}$ is the expected value of $X$, and $\lboundfunc{X}$ and $\uboundfunc{X}$ are the lower and upper confidence bounds, respectively. 
+
+For many values of interest $\moefunc{X}$ is dependent on simulation parameters that are set by the user. For example, when calculating $\mfpttrue$, the margin of error $\moefunc{\mfptest}$ is dependent upon the total number of replicate simulations (when using \abr{DS}), or upon the count of trajectories run in each phase (when using \abr{FFS}).
+
+%Thus, if the margin of error of $\mfpttrue$ can be determined, predictions can be made along the lines of ``$100 \cdot \alpha$ percent of the time, this given simulation protocol will produce an estimate of $\mfpttrue$ that will have no more than $100 \cdot \moefunc{\mfptest}$ percent error with respect to the true value''.
+
+\subsection{Determining Margin of Error from Simulation Parameters}
+\label{sec:moe_from_simulation_params}
+It is straightforward to determine the margin of error of an estimator that depends on a single underlying observable. For example, consider the margin of error of an $\mfpttrue$ estimate as determined via \abr{DS} simulation, $\moefunc{\mfptestds}$. It has been shown that observations of first passage times between two well separated states follow an exponential distribution during \abr{DS} simulations\supercite{Becker:2012ej}. Given this distribution of first passage times, the central limit theorem\supercite{Olive:2014by} gives the distribution of $\mfpttrue$ estimates in the limit of large sample size:
+    \begin{equation}
+    \label{eq:fpt_clt_distribution}
+        \frac{\sqrt{n} \left(\mfptestds - \E{FPT}\right) }{\sqrt{\V{FPT}}} \xrightarrow{D} \normdist{0}{1},
+    \end{equation}
+where $\samplecountds$ is the count of first passage time observations, $\E{FPT} = \mfpttrue$ is the expected value of the first passage time, $V[FPT]$ is the variance, $\normdist{0}{1}$ is the standard normal distribution (\ie mean 0 and variance 1), and $\xrightarrow{D}$ signifies that the distribution on the left converges to the one on the right. \eqref{eq:fpt_clt_distribution} implies\supercite{Olive:2014by} that an estimate of $\mfpttrue$ calculated using $\samplecountds$ observations will follow a normal distribution such that:
+    \begin{align}
+        \label{eq:mfptestds_moments}
+        \begin{split}
+            \E{\mfptestds} &= \mfpttrue, \\
+            \V{\mfptestds} &= \frac{\V{FPT}}{\samplecountds} = \frac{\mfpttrue^2}{\samplecountds},
+        \end{split}
+    \end{align}
+where the fact that $V = E^2$ for an exponential distribution was used to factor out $\V{FPT}$. The lower and upper bounds of the confidence interval of any normally distributed random variable $X$ can be found using a standard formula\supercite{Ross:2010wr} that depends on the first two moments of $X$:
+    \begin{align}\label{eq:gaussian_ci_bound}
+        \begin{split}
+            \lboundfunc{X} &= \E{X} - \zscore \sqrt{\V{X}},   \\
+            \uboundfunc{X} &= \E{X} + \zscore \sqrt{\V{X}},
+        \end{split}
+    \end{align}
+where $\zscore$ is the z score associated with the confidence level $\alpha$ (\eg $\zscorex{.95} \approx 1.96$)\footnote{The z score $\zscore$ for any confidence level $\alpha$ can be calculated as $\zscore = \sqrt{2} \mathsf{Erfinv}\left( \alpha \right)$, where Erfinv is the Inverse Error Function\supercite{Carlitz:1963vu}, and $\alpha$ is expressed as a fraction. Some authors write the z score as $\zscorex{(1-\alpha)/2}$ instead of $\zscore$\supercite{Ross:2010wr}.}. Plugging \eqrefTwo{eq:mfptestds_moments}{eq:gaussian_ci_bound} into \eqref{eq:moe_definition} yields the margin of error of the \abr{DS} $\mfpttrue$ estimator:
+    \begin{equation}\label{eq:moe_mfptestds}
+        \moefunc{\mfptestds} = \frac{\zscore}{\sqrt{\samplecountds}}.
+    \end{equation}
+Thus, if say, $10^5$ replicate trajectories are produced during a \abr{DS} simulation, the resultant estimate of $\mfpttrue$ will have no more than $\frac{\zscorex{.95}}{\sqrt{10^5}} \approx \frac{1.96}{316} = 0.62\%$ difference from the true value 95\% of the time.
+
+%for a wide variety of values of interest $X$, given that the distribution of $\est{X}$ obeys certain regularity conditions (mainly that $\E{\est{X}}$ and $\V{\est{X}}$ exist) \todo{REF}.
+
+\subsection{Minimizing the Computational Cost Required to Achieve a Desired Error Goal}
+We define the computational cost $\Cost$ of a simulation to be equivalent to the average in-simulation time required to complete it (alternatively, one may use the count of simulation steps). When estimating $\mfpttrue$ using \abr{DS} simulation, the computational cost is:
+    \begin{equation}\label{eq:cost_mfptestds}
+        \Costds = \samplecountds \cdot \mfpttrue,
+    \end{equation}
+where $\samplecountds$ is the total number of replicate trajectories. \eqref{eq:moe_mfptestds} illustrates the direct tradeoff between computational cost and simulation accuracy. In order to find the minimum number of replicate trajectories that are required to achieve a particular error goal in \abr{DS} simulations, \eqref{eq:moe_mfptestds} can be solved for n:
+    \begin{equation}\label{eq:ds_optimizing}
+        \samplecountds = {\left( \frac{\zscore}{\moe} \right)}^{2}
+        %n = \frac{\zscoresq}{\moefuncsq{\mfptestds}}.
+    \end{equation}
+
+%\subsection{Implementation of FFS with Lattice Microbes}
+%\begin{odraft}
+%    \1 We wrote and implementation of \abr{FFS} in Lattice Microbes, an open-source stochastic simulation software package produced by the Roberts lab. Lattice Microbes is a parallel program designed to run in both the desktop and the HHPC environments. It has been tested on clusters with thousands of CPU cores. To the best of our knowledge, our implementation of \abr{FFS} in Lattice Microbes is the first designed for high performance in a parallel cluster environment.
+%\end{odraft}    
+%
+%Broadly speaking, \abr{ES} methods increase sampling of rare events by constraining simulation trajectories such that they spend more time in regions
+%
+%In general, the margin of error $\moe$ of an estimate $\est{x}$ of an ensemble average $x$ of some property $\mathfrac{x}$ is proportional to:
+%\begin{equation*}
+%	\moe \propto\limits_{n \rightarrow \inf} \sqrt{\frac{\V{\mathfrac{x}}}{\E{\mathfrac{x}}^2 n}} \\
+%	\moe \propto\limits_{n \rightarrow \inf} \sqrt{\frac{\V{\mathfrac{x}}}{x^2 n}}.
+%\end{equation*}
+%In practice, what this means (among other things) is 
+%
+%\subsection{Measuring Simulation Error}
+%\begin{odone}
+%    \1 We quantify simulation error in terms of a relative margin of error.
+%        \2 The relative margin of error of a random variable $X$ is defined as the ratio of half the width of a specified confidence interval and its expected value
+%            \begin{equation}\label{eq:zeta_definition}
+%                \zeta_{\alpha}\left[ X \right] = \frac{ub_{\alpha}\left[ X \right] - lb_{\alpha}\left[ X \right]}{2 \E{X}}
+%            \end{equation}
+%            \3 where $\zeta_{\alpha}\left[ X \right]$ is the relative margin of error at confidence level $\alpha$, and $lb_{\alpha}\left[ X \right]$ and $ub_{\alpha}\left[ X \right]$ are  the lower and upper confidence bounds, respectively.
+%    
+%    \1 When using \abr{ES} methods, there is also landscape error to consider
+%        \2 All \abr{ES} methods involve sampling of some part of the simulated system's probability landscape
+%            \3 Details of how error accumulates during the landscape sampling process vary between different \abr{ES} methods
+%        \2 In \abr{FFS}, the landscape error affecting phase n depends on the probability landscape collected during phase n-1
+%        \2 Thus, landscape error in phase n decreases as the number of trajectories run in phase n-1 increases
+%        \2 Increasing number of runs in any phase also decreases sampling error, so there is no simple way to deconvolute landscape error and sampling error.
+%\end{odone}
+%
+%We hypothesized that there must be some particular feature of the state space landscape of $\GTS$ that the simulations are exploring during phases 4 and 5 that is responsible for the anomalous error. We further reasoned that the same features that are responsible for what Allen and coworkers call landscape error could be responsible for the errors that we see here. In brief, Landscape error is due to two independent factors: 1) underrepresentation of regions of the landscape in the dictionary of trajectory starting points  at $\lambda_i$ (with respect to samples taken during a particular simulation), and 2) significant differences in $P\left(\lambda_{i}|\lambda_{i-1}\right)$ as a function of trajectory starting state. The total probability factor $P\left(\lambda_{i}|\lambda_{i-1}\right)$ that is measured in each phase $i>0$ can be thought of as a mixture of many independent probabilities, one for each state along $\lambda_{i-1}$, weighted by the (normalized) count of times the state is used as a starting point for a phase $i$ trajectory. If either of factors 1) or 2) occurs alone, $P\left(\lambda_{i}|\lambda_{i-1}\right)$ will still be correctly estimated. However, if the factors occur together they can lead to significant errors. In other words, if the landscapes assembled at $\lambda_3$ and $\lambda_4$ are heterogeneous across replicate simulations, and if differences in those landscapes can lead to differences in the effective value of $P\left(\lambda_{i}|\lambda_{i-1}\right)$, then landscape error may be the cause of the anomalous simulation error we observe in our simulations of $\GTS$. Of particular importance is the fact that the landscape error in phase $i$ is due to errors in the landscape assembled from the endpoints of successful trajectories launched during phase $i-1$. Thus, no amount of extra sampling performed during phase $i$ alone can completely abolish landscape error.
+%
+%\subsection{Controlling Simulation Error by Controlling Number of Runs}
+%\begin{odraft}
+%    \1 The dominant source of error in both DS and \abr{FFS} is sampling error
+%        \2 For many simulation values of interest, such as $\mfpttrue$ and Probability Landscapes, error tends to decrease monotonically along with the total number of simulations run
+%            \3 True for any value calculated as an average taken over a simulated ensemble, and for many values derived from such averages
+%        \2 OPTIONAL: If an ensemble average is calculated a number of different times via independent repeated simulations, it will be seen to have a gaussian spread of values
+%            \3 The mean will be the true ensemble value
+%            \3 The spread (ie variance) will be proportional to the inverse square root of the number of runs in each separate simulation
+%            \3 Can be shown to be true in general for ensemble averages (and for values derived from ensemble averages) via arguments based on the central limit theorem
+%    \1 With DS, sampling error is controlled by a single parameter, how many replicates to run 
+%        \2 Can be treated with established error statistics (exponential distribution)
+%    \1 With \abr{FFS}, sampling error is controlled with N independent parameters, how many simulations to run in each phase
+%        \2 More complicated than DS
+%        \2 Some previous work has been done on the error statistics of both individual \abr{FFS} phase weights and on the overall outcomes of \abr{FFS} simulations
+%            \3 phase 0 has been left out of all previously published treatments
+%\end{odraft}
+%
+%As developers of stochastic simulations methods and software, we sought to develop a simulation protocol  One way to quantify 
+%
+%
+%\subsection{Finding the Optimal Runs per Phase for a Given Error Goal}
+%\begin{odraft}
+%    \1 Given the known relationship between error and number of runs, variational calculus can be used to find the optimal (ie minimum) number of runs required to reach a certain error goal
+%        \2 Method of Lagrange Multipliers
+%            \3 Trivial for DS case
+%            \3 \abr{FFS} case more complicated, need to minimize all phases together
+%    \1 Resulting \opteq{} requires reasonable, conservative estimates of first and second central moments of the distribution of phase weight samples
+%        \2 Moment estimation can be automated using new scheme, \abr{FFPilot}
+%\end{odraft}
+%
+%\subsection{Models for testing}
+%\begin{odraft}
+%    \1 Toy model
+%        \2 Simple set of random variable 
+%    \1 SRG
+%        \2 CME model
+%        \2 Single species X, inhibitory Hill-like expression, 1st order decay
+%        \2 Two states
+%            \3 Low X
+%            \3 High X
+%    \1 GTS
+%        \2 See \ref{fig:genetic_toggle_schematics}
+%        \2 CME model consisting only of 1st and 2nd order reactions
+%        \2 Seven species, single piece of operator DNA, cooperative binding to operator determines which protein is expressed
+%        \2 Two states
+%            \3 High A Low B
+%            \3 High B Low A
+%\end{odraft}
+%
+%\subsection{Derivation of model variants with different switching times}
+%\begin{odraft}
+%    \1 We wanted to explore how switching time effects accumulation of errors when using an enhanced sampling simulation method
+%    \1 Began with versions of SRG and GTS from the literature, tried to find ways to adjust only switching time (with minimum overall perturabation)
+%    \1 Self Inhibiting Gene
+%        \2 Adjust switching time by adjusting hill coefficient
+%    \1 genetic toggle switch
+%        \2 Adjust switching time via novel protein churn parameter $\theta$
+%        \2 Adjusting $\theta$ changes the transition path, but leaves the system as a whole unperturbed
+%\end{odraft}
+%
+%\subsection{Statistics of Trajectory Ensembles}
+%\begin{odraft}
+%    \1 The statistics employed in this paper are based on the concept that repeated observations of some property of a stochastic system are equivalent to repeatedly sampling some random variable $\phrv$.
+%        \2 The goal of a simulator is to produce an estimate of some value of interest $\omega$ based on samples taken from $\phrv$
+%            \3 The estimate is produced from an estimator, a function of $\phrv$
+%                \begin{equation*}\label{eq:estimator_definition}
+%                    \widehat{\omega}\left[ \phrv \right]
+%                \end{equation*}
+%        \2 Estimators are typically distinguished from "true" value by the overhat notation 
+%            \3 
+%        \2 Estimators are themselves random variables, distinct from $\phrv$
+%            
+%        \2 Many different strategies for performing the sampling have been developed. We focus on two
+%            \3 \abr{DS}
+%            \3 \abr{FFS}, a type of Enhanced Sampling
+%    \1 
+%\end{odraft}
+%
+%\subsection{Estimation of Mean First Passage Time}
+%\begin{odraft}
+%    \1 In this paper we focus on achieving accuracy in one particular estimator, that of $\mfpttrue$.
+%        \2 Although most of the methods and protocols we develop are already generalized.
+%        \2 Two main reasons we focus on $\mfpttrue$
+%            \3 Of critical importance in the study of rare events
+%            \3 Central to the method of \abr{FFS}. In \abr{FFS}, all estimators are defined as products in which $\mfpttrue$ or one of its components is a factor.
+%    \1 The procedure for estimating $\mfpttrue$ is somewhat different for the two sampling methods.
+%        \2 In DS, there is a single simulation phase
+%            \3 start a trajectory in state AA and wait (potentially a very long time) until it is absorbed in state BB.
+%    \1 On the other hand, in \abr{FFS} there are
+%    \1 As defined above, $MFPT_{DS}$ and $MFPT_{FFS}$ are equivalent only if the dwell time of the system in the starting state is much greater than the dwell time on the transition path
+%        \2 This separation of time scales is characteristic of rare event systems \supercite{Becker:2012ej}
+%\end{odraft}
+%
+%In this paper we focus on achieving accuracy in one particular estimator, that of $\mfpttrue$. Although many of the analyses and protocols developed in this paper can be applied in general to any estimator of a simulation observable.
+%
+%\subsection{Sources of Simulation Error}
+%\label{sec:sources_of_error}
+%\subsubsection{Direct Sampling}
+%\begin{odraft}
+%    \1 Sampling Error
+%\end{odraft}
+%\subsubsection{Forward flux sampling}
+%\begin{odraft}
+%    \1 Sampling Error
+%    \1 Landscape Error
+%\end{odraft}
+%
+%\subsection{Controlling Simulation Error by Controlling Margin of Error}
+%\begin{odraft}
+%    \1 
+%\end{odraft}
+%
+%\subsection{Simulating Random Variables Using NumPy and SciPy}
+%\begin{odraft}
+%    \1 
+%\end{odraft}
+%
+%\subsection{Stochastic Model of Genetic Toggle Switch}
+%\begin{odraft}
+%    \1 A generic model of a multi-state gene-regulatory biochemical network
+%        \2 See fig \ref{fig:genetic_toggle_schematics}
+%    \1 Contains a detailed representation of the dynamics of protein expression down to the single molecule level
+%        \2 Although the particulars of transcription and translation are abstracted away
+%    \1 Versions of the GTS have been built in live cells \supercite{Gardner:2000bm}.
+%\end{odraft}
+
+%\subsection{The Exclusive Genetic Toggle Switch}
+%\begin{odraft}
+%\1 (HAVE FIGURE: schematic diagram of toggle switch) The exclusive genetic toggle switch consists of a single piece of operator DNA that can produce two different proteins, A and B. The operator (and the system in general) stochastically switches back and forth between a high A state (\mc{A}), in which large quantities of A and minuscule quantities of B are produced, and a high B state (\mc{B}), in which the production rates are reversed. This rare switching event dominates the dynamics of this system. 
+%\1 The binding of protein to the operator provides the basis for the state switching behavior. During the infrequent moments when the operator is unbound, both protein A and B are produced at an equal rate. Stochastically, a dimer of A or B will then bind to the operator, at which point only more of that same protein can be produced. The count of a protein determines the propensity of its binding to the unbound operator, so there is a strong positive feedback on binding.
+%\1 To understand why the state switch is a rare event, it is instructive to realize that at some point during every switching event the count of the two proteins becomes equal. Thus, in order for a switching event from, say, $\mathcal{A}$ to $\mathcal{B}$ to occur, two events need to stochastically occur: a large quantity of protein A needs to be degraded without being replaced, and a large quantity of protein B needs to be produced without being degraded. Since either of these events occurring is unlikely, their co-occurrence is even more unlikely. 
+%\1 In detail
+%    \2 7 species, 14 reactions (NEED TABLE: species, reactions, rates)
+%\1 (HAVE FIGURE: theta vs brute force $\mfpttrue$) Taking advantage of the relationship between switch frequency and protein production/degradation rates, we have designed a version of the GTS with a tunable switching frequency. We have multiplied every protein production and degradation rate in the system by a parameter $\theta$. A high value of $\theta$ leads to a high rate of protein turnover in the system, making switching much more likely, and a low value of $\theta$ has the opposite effect. Moreover, the ratio between the protein production and degradation rates is unaffected by $\theta$. This means that the steady state counts of A and B are for the most part also unaffected by $\theta$. Thus, we can tune the frequency of the rare switching event by altering $\theta$ without affecting the overall dynamics of the system. Remarkably, the switching frequency is linearly proportional to the choice of $\theta$.
+%\end{odraft}
+%
+%\subsection{Modeling the Rare Switching Event as a Markov Process}
+%\begin{odraft}
+%\1 We assume that the rare switching event in the GTS system follows the dynamics of a two-state Markov model. This is a reasonable assumption given that the relaxation time of the system upon entering either \mc{A} or \mc{B} is much shorter than the mean time in between switching events (cite: Becker, 2012). In effect, imposing Markovian dynamics on the switching event is a sort of coarse-grained analysis of our molecular-detail simulations. This allows for the study and quantification of the switching event as an independent stochastic process. 
+%\1 The waiting times in between state transition events in a Markov model are exponentially distributed. As with any exponential distribution, the waiting times are characterized by a single parameter, which in this case is the mean waiting time. A primary goal of the simulations discussed in this paper is to determine the value of this parameter for a given version of the GTS.
+%\end{odraft}
+%
+%\subsection{Parameterizing the Rare Event Markov Process}
+%\subsubsection{Connecting the CME Model and the Markov Model}
+%\begin{odraft}
+%\1 So far we have described two independent models of the GTS: a detailed CME model with a many-dimensional state space, and a coarse-grained two-state Markov model. We aim to take the outcomes of a set of simulated trajectories of the detailed model, which has been parameterized in terms of the elementary reactions of the GTS, and use them to parameterize the coarse-grained model. In order to connect the two models together we need two things:
+%    \2 A 1D order parameter that describes the transition from one CME state to another. Simulation outcomes tend to be insensitive to the choice of order parameter, although a simulation using a "bad" order parameter may require more computational effort to achieve a given level of error.
+%    \2 A state rule that will allow us to determine what single state a given CME trajectory is in at a given time. This rule effectively defines both the states themselves as well as the exact nature of the switching process. The choice of state rule can have an effect on the simulation outcome, as different rules effectively describe different switching processes.
+%\1 (PROBABLY CUT THIS PARAGRAPH) There is no completely general, system-independent way to determine an appropriate order parameter. However, for systems with well-separated metastable states there is a straightforward protocol that can be followed to produce a reasonable order parameter:
+%    \2 Either through prior knowledge or via one of the many estimation methods, determine the rough location of the system's stable fixed-points in terms of the system's full state space.
+%    \2 Pick two states that you want to study the transition between. The steps that follow can be repeated if your system has more than two states.
+%    \2 Determine the equation of the straight line that connects the two states.
+%    \2 Now determine the general equation of all the possible lines (for a 2D state space), planes (for 3D), or hyperplanes (for nD) that lie perpendicular to your connecting line. Write out this equation in the form $c\sub{0} x\sub{0} + c\sub{1} x\sub{1} + ... + c\sub{n} x\sub{n} = d$ (given that $\left\{x\sub{0}, x\sub{1} ... x\sub{n}\right\}$ is your state vector, $\left\{c\sub{0}, c\sub{1} ... c\sub{n}\right\}$ is a set of constants, and $d$ is the variable that lets you choose among the possible perpendicular objects). The left hand side of this equation is your order parameter. This order parameter can then be further refined based on the particulars of your system and the aspects of it under study.
+%\1 We characterize the transition event in the GTS system in terms of an order parameter $\Delta$. $\Delta$ is based on the difference of the total count of the two proteins in the GTS:
+%\begin{align}
+%	\Delta &= \mathrm{number\ of\ molecules\ of\ protein\ B} - \mathrm{number\ of\ molecules\ of\ protein\ A} \\
+%	       &= (n\sub{B} + 2n\sub{B\sub{2}} + 2n\sub{OB\sub{2}}) - (n\sub{A} + 2n\sub{A\sub{2}} + 2n\sub{OA\sub{2}})
+%\end{align}
+%\1 Following the regions framework of Dinner (cite: Dinner 2010), we define each state in the CME by first choosing a value of $\delta$. This value is used to establish an interface which we will say separates that particular state from the rest of state space. The choice of $\delta$ value is somewhat arbitrary, but as long as it fulfills certain conditions:
+%    \2 In between the two states we're studying.
+%    \2 Close to but not on top of the stable fixed point.
+%    \2 Far from the midpoint of the transition.
+%\1 then the time-scale separation assumptions that underpin the Markov model will still hold. Any trajectory that passes through the interface of state \mc{X} while moving towards the stable fixed point is said to have transitioned into state \mc{X}. If that trajectory then passes back though interface \mc{X} but has not yet transitioned into a different state, it is said to be in the region of \mc{X}.
+%\end{odraft}
+
+%- Once we have the estimator mean and variance we can then calculate a confidence interval for the estimator. 
+%    - system independent
+%    -  why confidence intervals are appropriate for bounding behavior of single simulations
+%    - Though somewhat more complicated to implement, RCI has the virtue of making simulations much easier to setup and run. Previously, a computationalist would have needed to specify upfront a set number of replicate simulations to run
+%
+%- 
+%    - we have chosen to focus on $\mfpttrue$ in our error control efforts
+%        - the scale parameter of the exponential distribution of time in between switching events
+%        - (Most?) essential characteristic of any rare event systems
+%        - required for calculation of other results of interest, such as the epigenetic landscape
+
+%\end{markdown}
+
+%\end{document}
+
+

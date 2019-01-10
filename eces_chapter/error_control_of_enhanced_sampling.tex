@@ -1,0 +1,53 @@
+
+%\date{\today}
+
+%\begin{abstract}
+%Enhanced sampling methods, such as forward flux sampling (FFS), hold a great deal of promise for accelerating stochastic simulations of nonequilibrium biochemical systems involving rare events. However, the description of the tradeoffs between simulation efficiency and error in FFS remains incomplete. We present a novel and mathematically rigorous analysis of the errors in FFS that, for the first time, covers the contribution of every phase of the simulation. We derive a closed form expression for the optimally efficient count of samples to take in each FFS phase in terms of a fixed constraint on sampling error. We introduce a new method, forward flux pilot sampling (FFPilot), that is designed to take full advantage of our optimizing equation without prior information or assumptions about the phase weights and costs along the transition path. In simulations of both single- and multi-dimensional gene regulatory networks, FFPilot is able to completely control sampling error. Higher dimensional systems have additional sources of error and we show that this extra error can be traced to correlations between phases due to roughness on the probability landscape. Finally, we show that in sets of  simulations with matched error, FFPilot is on the order of tens-to-hundreds of times faster than direct sampling, in a fashion that scales with the rarity of the events.
+%\end{abstract}
+
+%\input{eces_chapter/latex_body_text/error_control_of_enhanced_sampling-intro-v2}
+
+\chapter{Automatic error control during forward flux sampling of rare events in master equation models}
+
+\input{eces_chapter/latex_body_text/error_control_of_enhanced_sampling-theory-methods-v1}
+
+\input{eces_chapter/latex_body_text/error_control_of_enhanced_sampling-results}
+
+%\input{error_control_of_enhanced_sampling-results-alt-derivs}
+
+%\input{eces_chapter/latex_body_text/error_control_of_enhanced_sampling-discussion}
+
+\section*{Supplementary Material}
+See supplementary material for additional derivations and figures.
+
+\section*{Acknowledgments}
+The authors thank the members of Roberts lab for discussions. This work was supported by the National Science Foundation under grant number PHY-1707961, and by the National Institutes of Health under grant T32 GM008403.
+
+\begin{appendices}
+
+%\input{eces_chapter/latex_body_text/error_control_of_enhanced_sampling-appendix-a}
+
+\renewcommand{\thesection}{A\arabic{section}}
+
+\input{eces_chapter/latex_body_text/error_control_of_enhanced_sampling-appendix-b}
+
+\input{eces_chapter/latex_body_text/error_control_of_enhanced_sampling-appendix-c}
+
+%\input{eces_chapter/latex_body_text/error_control_of_enhanced_sampling-appendix-d}
+
+\end{appendices}
+
+%\newpage
+%\footnotesize
+%\bibliographystyle{aipnum4-1.bst}
+%\bibliography{error_control_of_enhanced_sampling}
+
+\newpage
+\normalsize
+\input{eces_chapter/latex_body_text/error_control_of_enhanced_sampling-tables}
+\input{eces_chapter/latex_body_text/error_control_of_enhanced_sampling-figures}
+
+%\include{error_control_of_enhanced_sampling-supplemental_ref}
+
+
+%\end{document}

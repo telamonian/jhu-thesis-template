@@ -1,0 +1,158 @@
+%\documentclass[class=article, float=false, crop=false]{standalone}
+%\documentclass[10pt,letterpaper]{article}
+%
+%\input{error_control_of_enhanced_sampling-header}
+%
+%\begin{document}
+
+\section{The Upper Bound of the Variance of a Sum of Bernoulli Distributions}
+\label{sec:bernoulli_mixture_var}
+The overall process of launching trajectories in order to determine the phase weight during each phase of \abr{FFS} simulation can be thought of as a single draw from a sum of many independent Bernoulli distributions, also called a \abr{PBD}. This viewpoint emphasizes the statistical equivalence between the outcome of the $\sample$th trajectory in an \abr{FFS} phase, which will either fall back into its starting basin or flux forward to the next interface, and the outcome of the $\sample$th Bernoulli random variable in a \abr{PBD}, which will take on a value of either 0 or 1. In both cases ``success'' (fluxing forward, drawing a 1) occurs with some probability $\probbern$ inherent to the individual process, while ``failure'' (returning to basin, drawing a 0) occurs with probability $(1 - \probbern)$. The expected value and the variance of a draw from a \abr{PBD} of $\samplecountbern$ terms (\ie the sum over an independent draw from each of its constituent Bernoulli random variables) is:
+    \begin{align}
+    \label{eq:poisson_bernoulli_moments}
+        \begin{split}
+            \mu &= \sum _{\sample=1}^{\samplecountbern} \probbern, \\
+            V &= \sum _{\sample=1}^{\samplecountbern} \left( 1 - \probbern \right) \probbern.
+        \end{split}
+    \end{align}
+Equivalently, \eqref{eq:poisson_bernoulli_moments} is also the mean and variance of the total count of successful trajectories $\successcount$ in \abr{FFS} phase $\phasegz$, given that $\samplecountbern = \samplecount$ trajectories were run.
+
+The variance of a \abr{PBD} is maximized when the probability parameter of each of its Bernoulli random variables are all the same $\probsymb$:
+    \begin{equation*}
+        \probbernx{1} = \probbernx{2} = \ldots = \probbernx{\samplecountbern} = \probsymb,
+    \end{equation*}
+and so the upper bound on the variance of a sum of Bernoulli random variables is:
+    \begin{equation}
+    \label{eq:bernoulli_mixture_variance_max}
+        V \leq \samplecountbern \probsymb(1 - \probsymb).
+    \end{equation}
+
+\noindent
+\textit{Proof.} For a given value of $\mu$, the method of Lagrange Multipliers can be used to maximize $V$ with respect to the choice of particular values of the $p_i$ terms. Appropriate constraint and target equations can be taken from \eqref{eq:poisson_bernoulli_moments}:
+\begin{align}
+    \label{eq:bernoulli_mix_var_cons_tar}
+    \begin{split}
+        g \left[ \probbern \right] &= \sum _{\sample=1}^\samplecountbern \probbern - \mu = 0 \\
+        f \left[ \probbern \right]&= V = \sum _{\sample=1}^\samplecountbern \left( 1 - \probbern \right) \probbern.
+    \end{split}
+\end{align}
+
+A Lagrangian can be formed from \eqref{eq:bernoulli_mix_var_cons_tar}:
+\begin{equation*}
+    \mathcal{L}=\sum _{\sample=1}^\samplecountbern \left( \left( 1 - \probbern \right) \probbern \right) - \lambda  \left(\mu -\sum _{\kx=1}^\samplecountbern \probbernx{\kx} \right).
+\end{equation*}
+
+Next we find the gradient of the Lagrangian:
+\begin{align*}
+    \partial_{\lambda} \mathcal{L}&=\sum _{\sample=1}^\samplecountbern \probbern-\mu \\
+    \partial_{\probbern} \mathcal{L}&=-2 \probbern+\lambda +1.
+\end{align*}
+
+Now we set each part of the gradient to zero and solve the resulting set of equations. We start by solving for $p_i$ in terms of $\lambda$:
+\begin{equation*}
+    \probbern=\frac{\lambda +1}{2}.
+\end{equation*}
+
+Next we solve for $\lambda$ alone:
+\begin{equation*}
+    \lambda =\frac{2 \mu }{\samplecountbern}-1.
+\end{equation*}
+
+Then finally we plug the solution for $\lambda$ into the gradient of $p_i$ and solve for $p_i$ alone:
+\begin{equation}
+    \label{eq:poi_bern_maximizing_prob}
+    \probbern = \frac{\mu }{\samplecountbern} = \probsymb.
+\end{equation}
+
+Thus, the spot at which every $p_i$ is equal to $\frac{\mu}{\samplecountbern}$ is a critical point for the variance of a Bernoulli mixture distribution. It can further be shown that the above critical point is a maximum for the constrained variance using the Bordered Hessian variation of the classical second derivative test. The Bordered Hessian\supercite{Magnus:1999vh} of a Lagrangian can be defined as:
+\begin{equation*}
+    H \equiv \left(
+        \begin{array}{ccccc}
+            \frac{\partial \mathcal{L}}{\partial \lambda ^2} & \frac{\partial \mathcal{L}}{\partial \lambda  p_1} & \frac{\partial \mathcal{L}}{\partial \lambda  p_2} & \ldots  & \frac{\partial \mathcal{L}}{\partial \lambda  p_N} \\
+            \frac{\partial \mathcal{L}}{\partial \lambda  p_1} & \frac{\partial \mathcal{L}}{\partial p_1^2} & \frac{\partial \mathcal{L}}{\partial p_1 p_2} & \ldots  & \frac{\partial \mathcal{L}}{\partial p_1 p_N} \\
+            \frac{\partial \mathcal{L}}{\partial \lambda  p_2} & \frac{\partial \mathcal{L}}{\partial p_1 p_2} & \frac{\partial \mathcal{L}}{\partial p_2^2} & \ldots  & \frac{\partial \mathcal{L}}{\partial p_2 p_N} \\
+            \vdots  & \vdots  & \vdots  & \ddots & \vdots  \\
+            \frac{\partial \mathcal{L}}{\partial \lambda  p_N} & \frac{\partial \mathcal{L}}{\partial p_1 p_N} & \frac{\partial \mathcal{L}}{\partial p_2 p_N} & \ldots  & \frac{\partial \mathcal{L}}{\partial p_N^2} \\
+        \end{array}
+    \right),
+\end{equation*}
+which for our Lagrangian works out to:
+\begin{equation}
+\label{eq:bordered_hessian_concrete}
+    H=\left(
+        \begin{array}{ccccc}
+            0 & 1 & 1 & \ldots  & 1 \\
+            1 & -2 & 0 & \ldots  & 0 \\
+            1 & 0 & -2 & \ldots  & 0 \\
+            \vdots  & \vdots  & \vdots  & \ddots & \vdots  \\
+            1 & 0 & 0 & \ldots  & -2 \\
+        \end{array}
+    \right).
+\end{equation}
+$\frac{\mu}{\samplecountbern}$ is a maximum if and only if $H$ is negative definite. The negative definiteness of $H$ can be demonstrated by showing that the signs of its leading principal minors demonstrate the appropriate alternating pattern\supercite{Magnus:1999vh}. For any finite value of $\samplecountbern$, this Hessian can be diagonalized using the Gaussian Elimination technique. This makes it easy to calculate the determinants of the various $x \times x$ upper-left submatrices and to show that the signs of said determinants do indeed follow the pattern of $(-1)^{x-1}$ for $x \geq 3$, satisfying the condition for negative definiteness. This conclusion can be generalized to arbitrary values of $\samplecountbern$ using a proof by induction (the details of which are omitted for brevity). Thus, $H$ is always a negative definite matrix, and so setting each $\probbern = \frac{\mu}{\samplecountbern} = \probsymb$ does indeed maximize $V$ for a given $\mu$.
+
+From \eqref{eq:bernoulli_mixture_variance_max}, the upper bound on the variance of the count of successful trajectories $\successcount$ in \abr{FFS} phase $\phasegz$ is:
+    \begin{equation*}
+        \V{\successcount} \leq \samplecount \probphase(1 - \probphase).
+    \end{equation*}
+From \eqref{eq:pwest_definition}, the phase weight estimator $\pwestgz$ can be given in terms of the success count $\successcount$:
+    \begin{equation*}
+        \pwestgz = \frac{\successcount}{\samplecount}.
+    \end{equation*}
+The variance of a quotient $\V{x/y}$ is $\V{x}/y^2$ given that $y$ is a constant\supercite{Riley:2006wb}. Thus, the upper bound on the variance of $\pwestgz$ is:
+    \begin{equation*}
+    \label{eq:pwest_upper_bound}
+        \V{\pwestgz} = \V{\frac{\successcount}{\samplecount}} = \frac{\V{\successcount}}{\samplecount^2} \leq \frac{1}{\samplecount} \probphase(1 - \probphase).
+    \end{equation*}
+Finally, \eqref{eq:pwest_moments} can be used to derive an upper bound on $\V{\phrvgz}$ from the bound on $\V{\pwestgz}$:
+    \begin{equation}
+        \label{eq:pwest_var_upper_bound}
+        \V{\phrvgz} = \samplecount \V{\pwestgz} \leq \probphase(1 - \probphase).
+    \end{equation}
+Parameterizing the \opteq{} (\eqref{eq:optimizing_equation_ffpilot}) with a value of $\V{\phrvgz}$ that is at least as large as the true value helps to ensure that the calculated $\samplecount$ is at least sufficient to achieve the given error goal. The upper bound on the variance given in \eqref{eq:pwest_var_upper_bound} is equivalent to the variance of a single Bernoulli random variable with parameter $\probphase$. Thus, for the purposes of parameterizing the \opteq{} we treat each $\phrvgz$ as a single Bernoulli random variable without any loss in accuracy.
+
+%A The \abr{FFS} phase weight $\pwtruegz$ is defined as the probability that the $\sample$th trajectory of phase $\phase$ reaches the next interface. Equivalently 
+%
+%If $\probtraj$ is the success probability of the $\sample$th trajectory launched during the $i$th phase of an \abr{FFS} simulation, then by \eqref{eq:poisson_bernoulli_moments} the moments of the count of successful trajectories $\successcount$ are:
+%    \begin{equation}
+%        
+%    \end{equation}
+
+ 
+%The phase weight $\pwtruegz$ is defined as \eqref{eq:phaseprob_estimator_def} as the mean count of successful trajectories divided by $\samplecountbern$. The moments of $\fluxprob$ can thus be determined from \eqref{eq:poisson_bernoulli_moments}:
+%    \begin{align*}
+%        \begin{split}
+%            \E{\fluxprob} &= \frac{\mu}{\samplecountbern}, \\
+%            \V{\fluxprob} &= \V{\frac{\est{\mu}}{\samplecountbern}} = \frac{1}{N^2} \sum _{\sample=1}^N \left(1 - \fluxprob\right) \fluxprob.
+%        \end{split}
+%    \end{align*}
+%From the result in \eqref{eq:poi_bern_maximizing_prob}, an upper bound on the variance can be found by treating all of the $\fluxprob$ terms as equal:
+%    \begin{equation}
+%        \V{\fluxprob} >= \frac{1}{N} \left(1 - \fluxprob\right) \fluxprob.
+%    \end{equation}
+
+%Each trajectory launched during an \abr{FFS} simulation can be thought of as a single independent Bernoulli trial, akin to a single flip of a biased coin. With respect to determining the phase weight, the trajectory will either reach the next interface and be counted, or it will fall back into it's starting basin and be disregarded, analogous to the 0-or-1 output of a Bernoulli process. By extension,
+%
+%During the pilot stage of an \abr{FFPilot} simulation,
+%When parameterizing the \abr{FFPilot} Optimizing Equation,
+%
+%The $p_i$ of a trajectory is dependent upon its exact starting position in the complete state space
+%
+%Under appropriate conditions\footnote{ \eqrefTwo{eq:bernoulli_mixture_mean}{eq:bernoulli_mixture_mean} can also be thought of as
+%
+%We have made a few assumptions in arriving at the preceding statement about the $\mu$ and $V$ of the successful trajectory count that should be made explicit here. Since ,
+%
+%
+%Every trajectory launched contributes a single term to this mixture, in the form of a Bernoulli random variable (BRV). In this view, we draw an anal With respect to the value of its associated BRV, a trajectory will either reach the next interface and be counted for $1/n$ (where $n$ is the number of trajectories launched in the relevant phase) towards the phase weight, or it will fall back into it's starting basin and be disregarded. Due to variations in the state landscape (that occur in systems with $>1$ degrees of freedom), the probability parameter of each BRV is dependent upon the exact position in the complete state space from which its associated trajectory is launched. Thus, the underlying probability of success tends to vary from trajectory to trajectory.
+%
+%However, as we will prove, it can be shown
+%
+%For the purposes of simplifying the form and parameterization of \eqref{eq:optimizing_equation_ffpilot}, This simplification was motivated by the fact that
+%
+%Given: the mean $\mu$ and the variance $V$ of a mixture (\ie sum) of N Bernoulli random variables are
+%    \begin{align}
+%        \label{eq:bernoulli_mixture_moments}
+%        \mu &= \sum _{\sample=1}^N \probbern \\
+%        V &= \sum _{\sample=1}^N \left(1-\probbern\right) \probbern,
+%    \end{align}
+%where $p_i$ is the probability of success for the $i$th term in the mixture. For a given value of $\mu$, there are an infinite number of different possible values for $V$ depending on the exact distribution of the values of $p_i$.

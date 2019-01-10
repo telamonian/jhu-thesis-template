@@ -1,0 +1,1071 @@
+%\documentclass[class=article, float=false, crop=false]{standalone}
+%\documentclass[10pt,letterpaper]{article}
+%
+%\input{error_control_of_enhanced_sampling-header}
+%
+%\begin{document}
+%\vspace*{0.2in}
+
+\section{Results}
+
+%\subsection{Predicting Margin of Error Via Sample Count}
+%\begin{odone}
+%    \1 We quantify simulation error in terms of a relative margin of error.
+%        \2 The relative margin of error of a random variable $X$ is defined as the ratio of half the width of a specified confidence interval and its expected value
+%            \begin{equation}\label{eq:moe_definition}
+%                \zeta_{\alpha}\left[ X \right] = \frac{ub_{\alpha}\left[ X \right] - lb_{\alpha}\left[ X \right]}{2 \E{X}}
+%            \end{equation}
+%            \3 where $\zeta_{\alpha}\left[ X \right]$ is the relative margin of error at confidence level $\alpha$, and $lb_{\alpha}\left[ X \right]$ and $ub_{\alpha}\left[ X \right]$ are  the lower and upper confidence bounds, respectively.
+%    
+%    \1 When using \abr{ES} methods, there is also landscape error to consider
+%        \2 All \abr{ES} methods involve sampling of some part of the simulated system's probability landscape
+%            \3 Details of how error accumulates during the landscape sampling process vary between different \abr{ES} methods
+%        \2 In \abr{FFS}, the landscape error affecting phase n depends on the probability landscape collected during phase n-1
+%        \2 Thus, landscape error in phase n decreases as the number of trajectories run in phase n-1 increases
+%        \2 Increasing number of runs in any phase also decreases sampling error, so there is no simple way to deconvolute landscape error and sampling error.
+%\end{odone}
+%
+%As mentioned in the previous section, both \abr{DS} and \abr{ES} simulations can be used to estimate the $\mfpttrue$ between the states of a multi-stable system.
+%
+%The error characteristics of the \abr{DS} version of $\mfptest$ have been well described in  previous work. If the states of the system under investigation are separated such that the system as a whole spends much, much more time in one well-defined state or another than it does in transition between states, the dynamics of the state switching process will be equivalent to those of a Markov process. In that case, the waiting times in between switching events will follow an exponential distribution.
+%
+%
+%
+%\subsection{The Blind Optimization Method, for Independently Controlling Error }
+%\label{sec:blind_optimization_description}
+%Initially we devised a "blind" optimization method for determining the number of samples to take in each phase of \abr{FFS}. The method is blind both in the sense that no prior knowledge of the system is required, and in the sense that each phase is optimized independently of the others.
+
+\subsection{Derivation of the \opteq{}}
+\label{sec:opteq_derivation}
+In this subsection we find the choice of number trajectories to launch in each \abr{FFS} phase (which we will also refer to as sample count or $\samplecount$) that will minimize simulation run time while fixing the margin of error $\moe$ of the estimator of \abr{MFPT}. We will refer to the $\mfpttrue$ estimator in this subsection as $\PWest$. The derivation of the optimal choice of $\samplecount$ starts with the characterization of the moments and distribution of $\PWest$. We then use the moments and distribution of $\PWest$ to find $\moe$ as a function of the per-phase sample counts $\samplecount$. We then use the method of Lagrange multipliers to find the optimal choice of $\samplecount$ that will keep $\moe$ fixed while minimizing simulation run time.
+
+%The relationship we will derive is valid for the class of estimators that can be written as the product of one or more independent $\sqrt{n}$-consistent estimators of some function of simulation observables.
+
+\subsubsection{The Moments and Distribution of the \abr{FFS} $\mfpttrue$ Estimator $\PWest$}
+\label{sec:phase_weight_moments}
+
+%In distinguishing between exact values such as $\PWtrue$ and estimators such as $\PWest$, it is important to note that while $\PWtrue$ has a single true value, $\PWest$ is a random variable with a distribution of values.
+
+Each individual \abr{FFS} phase weight $\pwtrue$ can be thought of as the first moment (\ie the mean) of an observable $\phrv$ of a random process that is specific to phase $\phase$. By the end of every \abr{FFS} phase $\phase$, $\samplecount$ samples have been drawn from $\phrv$ (see \secref{sec:ds_es_description} for a more concrete description), at which point the phase weight $\pwtrue$ is estimated as:
+    \begin{equation*}
+        \pwest = \frac{1}{\samplecount} \sum_{\sample=1}^{\samplecount} \phrvsample
+    \end{equation*}
+Given the above form of $\pwest$, and given that the observable $\phrv$ meets certain regularity conditions \supercite{Oehlert:1992gp}, the asymptotic distribution of the individual $\widehat{w}_i$ terms can be determined from the central limit theorem:
+    \begin{equation}
+    \label{eq:pwest_asymptotic_dist}
+        \frac{\sqrt{n_i} (\widehat{w}_i - w_i)}{\sqrt{\pwvtrue}} \xrightarrow{D} \normdist{0}{1}.
+    \end{equation}
+The moments of each $\pwest$ can be determined by the appropriate interpretation of \eqref{eq:pwest_asymptotic_dist}:
+    \begin{align}
+    \label{eq:pwest_moments}
+        \begin{split}
+            \E{\widehat{w}_i} &= w_i, \\
+            \V{\widehat{w}_i} &= \frac{\pwvtrue}{n_i}.
+        \end{split}
+    \end{align}
+An estimator with this type of convergence behavior is said to be \ncon.
+
+Given that the $\mfpttrue$ estimator $\PWest$ is defined in \eqref{eq:PWest_definition} as a function $g\left[ \pwestvec \right]$ of a vector of \ncon estimators $\pwestvec = \left\{ \pwestx{0} \comma \pwestx{1} \comma \cdots \comma \pwestx{N} \right\}$, we can apply the multivariate delta method\supercite{Wasserman:2013dt} to determine the moments and distribution of $\PWest$. From the multivariate delta method, we know that:
+    \begin{equation}
+    \label{eq:PWest_asymptotic_dist}
+        \frac{\PWest - \PWtrueexpinv}{\sqrt{\PWtruegradtrans \Sigma \nabla_{\pwestvec}}} \xrightarrow{D} \normdist{0}{1},
+    \end{equation}
+%    \frac{\left( g \left[ \bm{\widehat{w}} \right] - g \left[ \bm{w} \right] \right)}{\sqrt{\nabla_{\bm{w}}^{T} \Sigma \nabla_{\bm{w}}}} \xrightarrow{D} \normdist{0}{1}
+where $\PWtruegrad$ is the gradient of $g(\pwestvec)$ evaluated at $\pwtruevec$, $\PWtruegradtrans$ is the transpose of $\PWtruegrad$, and $\Sigma$ is the covariance matrix of the phase weight estimators $\pwest$. We can determine the moments of $\PWest$ by interpreting \eqref{eq:PWest_asymptotic_dist}:
+    \begin{align}
+    \label{eq:PWest_moments}
+        \begin{split}
+            \E{\PWest} &=\PWtrueexp = \mfpttrue, \\
+            \V{\PWest} &= \PWtruegradtrans \Sigma \PWtruegrad.
+        \end{split}
+    \end{align}
+
+A simpler form of $\V{\PWest}$ can be found. To begin with, we find $\PWtruegrad$. In column vector form it is:
+    \begin{equation}
+        \PWtruegrad =
+        \begin{pmatrix}
+            \pwtrueinvx{0}  \PWtrueexpaltinv  \\
+            -\pwtrueinvx{1} \PWtrueexpaltinv   \\
+            \vdots \\ 
+            -\pwtrueinvx{\Phase}     \PWtrueexpaltinv
+        \end{pmatrix} =
+        \begin{pmatrix}
+            s_0   \\ 
+            -s_1    \\ 
+            \vdots \\ 
+            -s_{\Phase}
+        \end{pmatrix},
+    \end{equation}
+where we have substituted $s_\phase$ for $\pwtrueinvx{\phase}  \PWtrueexpaltinv$ for the sake of brevity. If the covariance of $\pwest$ and $\pwestx{j}$ is written as $\sigma_{ij}$, then the covariance matrix $\Sigma$ is:
+    \begin{equation*}
+        \Sigma = 
+        \begin{pmatrix}
+            \sigma_{00}       & \sigma_{01}       & \cdots & \sigma_{0 \Phase} \\
+            \sigma_{10}       & \sigma_{11}       & \cdots & \sigma_{2 \Phase} \\
+            \vdots            & \vdots            & \ddots & \vdots            \\
+            \sigma_{\Phase 0} & \sigma_{\Phase 1} & \cdots & \sigma_{\Phase \Phase}
+        \end{pmatrix},
+    \end{equation*}
+and the variance of $\PWest$ can be written as:
+    \begin{equation}\label{eq:PWest_variance_expansion}
+        \V{\PWest} =
+        \begin{pmatrix}
+            s_0 & -s_1 & \cdots & -s_{\Phase}
+        \end{pmatrix}
+        \begin{pmatrix}
+            \sigma_{00}       & \sigma_{01}       & \cdots & \sigma_{0 \Phase} \\
+            \sigma_{10}       & \sigma_{11}       & \cdots & \sigma_{2 \Phase} \\
+            \vdots            & \vdots            & \ddots & \vdots            \\
+            \sigma_{\Phase 0} & \sigma_{\Phase 1} & \cdots & \sigma_{\Phase \Phase}
+        \end{pmatrix}
+        \begin{pmatrix}
+            s_0    \\ 
+            -s_1    \\
+            \vdots \\ 
+            -s_{\Phase}
+        \end{pmatrix}.
+    \end{equation}
+If we impose the assumption of independence on all of the phase weight estimators $\pwest$, then only the diagonal elements of the covariance are non-zero:
+    \begin{equation*}
+        \V{\PWest} =
+        \begin{pmatrix}
+            s_0 & -s_1 & \cdots & -s_{\Phase}
+        \end{pmatrix}
+        \begin{pmatrix}
+            \sigma_{00} & 0           & \cdots & 0           \\
+            0           & \sigma_{11} & \cdots & 0           \\
+            \vdots      & \vdots      & \ddots & \vdots      \\
+            0           & 0           & \cdots & \sigma_{\Phase \Phase}
+        \end{pmatrix}
+        \begin{pmatrix}
+            s_0    \\ 
+            -s_1    \\
+            \vdots \\ 
+            -s_{\Phase}
+        \end{pmatrix}.
+    \end{equation*}
+Under this condition of independence the form of $\V{\PWest}$ can be simplified considerably:
+    \begin{align*}
+        \V{\PWest} &= \sum_i s_i^2 \sigma_{ii}, \\
+        \V{\PWest} &= \sum_i \pwtrueinvsqx{i} \sigma_{ii} \PWtrueexpaltsq,
+    \end{align*}
+and since $\sigma_{ii} = \V{\pwest}$:
+    \begin{align*}
+        \V{\PWest} &= \PWtrueexpaltsq \sum_i \frac{\V{\pwest}}{\pwtruesq}.
+    \end{align*}
+Finally, plugging in substitutions from \eqref{eq:PWtrue_definition} and from \eqref{eq:pwest_moments}, the variance of $\PWest$ is:    
+    \begin{equation}\label{eq:PWest_variance}
+        \V{\PWest} = \mfpttrue^2 \sum_i \frac{\pwvtrue}{\pwtruesq n_i}.
+    \end{equation}
+
+Alternatively, the variance of $\PWest$ can be derived from the formula for the variance of a product of random variables (see supplemental text). The expressions derived from each technique agree in the high sample count limit.
+
+The result in \eqref{eq:PWest_variance} agrees with and is similar to the established result of Allen {\etal}\supercite{Allen:2006ch} concerning the variance of estimates produced by a complete \abr{FFS} simulation. Unlike earlier work, however, we have imposed no particular form on $\phrv$, the random process underlying each phase $\phase$. As will be seen in \secref{sec:opt_eq_for_ffs}, this generalization allows us to study the contributions of phase 0 to the overall error of an \abr{FFS} simulation for the first time.
+
+%Interestingly, Allen's result and ours are strikingly similar in spite of the fact that they were considering the variance in estimates of the inverse of the $\mfpttrue$ (\ie the switching rate, or $\PWest$)! It should be noted that this parity between the variance of $\PWest$
+
+%Consider an estimator of a product $\PWtrue$ that is defined as the product of $N$ independent $\sqrt{n}$-consistent estimators of some function of simulation observables $w_i$:
+%\begin{equation}\label{eq:PWest_definition}
+%    \PWest = \prod_i \widehat{w}_i
+%\end{equation}
+%From the $\sqrt{n}$-consistency property we know the expected value of each $\widehat{w}_i$:
+%\begin{equation}\label{eq:phase_weight_expected}
+%    \E{\widehat{w}_i} = w_i
+%\end{equation}
+%and from the independence property we know how to write the expected value of the Product Estimator in terms of the expected values of each $\widehat{w}$:
+%\begin{equation}\label{eq:product_estimator_expected_decomposition}
+%    \E{\PWest} = \E{\prod_i w_i} = \prod_i \E{w_i}
+%\end{equation}
+%Plugging \eqref{eq:phase_weight_expected} into \eqref{eq:product_estimator_expected_decomposition} yields the complete expression for the expected value of the Product Estimator:
+%\begin{equation}\label{eq:product_estimator_expected}
+%    \E{\PWest} = \prod_i w_i = \PWtrue
+%\end{equation}
+%
+%\begin{odraft}
+%    \1 Similar to the expected value, the variance of the Product Estimator can also be determined via a product formula, although the full form is somewhat unwieldy.
+%        \2 From the general properties of variance it is known that for independent random variables $X_0, X_1, ..., X_i$,
+%            \begin{equation*}
+%                \V{\prod_i X_i} = \prod_i \left(\V{X_i} + \E{X_i}^2\right) - \prod_i \E{X_i}^2
+%            \end{equation*}
+%        \2 Or alternatively (CITE),
+%            \begin{equation*}
+%                \V{\prod_i X_i} = \prod_i \E{X_i}^2 \left( \sum_i \GVAR{X_i} + \sum_{i_0 < i_1} \GVAR{X_{i_0}} \GVAR{X_{i_1}} + \sum_{i_0 < i_1 < i_2} \GVAR{X_{i_0}} \GVAR{X_{i_1}} \GVAR{X_{i_2}} + \cdots \right)
+%            \end{equation*}
+%        \2 where $ \GVAR{X_i} = \frac{\V{X_i}}{\E{X_i}^2} $.
+%        \2 and so
+%            \begin{equation*}
+%                \V{\PWest} = \prod_i \E{\widehat{w}_{i}}^2 \left( \sum_i \GVAR{\widehat{w}_{i}} + \sum_{i_0 < i_1} \GVAR{\widehat{w}_{0}} \GVAR{\widehat{w}_{1}} + \cdots \right)
+%            \end{equation*}
+%    \1 Under certain conditions, the higher order terms of $V{\prod_i X_i}$ can be ignored without a large loss of accuracy.
+%        \2 This yields an easy to work with approximation of the product variance as a series of of independent terms that only depend on a single $X_i$.
+%        \2 If $ \E{X_i} >> \V{X_i} $ for all $X_i$, then it can be seen from the definition of $ \GVAR{X_i} $ that $ \GVAR{X_{i_0}} >> \GVAR{X_{i_0}}\GVAR{X_{i_1}} $ for all $ X_{i_0}, X_{i_1} $.
+%        \2 Under these conditions we can approximate the product variance as a series of independent terms that only depend on a single $X_i$ 
+%            \begin{align*}
+%                \V{\prod_i X_i} &= \prod_i \E{X_i}^2 \left( \sum_i \GVAR{X_i} + \bigO\left( \GVAR{X_i}^2 \right)  + \cdots \right)
+%             \\ \V{\prod_i X_i} &\approx \prod_i \E{X_i}^2 \sum_i \GVAR{X_i}
+%            \end{align*}
+%    \1 We can determine the general form of each of the individual $\V{\widehat{w_i}}$ terms from the central limit theorem
+%        \2 For large values of per phase sample count $n_i$, the variance of each phase weight estimator asymptotically approaches the variance of the underlying random process that we are sampling divided by the sample count.
+%            \3 This gives
+%                \begin{equation*}
+%                    \V{\widehat{w}_i} = \frac{\V{\Xi_i}}{n_i}
+%                \end{equation*}
+%            \3 where $\Xi_i$ is the random variable associated with the underlying random process.
+%        \2 Since $\V{w_i}$ is a fixed value, the value of each $\V{\widehat{w_i}}$ term trends monotonically downward as $n_i$ increases.
+%    \1 If each $n_i$ is assumed to be set to a large value (Lattice Microbes currently sets $\floor{n_i} = 10^4$ for production simulations), then it is reasonable to assume that $\E{\widehat{w}_i} >> \V{\widehat{w}_i}$ as well.
+%        \2 In this regime we can use the simplified formula for the product variance.
+%            \begin{equation*}
+%                \V{\PWest} \approx \prod_i \E{\widehat{w}_{i}}^2 \sum_i \frac{\GVAR{\widehat{w}_{i}}}{n_i} = \prod_i w_{i}^{2} \sum_i \frac{\V{\Xi_i}}{w_{i}^{2} n_i}
+%            \end{equation*}
+%    \1 The distribution of $\PWest$ can be determined as the product distribution of the individual $\widehat{w_i}$ terms
+%        \2 From the central limit theorem, we know that the distribution of each $\widehat{w_i}$ will converge to Gaussian in the limit as $n_i$ increases.
+%            \begin{equation*}
+%                \widehat{w}_i \rightarrow \mathcal{N}\left( w_i \comma \frac{\V{\Xi_i}}{n} \right)
+%            \end{equation*}
+%        \2 It has been previously shown \supercite{Aroian:1947ey} that the product of two Gaussian random variables $X_{i_0}X_{i_1}$ will also be Gaussian if the ratios $\frac{\E{X_i}}{\V{X_i}}$ are very large.
+%        \2 Thus, in the high sample count limit the distribution of $\PWest$ converges to Gaussian along with the individual $\widehat{w_i}$ terms
+%            \begin{equation*}
+%                \PWest \rightarrow \mathcal{N}\left( \prod_i w_{i} \comma \prod_i w_{i}^{2} \sum_i \frac{\V{\Xi_i}}{w_{i}^{2} n_i} \right)
+%            \end{equation*}
+%\end{odraft}
+%
+%In this paper we take the view that control simulation error is equivalent to controlling the size of the Margin Error around the estimated value of an observable of interest. To this end we first derive a formula specifying the relationship between 
+%
+%The following treatment is focused 
+%
+%The estimators of $\mfpttrue$ used in stochastic simulations can be considered to be random variables. Thus, the estimators of $\mfpttrue$ produced by the \abr{DS} and \abr{FFS} sampling methods, $\mfptestds$ and $\PWest$, each have an associated distribution and set of moments. In the following section we characterize the distributions of each of these estimators, and then derive the confidence intervals for each in terms of the count of simulations performed.
+%
+%\subsubsection{Moments and Distribution of the Direct Sampling $\mfpttrue$ Estimator}
+%\begin{odraft}
+%    \1 For an Ergodic Convergent Markov Chain, the count of visits the system makes from a stable attractor state to a subset of states outside of the attractor has a Poisson distribution with rate $\phi_{DS}$.
+%        \2 As an aside, $\lambda$ is a more commonly used symbol for this rate constant, but we reserve $\lambda$ for referring to the various interfaces used in Forward Flux. 
+%        \2 Excursion First Passage Time is thus exponentially distributed with mean $\tau_{DS} = \frac{1}{\phi_{DS}}$
+%    \1 The MLE estimator of exponential parameter $\tau_{DS}$, $\widehat{\tau}_{DS}$, is known to converge to the true value and its distribution is known to converge to a particular normal distribution (by asymptotic normality and the central limit theorem).
+%\end{odraft}
+%
+%When using \abr{DS} to calculate $\mfpttrue$, the goal is to observe many excursions of the system from a given steady state to a subset of states of interest outside of the initial steady state. For the equivalent Markov Chain (i.e. ergodic, convergent) it has been shown that the distribution of counts of excursions in a given time interval $t$ approaches a Poisson distribution with rate parameter $\phi_{DS} t$, where $\phi_{DS}$ is some positive constant (CITE). Equivalently, we can say that the distribution of times in between excursion events follows an exponential distribution with pdf $P_{exp}(t)$ (CITE):
+%\begin{equation*}
+%P_{exp}(t) = \phi_{DS} e^{-\phi_{DS} t} = \frac{1}{\tau_{DS}} e^{-\frac{t}{\tau_{DS}}}
+%\end{equation*}
+%where $\tau_{DS} = \frac{1}{\phi_{DS}}$ is the inter-event arrival time, and is equivalent to $\mfpttrue$:
+%\begin{equation*}
+%MFPT_{DS} = \tau_{DS}
+%\end{equation*}
+%We can derive an estimator for $MFPT_{DS}$ via the Maximum Likelihood framework. Given a set ${t_1, t_2, ..., t_n}$ of n observations of FPT events, the ML estimator of $MFPT_{DS}$ is (CITE):
+%\begin{equation}\label{mfpt_ds_mle}
+%\mfptestds = \widehat{\tau}_{DS} = \frac{\sum_{i=1}^{n}t_i}{n}
+%\end{equation}
+%where the $\widehat{}$ symbol indicates that the quantity underneath is an estimator.
+%
+%There are a number of well established properties of the ML exponential parameter estimator. From these, we can derive the moments and distribution of $\mfptestds$. It is known that the ML exponential parameter estimator is consistent, which in turn means that the expected value of $\mfptestds$ is the true value (CITE):
+%\begin{equation}\label{mfpt_ds_mle_expectation}
+%E\left[\mfptestds\right] = MFPT_{DS}
+%\end{equation}
+%Further, it is known that the ML exponential parameter estimator is asymptotically normal, and so follows the central limit theorem (CITE). Thus, for large n, the variance of $\mfptestds$ approaches:
+%\begin{equation}\label{mfpt_ds_mle_variance}
+%E\left[\mfptestds\right] \rightarrow MFPT_{DS}
+%\end{equation} 
+%and its distribution converges to a normal distribution with the given moments:
+%\begin{equation}\label{mfpt_ds_mle_distribution}
+%P\left(\mfptestds\right) \rightarrow \mathcal{N} \left(\tau_{DS}, \frac{\tau_{DS}^{2}}{n}\right)
+%\end{equation}
+%
+%%\begin{align}\label{mfpt_ds_mle_distribution}
+%%P\left(\mfptestds\right) &\rightarrow \mathcal{N} \left(\tau_{DS}, \frac{\tau_{DS}^{2}}{n}\right)
+%%\\
+%%P\left(\widehat{\tau}_{DS}\right) &\rightarrow \mathcal{N} \left(\frac{\sum_{i=1}^{n}t_i}{n}, \frac{\left(\sum_{i=1}^{n}t_i\right)^2}{n^3}\right)
+%%\end{align}
+%
+%\subsubsection{Moments and Distribution of the forward flux sampling MFPT Estimator}
+%\begin{odraft}
+%    \1 \abr{FFS} envisions the MFPT sampling process as one constant flux process (during phase 0) followed by a number of Bernoulli processes (during phases 1-N).
+%        \2 One phase weight term, $w_i$, is estimated independently in each phase based on the bundle of trajectories launched in that phase alone.
+%        \2 In the Forward Flux framework, $MFPT_{FFS}$ is estimated as the product of estimators of these weight terms $\widehat{w}_{i}$,
+%            \begin{align*}
+%                \PWest &= \prod_{i=0}^{N} \widehat{w}_{i}
+%%             \\ \PWest &= \frac{\widehat{\tau}_{FFS}}  {\prod_{i=1}^{N} \widehat{p}_{i}}
+%            \end{align*}
+%            \3 where $\widehat{w}_{0} = \widehat{\tau}_{FFS}$ is the count of forward flux events through $\lambda_{0}$ in a fixed time, and $\widehat{w}_{i} = \widehat{p}_{i} = \widehat{p}_{\lambda_{i-1} | \lambda_{i}}$ is the transition probability from $\lambda_{i-1}$ to $\lambda_{i}$
+%        \2 Initially, we will make no assumptions about the exact form of each of the random variables $\widehat{w}_{i}$, only that they are independent of each other and that each comports with the central limit theorem.
+%    \1 The moments and distribution of $\PWest$ can be determined by appropriate combination of the moments and distributions of the individual terms of the product $\prod_i \widehat{w}_{i}$
+%        \2 The expected value is the most straightforward.
+%        \2 From the general properties of expected value it is known that for independent random variables $X_0, X_1, ..., X_i$,
+%            \begin{equation*}
+%                \E{\prod_i X_i} = \prod_i \E{X_i}
+%            \end{equation*}
+%        \2 From the central limit theorem, we know that the expected value of the individual phase weight estimators is the true value.
+%            \begin{equation*}
+%                \E{\widehat{w_i}} = w_i
+%            \end{equation*}
+%        \2 and so
+%            \begin{equation*}
+%                \E{\PWest} = \E{\prod_i \widehat{w}_{i}} = \prod_i \E{\widehat{w}_{i}} = \prod_i w_i
+%            \end{equation*}
+%    \1 The variance of $\PWest$ can also be determined via a product formula, although the full form is somewhat unwieldy.
+%        \2 From the general properties of variance it is known that for independent random variables $X_0, X_1, ..., X_i$,
+%            \begin{equation*}
+%                \V{\prod_i X_i} = \prod_i \left(\V{X_i} + \E{X_i}^2\right) - \prod_i \E{X_i}^2
+%            \end{equation*}
+%        \2 Or alternatively (CITE),
+%            \begin{equation*}
+%                \V{\prod_i X_i} = \prod_i \E{X_i}^2 \left( \sum_i \GVAR{X_i} + \sum_{i_0 < i_1} \GVAR{X_{i_0}} \GVAR{X_{i_1}} + \sum_{i_0 < i_1 < i_2} \GVAR{X_{i_0}} \GVAR{X_{i_1}} \GVAR{X_{i_2}} + \cdots \right)
+%            \end{equation*}
+%        \2 where $ \GVAR{X_i} = \frac{\V{X_i}}{\E{X_i}^2} $.
+%        \2 and so
+%            \begin{equation*}
+%                \V{\PWest} = \prod_i \E{\widehat{w}_{i}}^2 \left( \sum_i \GVAR{\widehat{w}_{i}} + \sum_{i_0 < i_1} \GVAR{\widehat{w}_{0}} \GVAR{\widehat{w}_{1}} + \cdots \right)
+%            \end{equation*}
+%    \1 Under certain conditions, the higher order terms of $V{\prod_i X_i}$ can be ignored without a large loss of accuracy.
+%        \2 This yields an easy to work with approximation of the product variance as a series of of independent terms that only depend on a single $X_i$.
+%        \2 If $ \E{X_i} >> \V{X_i} $ for all $X_i$, then it can be seen from the definition of $ \GVAR{X_i} $ that $ \GVAR{X_{i_0}} >> \GVAR{X_{i_0}}\GVAR{X_{i_1}} $ for all $ X_{i_0}, X_{i_1} $.
+%        \2 Under these conditions we can approximate the product variance as a series of independent terms that only depend on a single $X_i$ 
+%            \begin{align*}
+%                \V{\prod_i X_i} &= \prod_i \E{X_i}^2 \left( \sum_i \GVAR{X_i} + \bigO\left( \GVAR{X_i}^2 \right)  + \cdots \right)
+%             \\ \V{\prod_i X_i} &\approx \prod_i \E{X_i}^2 \sum_i \GVAR{X_i}
+%            \end{align*}
+%    \1 We can determine the general form of each of the individual $\V{\widehat{w_i}}$ terms from the central limit theorem
+%        \2 For large values of per phase sample count $n_i$, the variance of each phase weight estimator asymptotically approaches the variance of the underlying random process that we are sampling divided by the sample count.
+%            \3 This gives
+%                \begin{equation*}
+%                    \V{\widehat{w}_i} = \frac{\V{\Xi_i}}{n_i}
+%                \end{equation*}
+%            \3 where $\Xi_i$ is the random variable associated with the underlying random process.
+%        \2 Since $\V{w_i}$ is a fixed value, the value of each $\V{\widehat{w_i}}$ term trends monotonically downward as $n_i$ increases.
+%    \1 If each $n_i$ is assumed to be set to a large value (Lattice Microbes currently sets $\floor{n_i} = 10^4$ for production simulations), then it is reasonable to assume that $\E{\widehat{w}_i} >> \V{\widehat{w}_i}$ as well.
+%        \2 In this regime we can use the simplified formula for the product variance.
+%            \begin{equation*}
+%                \V{\PWest} \approx \prod_i \E{\widehat{w}_{i}}^2 \sum_i \frac{\GVAR{\widehat{w}_{i}}}{n_i} = \prod_i w_{i}^{2} \sum_i \frac{\V{\Xi_i}}{w_{i}^{2} n_i}
+%            \end{equation*}
+%    \1 The distribution of $\PWest$ can be determined as the product distribution of the individual $\widehat{w_i}$ terms
+%        \2 From the central limit theorem, we know that the distribution of each $\widehat{w_i}$ will converge to Gaussian in the limit as $n_i$ increases.
+%            \begin{equation*}
+%                \widehat{w}_i \rightarrow \mathcal{N}\left( w_i \comma \frac{\V{\Xi_i}}{n} \right)
+%            \end{equation*}
+%        \2 It has been previously shown \supercite{Aroian:1947ey} that the product of two Gaussian random variables $X_{i_0}X_{i_1}$ will also be Gaussian if the ratios $\frac{\E{X_i}}{\V{X_i}}$ are very large.
+%        \2 Thus, in the high sample count limit the distribution of $\PWest$ converges to Gaussian along with the individual $\widehat{w_i}$ terms
+%            \begin{equation*}
+%                \PWest \rightarrow \mathcal{N}\left( \prod_i w_{i} \comma \prod_i w_{i}^{2} \sum_i \frac{\V{\Xi_i}}{w_{i}^{2} n_i} \right)
+%            \end{equation*}
+%\end{odraft}
+
+%So long as the initial interface \abr{FFS} interface, $\lambda_0$, is placed outside of the initial steady state, we can assume that the distribution of flux events converges to a Poisson distribution. This is true for the same reasons as in the \abr{DS} case. Further, it is known that
+
+\subsubsection{Margin of Error of $\PWest$}
+%\begin{odone}
+%    \1 The formula for the relative margin of error of a Gaussian random variable $X$ at confidence level $\alpha$ is
+%        \begin{equation*}
+%        \label{eq:zeta_gaussian_outline}
+%            \moefunc{X} = \zscore \frac{\sqrt{\V{X}}} {\E{X}}
+%        \end{equation*}
+%        \2 where $\zscore = \sqrt{2}\, \mathrm{Erf}^{-1} \left[ \alpha \right]$
+%    \1 Since both $\mfptestds$ and $\PWest$ have Gaussian distributions, we can plug their moments directly into \eqref{eq:zeta_gaussian} to obtain their margins of error
+%        \begin{align*}
+%            \moefunc{\mfptestds} &= \zscore \frac{\sqrt{\V{Y_{DS}}}} {w_{DS} \sqrt{n_{DS}}}  \\
+%            \moefunc{\PWest} &= \zscore \sqrt{\sum_i \frac{\V{\Xi_i}}{w_{i}^{2} n_i}}
+%        \end{align*}
+%\end{odone}
+
+Now we derive a formula for $\moefunc{\PWest}$, the margin of error of the $\mfpttrue$ estimator $\PWest$. From \eqref{eq:PWest_asymptotic_dist} we know that $\PWest$ follows a normal distribution. The lower and upper confidence bounds of $\PWest$ are found by plugging the the moments of $\PWest$ (given by \eqrefTwo{eq:PWest_moments}{eq:PWest_variance}) into the bounds formulas for a normally distributed random variable (given by \eqref{eq:gaussian_ci_bound}):
+    \begin{align}
+    \label{eq:PWest_ci_bound}
+        \begin{split}
+            \uboundfunc{\PWest} &= \mfpttrue \left(1 + \zscore \sqrt{\sum_i \frac{\pwvtrue}{\pwtruesq \samplecount}} \right), \\
+            \lboundfunc{\PWest} &= \mfpttrue \left(1 - \zscore \sqrt{\sum_i \frac{\pwvtrue}{\pwtruesq \samplecount}} \right).
+        \end{split}
+    \end{align}
+Plugging \eqref{eq:PWest_ci_bound} into the margin of error definition (given by \eqref{eq:moe_definition}) yields the desired margin of error:
+    \begin{equation}
+    \label{eq:product_estimator_zeta}
+        \moefunc{\PWest} = \zscore \sqrt{\sum_i \frac{\pwvtrue}{\pwtruesq n_i}}.
+    \end{equation}
+
+\subsubsection{Derivation of the General Optimizing Equation}
+%\begin{odone}
+%    \1
+%        \2 Computational effort is defined in terms of total simulation time
+%    \1 We minimize computational effort while keeping $\zscore$ constant using the method of Lagrange multipliers
+%        \2 Computational effort $\mathcal{C}$ is defined as the sum over the products of the per phase sample counts $n_i$ and the per phase mean simulation times per trajectory $\pctrue$
+%            \begin{equation*}\label{eq:computational_effort_definition}
+%                \mathcal{C} = \sum_i n_i \pctrue
+%            \end{equation*}
+%        \2 We rewrite eq. \eqref{eq:product_estimator_zeta} as a constraint equation, omitting
+%            \begin{equation*}\label{eq:zeta_constraint_equation}
+%                \moe = \zscore \sqrt{\sum_i \frac{\pwvtrue}{\pwtruesq n_i}}
+%            \end{equation*}
+%\end{odone}
+
+As we can see from \eqref{eq:product_estimator_zeta}, there are many different choices of $n_i$ that will give the same value of $\moefunc{\PWest}$. What we really want to find is the optimal choice of $n_i$ that will minimize simulation run time while keeping $\moefunc{\PWest}$ fixed. We can find a formula for this optimal choice using the method of Lagrange multipliers\supercite{Riley:2006wb}.
+
+For the method of Lagrange multipliers, we need a function to minimize, the target function $f[x]$, and a function to hold constant, the constraint equation $g[x]$. We use the total computational cost $\mathcal{C}$ as the target function, which for \abr{FFS} is:
+    \begin{equation}
+    \label{eq:cost_target_func}
+        f\left[n_i\right] = \Costffs = \sum _{i=0}^N n_i \pctrue
+        %f\left[n_i\right] = \sum _i n_i\pctrue,
+    \end{equation}
+where $\pctrue$ is the average computational cost per sample. For the constraint equation, we square both sides of \eqref{eq:product_estimator_zeta} and set it equal to zero:
+    \begin{equation}
+    \label{eq:error_constraint_func}
+    	g\left[n_i\right]=\sum_i \frac{k_i}{n_i}-\frac{\moesq}{\zscoresq}=0,
+    \end{equation}
+where
+    \begin{equation*}
+    	k_i=\frac{\pwvtrueshort}{\pwtruesq}.
+    \end{equation*}
+
+Now that we've chosen a target and a constraint function, the next step of the method is to combine \eqrefTwo{eq:cost_target_func}{eq:error_constraint_func} in order to write out the Lagrangian:
+    \begin{equation}
+    \label{eq:optimization_lagrangian}
+    	\mathcal{L}=\sum _i n_i \pctrue + \lambda \left(\sum _i \frac{k_i}{n_i} - \frac{\moesq}{\zscoresq}\right),
+    \end{equation}
+and then find its gradient $\nabla \mathcal{L}$:
+    \begin{equation*}
+        \nabla \mathcal{L}=\left\{ \partial_{\lambda} \mathcal{L}, \partial_{n_0} \mathcal{L}, \text{...}, \partial_{n_N} \mathcal{L} \right\},
+    	%\nabla \mathcal{L}=\left\{\frac{\partial \mathcal{L}}{\partial \lambda },\frac{\partial \mathcal{L}}{\partial n_0},\text{...},\frac{\partial \mathcal{L}}{\partial n_N}\right\},
+    \end{equation*}
+We find the values of each of the partial derivatives individually. Calculating $\partial_{\lambda} \mathcal{L}$ is trivial, and when finding each separate $\partial_{n_i} \mathcal{L}$ we can eliminate all but one term from both sums, since terms that don{'}t depend on $n_i$ will vanish:
+    \begin{equation*}
+    	\partial _{\lambda }\mathcal{L}=\sum _i \frac{k_i}{n_i}-\frac{\moesq}{\zscoresq}.
+    \end{equation*}
+    \begin{equation*}
+    	\partial _{n_i}\mathcal{L}=\pctrue-\frac{\lambda  k_i}{n_i^2},
+    \end{equation*}
+Now we can write out the actual gradient
+    \begin{equation}
+    \label{eq:optimization_lagrangian_gradient}
+    	\nabla \mathcal{L}=\left\{\sum _i \frac{k_i}{n_i}-\frac{\moesq}{\zscoresq},\text{...},\pctrue-\frac{\lambda  k_i}{n_i^2},\text{...}\right\}.
+    \end{equation}
+
+The next step is to set each component of the gradient \eqref{eq:optimization_lagrangian_gradient} equal to zero and solve the resulting set of $N+2$ equations for $\lambda$ and each $n_i$. We begin by solving $\partial _{n_i}\mathcal{L} = 0$ for $n_i$ in terms of $\lambda$:
+    \begin{equation*}
+    	\pctrue-\frac{\lambda  k_i}{n_i^2}=0,
+    \end{equation*}
+    \begin{equation}
+    \label{eq:ni_in_terms_of_lambda}
+        n_i = \left\{ -\frac{\sqrt{\lambda } \sqrt{k_i}}{\sqrt{\pctrue}} \comma \frac{\sqrt{\lambda } \sqrt{k_i}}{\sqrt{\pctrue}}\right\}.
+    \end{equation}
+Next, we solve $\partial_{\lambda }\mathcal{L} = 0$ for $\sqrt{\lambda}$ by substituting in the positive expression for $n_i$ found in \eqref{eq:ni_in_terms_of_lambda}:
+    \begin{equation*}
+    	\sum _i \frac{k_i}{\frac{\sqrt{\lambda} \sqrt{k_i}}{\sqrt{\pctrue}}}-\frac{\moesq}{\zscoresq}=0,
+    \end{equation*}
+    \begin{equation}
+    \label{eq:lagrange_mult_sqrt_lambda}
+    	\sqrt{\lambda }=\frac{\zscoresq}{\moesq}\sum_i \sqrt{\pctrue k_i}.
+    \end{equation}
+Now we eliminate $\lambda $ from our expression for $n_i$ in \eqref{eq:ni_in_terms_of_lambda} by substituting in the expression for $\sqrt{\lambda }$ we found in \eqref{eq:lagrange_mult_sqrt_lambda}:
+    \begin{equation}
+    \label{eq:optimizing_equation_general}
+    	n_i=\frac{\zscoresq}{\moesq}\sqrt{\frac{k_i}{\pctrue}}\sum_j \sqrt{\pctruex{j} k_j}.
+    \end{equation}
+    
+%\begin{equation}\label{eq:optimizing_equation_general_expanded}
+%	n_i=\frac{\zscoresq}{\moesq E_{i}}\sqrt{\frac{V_i}{\pctrue}}\sum _j \frac{\sqrt{\pctruex{j} V_j}}{E_j}
+%\end{equation}
+%\begin{equation}\label{eq:optimizing_equation_general_expanded_alt_form}
+%	n_i=\frac{\zeta}{E_{i}}\sqrt{\frac{V_i}{\pctrue}}\sum _j \frac{\sqrt{\pctruex{j} V_j}}{E_j}
+%\end{equation}
+
+%\subsubsection{Determining Appropriate Forms for $\phrv$}
+%\label{sec:phrv_forms}
+%\begin{odone}
+%    \1 For DS, we assume that the waiting time before first passage events is exponentially distributed.
+%        \2 This appears to be an excellent approximation.
+%            \3 See \figref{fig:brute_force_mfpt_cdf}
+%    \1 For \abr{FFS}, we need to consider phase 0 and phases $i>0$ separately
+%        \2 We assume that the waiting time in between forward flux events during phase 0 is exponentially distributed.
+%            \3 Turns out this might not be a good approximation.
+%                \4 See \figref{fig:ffpilot_phase_zero_dwell_time_cdf}
+%        \2 In phases $i>0$, we assume that the trajectory outcomes (ie whether a given trajectory fluxes forward into the next tile or fluxes backward into the starting tile) is distributed according to a Bernoulli distribution.
+%            \3 Different Bernoulli distribution in each phase.
+%\end{odone}
+%
+%\subsection{Estimating the Parameters of the Optimization Equation}
+%For every phase $i$ five parameters are required in order to apply the optimization equation, as can be seen by expanding the $k_i$ terms in \eqref{eq:optimizing_equation_general}:
+%    \begin{equation*}
+%        n_i=\frac{\zscoresq}{\moesq}\sqrt{\frac{\pwvtrueshort}{\pwtruesq \pctrue}}\sum_j \sqrt{\frac{\pwvtrueshort_j \pctruex{j}}{\pwtruesqx{j}}}.
+%    \end{equation*}
+%Two of the parameters, the margin of error $\moe$ and the confidence interval z score $\zscore$, are independent of the model being studied and can be set according to any desired error goal. The other three parameters are model dependent, and vary for each different combination of model, order parameter, and tiling. These three parameters are $\pctrue$, which is the computational cost of a single trajectory launched during phase $i$, $\pwtrue$, which is the phase weight for phase $i$ (as defined in \eqref{eq:pw_definition}), and $\pwvtrueshort$, which is the variance of the distribution of which $\pwtrue$ is the mean. For phase 0, $\pwvtrueshort_{i=0}$ is the variance of of the waiting times in between forward flux events, and for phase $i > 0$, $\pwvtrueshort_{i > 0}$ is the variance of the forward flux indicator function (which is 0 for a trajectory that falls back into the starting state or 1 for a trajectory that crosses to the next interface).
+%
+%In general the exact values of these parameters are unknown and estimates must be used instead. This gives rise to a apparently paradoxical situation: in order to find values of $n_i$ that will yield reasonable estimates of $\pwtrue$, one must first find reasonable estimates of $\pwtrue$ (and more) to plug into the optimization equation. We resolved this seemingly recursive requirement by developing protocols for producing rough but conservative estimates of the necessary parameters. By conservative, we mean that the estimates, when plugged into the optimization equation, will be likely to give values of $n_i$ that are at least as large as the true values. This in turn ensures that simulations run with $n_i$ trajectories per phase will produce results that are at least as accurate as the specified error goal.
+%
+%In general, the parameters of the optimization equation as given in \eqref{eq:optimizing_equation_general} are not known exactly, and have to be themselves estimated. The optimization equation can be written in terms of parameter estimators as:
+%\begin{equation}
+%    n_i=\frac{\zscoresq}{\moesq}\sqrt{\frac{\pwvestshort_i}{\pwestsq \pcest_i}}\sum_j \sqrt{\frac{\pwvestshort_j \pcest_j}{\pwestsqx{j}}}
+%\end{equation}
+%where $\pcest_i$ is an estimator of the computational cost of a single trajectory launched during phase $i$, and $\pwest$ and $\pwvestshort_i$ are estimators of the mean and the variance of the distribution of the waiting times in between phase 0 forward flux events (for $i=0$), or estimators of the mean and variance of the distribution of per-trajectory forward flux indicator values (for $i>0$). 
+
+\subsubsection{The Optimizing Equation for FFS}
+\label{sec:opt_eq_for_ffs}
+%\begin{odone}
+%    \1 For \abr{FFS}, we need two slightly different versions of the optimization equation.
+%        \2 One for phase 0.
+%            \begin{equation}
+%                n_0 = \frac{\zscoresq}{\moesq} \sqrt{\frac{\pwvtruex{0}}{\pwtruesqx{0} \pctruex{0}}} \left( \sqrt{\frac{\pwvtruex{0} \pctruex{0}}{\pwtruesqx{0}}} + \sqrt{\frac{\pctruex{1} (1 - p_1)}{p_1}} + \sqrt{\frac{\pctruex{2} (1 - p_2)}{p_2}} + \cdots + \sqrt{\frac{\pctruex{N} (1 - p_N)}{p_N}} \right)
+%            \end{equation}
+%
+%        \2 One for every other phase.
+%            \begin{equation}
+%                n_{i>0} = \frac{\zscoresq}{\moesq} \sqrt{\frac{1 - p_i}{p_i \pctrue}} \left( \sqrt{\frac{\pwvtruex{0} \pctruex{0}}{\pwtruesqx{0}}} + \sqrt{\frac{\pctruex{1} (1 - p_1)}{p_1}} + \sqrt{\frac{\pctruex{2} (1 - p_2)}{p_2}} + \cdots + \sqrt{\frac{\pctruex{N} (1 - p_N)}{p_N}} \right)
+%            \end{equation}
+%
+%    \1 In order to use the \opteq{}, we need to know the values of the $p_i$ terms for the particular system being simulated.
+%        \2 $p_i$ is also dependent on tiling.
+%        \2 One possibility is to have prior knowledge about the system
+%        \2 Without prior knowledge, need some kind of iterative estimation scheme
+%\end{odone}
+A form of the general optimizing equation given in \eqref{eq:optimizing_equation_general} that is more specific to \abr{FFS} can be found by considering the properties of the observable $\phrv$ in each phase. During a phase $i>0$, each trajectory launched and finished is equivalent to a single sample taken from $\phrvx{i>0}$. The $\sample$th trajectory of a phase will either succeed (\ie cross forward to the next interface) with probability $\probtraj$, or it will fail (\ie fall back into its starting basin), with probability $1 - \probtraj$. The sample taken from $\phrvx{i>0}$ is 1 If the trajectory succeeds, and 0 otherwise. Thus, the outcome of the $\sample$th trajectory of phase $\phase$ is a Bernoulli random variable with probability parameter $\probtraj$.
+
+For multidimensional systems, $\probtraj$ is dependent upon the starting point of a trajectory. Since the starting point of each trajectory is chosen at random, $\probtraj$ in general varies from trajectory to trajectory. Thus, each $\phrvx{i>0}$ is technically a mixture of Bernoulli random variables. However, for the purposes of the optimizing equation, it can be shown that no accuracy is lost if each $\phrvx{i>0}$ is treated as a single Bernoulli random variable (see \appendref{sec:bernoulli_mixture_var}) with moments:
+    \begin{align}
+    \label{eq:phrv_moments}
+        \begin{split}
+            \E{\phrvx{i>0}} &= \pwtrue = \probphase, \\
+            \V{\phrvx{i>0}} &= \probphase \left( 1 - \probphase \right),
+        \end{split}
+    \end{align}
+where $p_i$ is the crossing probability in phase i (\ie $\fluxprob$). 
+
+The $k_i$ terms in \eqref{eq:optimizing_equation_general} can be expanded to yield:
+    \begin{equation}\label{eq:optimizing_equation_general_expanded}
+        n_i=\frac{\zscoresq}{\moesq}\sqrt{\frac{\pwvtrueshort}{\pwtruesq \pctrue}}\sum_j \sqrt{\frac{\pwvtrueshortx{j} \pctruex{j}}{\pwtruesqx{j}}}.
+    \end{equation}
+The moments from \eqref{eq:phrv_moments} can then be plugged into \eqref{eq:optimizing_equation_general_expanded} to yield the \abr{FFS} specific form of the optimizing equation:
+    \begin{equation}
+    \label{eq:optimizing_equation_ffpilot}
+        \samplecount =
+        \begin{cases}
+            \frac{\zscoresq}{\moesq} \sqrt{\frac{\pwvtrueshortx{0}}{\pwtruesqx{0} \pctruex{0}}} \left( \sqrt{\frac{\pwvtrueshortx{0} \pctruex{0}}{\pwtruesqx{0}}} + \sum_{j=1}^{\phasecount} \sqrt{\frac{(1 - p_j) \pctruex{j}}{p_j}} \right) & \text{if}\ i=0, \\
+            
+            \tracingmacros=1
+            \frac{\zscoresq}{\moesq} \sqrt{\frac{1 - p_i}{p_i \pctrue}} \left( \sqrt{\frac{\pwvtrueshortx{0} \pctruex{0}}{\pwtruesqx{0}}} + \sum_{j=1}^{\phasecount} \sqrt{\frac{(1 - p_j) \pctruex{j}}{p_j}} \right) & \text{otherwise}.
+            \tracingmacros=0
+        \end{cases}
+    \end{equation}
+We call this form the \opteq{}.
+
+In regards to phase 0, the precise forms of $\E{\phrvx{0}} = \pwtruesqx{0}$ and $\pwvtrueshortx{0}$ are unknown. We have found that $\phrvx{0}$, the waiting time in between phase 0 forward flux events, does not in general follow an exponential distribution (see supplemental Fig S2). In fact, the distribution of $\phrvx{0}$ seems to be highly model dependent. Thus, in order to avoid any assumptions about $\phrvx{0}$, we leave the ratio $\frac{\pwvtrueshortx{0}}{\pwtruesqx{0}}$ unexpanded in \eqref{eq:optimizing_equation_ffpilot}.
+
+Of the assumptions made in deriving \eqref{eq:optimizing_equation_ffpilot}, two of the most significant are the assumption of large sample size, and the assumption of the uncorrelatedness of the phases during an \abr{FFS} simulation. The large sample size assumption underlies the validity of \eqrefTwo{eq:pwest_moments}{eq:PWest_asymptotic_dist}. In general this assumption can be satisfied by setting a minimum floor on the number of samples $\samplecount$ taken in each phase (an implementation of this sample size floor is discussed in the next section). 
+
+Ensuring that the uncorrelatedness assumption is satisfied is altogether trickier. Most of the preexisting \abr{FFS} literature takes the uncorrelatedness of the phases as a given\supercite{Allen:2006ch,Borrero:2008il,Becker:2012fl}, but in practice we have found this to not always be the case. This issue is discussed in detail in \secref{sec:landscape_error}. In brief, systems with complex, high dimensional state spaces tend to have correlations between the outcomes of trajectories across the different phases. This results in non-zero covariance between the different phase weights, which effectively like adding an extra term to \eqref{eq:PWest_variance}. In other words, when the phases are correlated, our approach will somewhat underestimate the actual variance, and \eqref{eq:optimizing_equation_ffpilot} will somewhat underestimate the number of samples required to achieve a particular error goal.
+
+\subsection{FFPilot: A Sampling Algorithm Designed to Take Advantage of the Optimization Equation}
+\label{sec:ffpilot_definition}
+\begin{odone}
+    \1 We'd like to be able to apply the optimizing equation to real biochemical networks, but we can't do this without some prior knowledge of the system under study
+        \2 need the phase weights
+        \2 need the average computational cost per trajectory
+    \1 One approach is to first do a quick pilot simulation and then produce conservative estimates of the needed factors based on those results.
+        \2 Run enough trajectories in each phase to observe a fixed, reasonable number of crossing events
+            \3 Our experiments have shown that running to a fixed number of successful crossings is the most efficient of the "blind" optimization methods
+            \3 Usually choose $10^4$ as the number of successes
+        \2 Use estimators that are likely to give an underestimate of the true phase phase weight
+            \3 If we underestimate the phase weight, we are guaranteed to do at least as many runs as are required by the \opteq{}
+            \3 No such estimator available for phase 0, have to settle for sample mean/variance
+            \3 For all of the other phases, since their outcomes have a Bernoulli distribution we use the Agresti-Coull lower interval bound estimator
+                \4 With $99\%$ confidence interval
+    \1 Once all of the phase weight estimations are done, calculate the number of runs required in each phase of the production stage
+        \2 Production stage then proceeds as a standard \abr{FFS} simulation
+\end{odone}
+We wanted to be able to apply the optimizing equation to real biochemical networks, but to do so we need some prior knowledge of the system under study. As shown in \eqref{eq:optimizing_equation_ffpilot}, two global and $2 \cdot (\Phase + 1)$ phase-specific parameters are required in order to apply the optimization equation and thereby calculate the optimal value of $n_i$. The two global parameters, the margin of error $\moe$ and the confidence interval z score $\zscore$, are independent of the model being studied and are set according to the desired error goal. The other parameters, the ratio $\frac{\pwvtrueshortx{0}}{\pwtruesqx{0}}$ (from phase 0), the successful crossing probabilities $p_i$ (from phases $\phasegz$), and the per-sample computational costs $\pctrue$, are model dependent and vary for each different combination of model, order parameter, and interface placement.
+
+In general the exact values of the model-dependent parameters are unknown and estimates must be used instead. Rather than simplifying using assumptions such as constant cost\supercite{Allen:2006ch,Borrero:2008il}, we produce rough but conservative estimates of the necessary parameters using a pilot simulation. By conservative, we mean that the estimates, when plugged into the optimization equation, will be likely to give values of $n_i$ that are at least as large as the true values. This condition ensures that simulations run with $n_i$ trajectories per phase will produce results that are at least as accurate as the specified error goal.
+
+We call our new enhanced sampling protocol \abr{FFPilot}. The basic concept of \abr{FFPilot} is to break an \abr{FFS} simulation up into two stages. First a pilot stage is executed (see supplemental Fig S1), from which the parameters required for the optimization equation are estimated. Then, based on the results of the optimization equation, a production stage is planned and executed, from which the actual simulation output is calculated.
+
+The \abr{FFPilot} algorithm proceeds as follows:
+\begin{enumerate}
+    \item Specify an error goal in terms of a target margin of error. Optionally, the confidence interval (which defaults to 95\%) can be specified as well.  As with standard \abr{FFS}, the user must specify an order parameter and interface placements.
+    \item Begin \abr{FFPilot} pilot stage:
+        \begin{enumerate}
+            \item Set the pilot stage sample count $\samplecountpilot$ to a single fixed value. Throughout this paper we used a value of $\samplecountpilot = 10^4$.
+            \item Run a complete \abr{FFS} simulation, following the algorithm described in \secref{sec:ds_es_description}. Unlike standard \abr{FFS}, the number of samples to collect in each phase is determined by a blind optimization method.
+            \begin{enumerate}
+                \item Phase 0 proceeds the same as in standard \abr{FFS}, using $\samplecountz = \samplecountpilot$ as the sample count.
+                \item In phases $\phasegz$, trajectories are run until $\samplecountpilot$ successful forward flux events are observed. It can be shown that, for a relatively modest number of successes, this method constrains error to within 2\% when estimating the individual phase weights (see \appendref{sec:blind_opt} for complete details).
+            \end{enumerate}
+        \end{enumerate}
+    \item \label{item:ffpilot_parameterization} When the pilot stage is finished, estimate the values required for the optimization equation from the results of the pilot simulation. Use confidence intervals to form conservative estimates that, when plugged into the optimization equation, are likely to yield values of $n_i$ that are as large or larger than those required for the error goal.
+    \item Begin \abr{FFPilot} production stage:
+        \begin{enumerate}
+            \item \label{item:ni_calculation} Determine $n_i$, the number of samples to collect in each phase, based on the error goal and \eqref{eq:optimizing_equation_ffpilot}, the \opteq{} (as parameterized in step \ref{item:ffpilot_parameterization}).
+            \item Run another complete \abr{FFS} simulation using using the values of $n_i$ calculated in step \ref{item:ni_calculation}.
+        \end{enumerate}
+    \item Collect results from the production stage simulation and use/analyze them in the same way as would be done for standard \abr{FFS} simulation. The results from the pilot stage are ignored for the purposes of calculating the final simulation results as sampling differences in states at the interfaces would introduce additional error. 
+\end{enumerate}
+
+In terms of the error in the final simulation results, the optimization equation is inaccurate in the low sample count limit. Therefore, we enforce a minimum floor ($10^3$) on the count of samples taken in each phase of the production stage.
+
+The effectiveness of the pilot stage blind optimization method can be related to an earlier finding of Borerro {\etal}\supercite{Borrero:2008il}. They showed that a fixed quantity of computational effort is optimally spent during an \abr{FFS} simulation when the interfaces and the trajectory counts per phase are arranged in such a way that each interface encounters an equal flux of trajectories crossing them. Although we do not constrain the computational effort spent during our blind optimization, our approach produces equal flux across each interface as well.
+
+\subsection{Rare Event Model}
+\label{sec:rem}
+%\begin{odone}
+%    \1 Distribution of Calculated $\mfpttrue$s
+%        \2 Setup
+%            \3 Used toy model based on GTS($\theta=1$)
+%            \3 Determined number of "runs" in each "phase" using the \abr{FFPilot} algorithm
+%            \3 Repeated 160,000 times
+%        \2 Results
+%            \3 As predicted, both the "\abr{DS}" and "\abr{FFPilot}" versions of the toy model produce a gaussian distribution of calculated $\mfpttrue$s across replicate simulations, as can be seen in \figref{fig:toy_model_estimator_distributions}
+%            \3 The mean is the known true value of the $\mfpttrue$
+%            \3 Further, the measured variance closely matches the predicted variance
+%    \1 Error Goal vs Error
+%        \2 Setup
+%            \3 Used 3 different versions of the toy model based on 3 different versions of GTS with $\theta=\{.1,1,10\}$
+%            \3 Used 3 different error goals, 10\%, 3.2\%, and 1\%
+%            \3 Ran each condition 1000 times
+%        \2 Results
+%            \3 As predicted, the 95th percentile of the actual error in each condition (red line in \figref{fig:toy_model_actual_error_vs_predicted_error}) lies slightly below the condition's error goal
+%            \3 Everything's perfect! Yay!
+%\end{odone}
+We began our testing of \abr{FFPilot} with a toy model of a barrier crossing process, which we refer to as the rare event model ($\REM$). $\REM$ models a particle in a discrete potential field in which there are two metastable states, $\statea$ and $\stateb$, connected by a transition path (see top of \figref{fig:model_schematics}). Particles in $\statea$ have a constant propensity to initiate a transition by entering the transition path. Because of the constant propensity the waiting times in between transition attempts are exponentially distributed.
+
+The transition path itself is composed of a sequence of $\phasecount$ steps; particles enter the path at step 1. At each successive step, a particle will instantaneously either proceed to the next step with probability $p_i$, or fall back into $\statea$ with probability $1 - p_i$. If the particle successfully passes the final step it enters $\stateb$. In effect, the particle's fate once it enters the transition path can be thought of as the outcome of $\phasecount$ weighted coin flips. If all $\phasecount$ coins land heads up, the particle completes the transition $\atob$. Otherwise, the particle falls back into $\statea$.
+
+We designed $\REM$ to map precisely onto \abr{FFPilot} sampling in order to directly test the validity of the assumptions and simplifications that were made in the derivation of the \opteq{} (\eqref{eq:optimizing_equation_general}). Simulations of $\REM$ can be carried out using either \abr{DS} or \abr{FFPilot}. To simulate a single replicate of a particle starting in $\statea$ using \abr{DS}, first the time until the particle leaves $\statea$ is randomly selected from an exponential random variable according to the propensity of entering the transition path. The particle's behavior at each step is then randomly chosen, either falling back to $\statea$ or proceeding to the next step according to the appropriate $p_i$. If the particle falls back into $\statea$ the process is repeated until it successfully passes to $\stateb$. The total time the particle took to transition to $\stateb$ is the $\atob$ first passage time for that trajectory.
+
+To simulate a single replicate of a particle starting in $\statea$ using \abr{FFPilot}, first an order parameter and the interface positions must be chosen (see section \secref{sec:ds_es_description}). We chose the step number $i$ as the order parameter, and placed the interfaces between each step $i$. The phase 0 weight is calculated by first drawing many samples of the $\statea$ leaving time according to the propensity, and then taking the mean of those samples. The remaining phase weights are determined by repeatedly starting a particle at step $i$, randomly selecting if it continues on to the next step according to $p_i$, and then calculating the average probability of success from the observations. The pilot stage of \abr{FFPilot} is accomplished by first running the phase 0 weight calculation $\samplecountpilot$ times, then running each phase $\phasegz$ weight calculation until $\samplecountpilot$ success events are observed. The outcome of the pilot stage is then fed into the \opteq{} \eqref{eq:optimizing_equation_ffpilot}, and the results are used to determine how many samples to take during the \abr{FFPilot} production stage. For the purposes of parameterizing \eqref{eq:optimizing_equation_ffpilot}, the phase 0 relative variance and the per-phase costs $\pctrue$ are all set equal to $1$ (see \tableref{tab:rem} for complete parameters). $\mfpttrue$ is then estimated as the product of the production stage phase weights.
+
+We first studied the distribution of the $\mfpttrue$ estimators. Taken together, \eqrefThree{eq:PWest_asymptotic_dist}{eq:PWest_moments}{eq:PWest_variance} describe the normal distribution that repeated estimation of $\mfpttrue$ is expected to produce. In our derivation we have assumed that we are working in the high sampling limit for values of $\pwtrue$ and $n_i$ of interest. To test this assumption, we performed $1.6 \cdot 10^5$ independent simulations of $\REM$ using both \abr{DS} and \abr{FFPilot} using a 1\% error goal. \figref{fig:toy_model_estimator_distributions} shows the distributions from our simulations. The black line in each figure is the normal distribution with mean and variance given by \eqrefTwo{eq:PWest_moments}{eq:PWest_variance}. The binned \abr{MFPT} estimates from both the \abr{DS} and the \abr{FFPilot} $\REM$ simulations are in excellent agreement with the predicted normal distribution.
+
+Next, we tested how well the \abr{FFPilot} approach was able to control sampling error in simulations of $\REM$. If the method works as expected, $95\%$ of simulations should have errors at or below the \abr{FFPilot} error goal. We executed 1000 \abr{FFPilot} simulations of $\REM$ at 3 different error goals (10\%, 3.2\%, and 1\%). We used the full \abr{FFPilot} algorithm to determine how many trajectories  to start at each interface.
+
+The percent errors of the $\mfpttrue$ calculated in each of these simulations are shown in \figref{fig:toy_model_actual_error_vs_predicted_error}. The percent errors were calculated relative to the analytically determined $\mfpttrue$. As can be seen, the 95th error percentiles (marked by the red lines) are located along $x=y$, indicating that overall error in the \abr{MFPT} estimates was constrained to the error goal. $\REM$ has no source of error aside from sampling error, and under these conditions \abr{FFPilot} precisely controls the total simulation error.
+
+\subsection{Self Regulating Gene Model}
+\label{sec:srg}
+%\begin{odone}
+%    \1 phase 0 Inter-Event Time Distribution
+%        \2 Setup
+%            \3 Collected $10^6$ inter-event times during phase 0
+%        \2 Results
+%            \3 Contrary to expectations, distribution is not exponential
+%                \4 $\frac{V}{E^2}$ was 6-ish, for exponential distribution should be 1
+%    \1 Error Goal vs Error
+%        \2 Setup
+%            \3 Used 3 different versions of the SIG with 3 different hill coefficients, 2.2, 2.3 and 2.4
+%                \4 Also slightly adjusted the k50
+%            \3 Used 3 different error goals, $10\%, 3.2\%, 1\%$
+%            \3 Ran each condition 100 times
+%        \2 Results
+%            \3 As predicted, the 95th percentile of the actual error in each condition (red line in \figref{fig:name_srg_-_percent_error_vs_error_goal_-_kind_mfpt_-_reps_100_-_pzsm_1.0e+00}) lies slightly below the condition's error goal
+%            \3 Everything's perfect! Yay!
+%\end{odone}
+%We next tested \abr{FFPilot} with a CME model of a relatively simple biochemical network, the self regulating gene model ($\SRG$). $\SRG$ consists of a single species, protein X, which is produced through autocatalysis:
+%\begin{align*}
+%    \ce{X &-> 2X}
+%\end{align*}
+%and which decays through a first order reaction:
+%\begin{align*}
+%    \ce{X &-> $\varnothing$}.
+%\end{align*}
+%Production of X is controlled by a Hill-like rate law (see table \ref {tab:srg_list}), and so experiences positive self feedback. This feedback is not particularly strong at low copy numbers of X, so in this regime dilution of X tends to prevail over production. At higher copy numbers of X, the self feedback becomes strong enough that production prevails over dilution, at least up until the copy numbers where the Hill-like rate law starts to level off. Thus, $\SRG$ tends to spend most of the time in one of two metastable states, low X and high X.
+
+We next tested \abr{FFPilot} with a relatively simple biochemical network, the self regulating gene model ($\SRG$)\supercite{Roberts:2015iu}. $\SRG$ models expression of a single protein $\srga$. $\srga$ is produced though autocatalysis, and decays via a first order process (see \figref{fig:model_schematics}).
+
+In the deterministic formulation of $\SRG$, the rate of change in the quantity of protein $\srga$ is:
+\begin{align}
+\label{eq:srg_rate_a}
+\frac{d\srga}{dt} = \srgklow + \left(\srgkhigh - \srgklow\right)\frac{\srga^h}{\srgkmid^h + \srga^h} - \srga
+\end{align}
+For a given set of parameters, the fixed points of the state space of $\SRG$ can be found by setting \eqref{eq:srg_rate_a} equal to 0 and solving for $\srga$. For all of the parameters we used in our simulations there are three fixed points, two stable and one unstable. One of the stable fixed points corresponds to a state with a low count of $\srga$, and the other corresponds to a state with high count of $\srga$. 
+
+To formulate $\SRG$ as a stochastic model, we use the chemical master equation (CME) (see \tableref{tab:srg_reactions} for complete reaction list). The CME models the probability for the system to be in any state. Additionally, fluctuations due to population noise can cause the system to transition back and forth between the low and high states. The $\mfpttrue$ between the states is related to the entropic barrier separating them.
+
+%Production of $\srga$ is controlled by a Hill-like rate law (see table \ref {tab:srg_list}), and so experiences positive self feedback. This feedback is not particularly strong at low copy numbers of X, so in this regime dilution of X tends to prevail over production. At higher copy numbers of X, the self feedback becomes strong enough that production prevails over dilution, at least up until the copy numbers where the Hill-like rate law starts to level off. Thus, $\SRG$ tends to spend most of the time in one of two metastable states, low X and high X.
+
+We wanted to study how the height of the barrier between the low $\srga$ and high $\srga$ states affects the accuracy of \abr{FFPilot}. Towards this end, we parameterized 3 different variants of $\SRG$ with different barrier heights, and thus different $\mfpttrue$ values. We call these three variants $\SRGSLOWEST$, $\SRGSLOWER$, and $\SRGSLOW$, after the Hill coefficient used in the protein $\srga$ production rate law. We tuned the other parameters in the model in order to approximately balance the occupancy of the low $\srga$ and high $\srga$ states in each of the variants (see \tableref{tab:srg} for parameter values).
+
+For all \abr{FFPilot} simulations of $\SRG$ we used the count of protein $\srga$ as the order parameter. We determined the positions of the interfaces by first placing $\lambda_0$ a quarter of the distance (in terms of the order parameter) from the lower fixed point to the intermediate fixed point, then $\lambda_N$ three quarters of the distance from the lower fixed point to the upper fixed point. We then placed 11 more interfaces spaced evenly between $\lambda_0$ and $\lambda_N$.
+
+Unlike $\REM$, trajectories in the low $\srgoparam$ state do not cross $\lambda_0$ and enter the transition pathway with a fixed propensity. Instead, the propensity changes dynamically with the system state, giving rise to a complex distribution of waiting times in between crossing events. In deriving the \opteq{} (more specifically, when deriving \eqref{eq:PWest_variance}), we assumed that the first two central moments of the phase 0 waiting time distribution ($\pwtruex{0}$ and $\pwvtrueshortx{0}$) exist. In order to test this assumption we executed simulations in which we only performed phase 0, collecting $10^6$ crossing events for $\lambda_0$.
+
+\figref{fig:name_srg_-_ffpilot_phase_zero_dwell_time_dist} shows the phase 0 inter-event time distributions. The tail of each distribution is fit well by a single exponential distribution, but the distribution near 0 is not. We estimated the value of the relative variance, $\frac{\pwvtrueshortx{0}}{\pwtruesqx{0}}$, used in the phase 0 terms of the \opteq{} (\eqref{eq:optimizing_equation_ffpilot}) to be 6.80, 6.43, and 5.96 for $\SRGSLOWEST$, $\SRGSLOWER$, and $\SRGSLOW$, respectively.
+
+Next, we examined how well the \abr{FFPilot} approach was able to control sampling error with respect to $\mfpttrue$. We executed 1000 \abr{FFPilot} simulations of $\SRGSLOWEST$, $\SRGSLOWER$, and $\SRGSLOW$ using error goals 1\%, 3.2\%, and 10\%. We estimated $\mfpttrue$ from each simulation, then found the percent error relative to the value estimated from a \abr{DS} simulation executed with an error goal of 0.62\%.
+
+The errors are shown in \figref{fig:name_srg_-_error_goal_test_complete_-_h_all}. The 95th error percentiles are again located precisely along $x=y$. The accuracy of the estimates show that \abr{FFPilot} is able to control error in both phase 0 (regardless of the exact distribution of the inter-event times) and the remaining phases for $\SRG$.
+
+We also looked at the contribution of phase 0 to the overall cost of the pilot stage. Applying \eqref{eq:cost_target_func} to values from \tableref{tab:srg}, we found that for all variants of $\SRG$ phase 0 required around ${\sim} 35\%$ of the total simulation time. This finding is in contrast to the longstanding assumption in the \abr{FFS} literature that phase 0 does not significantly contribute to the cost of a simulation and should therefore be extensively sampled.
+
+\subsection{Genetic Toggle Switch Model}
+\label{sec:gts}
+%\begin{odone}
+%    \1 phase 0 Inter-Event Time Distribution
+%        \2 Setup
+%            \3 Collected $10^6$ inter-event times during phase 0
+%        \2 Results
+%            \3 Still not exponential, similar to results for SIG. See \figref{fig:ffpilot_phase_zero_dwell_time_cdf}
+%                \4 $\frac{V}{E^2}$ was 8-ish, for exponential distribution should be 1
+%                \4 Ratio, and thus distribution, is system dependent
+%    \1 Error Goal vs Error
+%        \2 Setup
+%            \3 Used 3 different versions of versions of GTS with $\theta=\{.1,1,10\}$
+%            \3 Used 3 different error goals, $10\%, 3.2\%, 1\%$
+%            \3 Ran each condition 1000 times
+%        \2 Results
+%            \3 Contrary to prediction, the 95th percentile of the actual error in each condition (red line in \figref{fig:name_gts_-_percent_error_vs_error_goal_-_mfpt_-_pzsm_1.0e+01_-_reps_1000}) lies somewhat above the condition's error goal.
+%            \3 Results are still in line with predictions, but there is extra error/dispersion
+%    \1 The extra error can be shown to be due to landscape error
+%        \2 The biggest errors occur in phases 4 and 5, the two phases immediately before the midpoint in the transition path. See \figref{fig:name_gts_-_phase_weights_-_rep_6_8_-_theta_1.0e+01}.
+%        \2 A further breakdown of the phase 4 error shows that it is primarily due to a large discrepancy that can occur between simulations in the observed occupancy of the various operator states. See \figref{fig:name_gts_-_phase_weight_4_split_by_operator_-_rep_6_8_-_theta_1.0e+01}.
+%\end{odone}
+The last model we investigated using \abr{FFPilot} was a more complex gene regulatory network, one of a family of systems commonly referred to as a genetic toggle switch ($\GTS$)\supercite{Gardner:2000bm}. Our $\GTS$ has seven species that interact with one another via fourteen reactions, all of which are first or second order (see \tableref{tab:gts_reactions}). $\GTS$ consists of a single piece of operator DNA, $\gtso$. When $\gtso$ is not bound to anything it can produce either of two proteins, $\gtsa$ and $\gtsb$. $\gtsa$ and $\gtsb$ can both decay, they can both form homodimers, and those dimers can both bind back to $\gtso$. Only one dimer can bind to $\gtso$ at any given time. When $\gtso$ is bound to a dimer of either protein, it can only produce more of that same protein (see \figref{fig:model_schematics}).
+
+The combination of positive feedback (of monomer production on dimer/operator binding) and negative feedback (of dimer/operator binding on production of the competing monomer) gives $\GTS$ bistable dynamics\supercite{Biancalani:2015ii}. The system as a whole switches between a state with high levels of the various forms of $\gtsa$ and low levels of $\gtsb$, and a state with low levels of $\gtsa$ and high levels of $\gtsb$.
+
+For $\GTS$ we defined three order parameters. One, which we called $\gtsbma$, is the difference between the total count of protein $\gtsb$ and the total count of protein $\gtsa$. Another, which we called $\gtsbpa$, is the sum of the total count of protein $\gtsa$ and the total count of protein $\gtsb$. The last, $\gtsostate$, takes a value from [-1,1] based solely on the state of the single operator. In terms of the underlying species counts, the order parameters can be written as:
+\begin{align*}
+    \gtsbma &= \gtsb + 2\gtsbb + 2\gtsobb - \left( \gtsa + 2\gtsaa + 2\gtsoaa \right) \\
+    \gtsbpa &= \gtsa + 2\gtsaa + 2\gtsoaa + \gtsb + 2\gtsbb + 2\gtsobb \\
+    \gtsostate &= -\gtsoaa + \gtsobb
+\end{align*}
+where $\gtsa$ and $\gtsb$ are the monomer counts, $\gtsaa$ and $\gtsbb$ are the dimer counts, and $\gtsoaa$ and $\gtsobb$ are the dimer-operator complex counts. Equivalently, $\gtsostate$ can be said to have one of three categorical values:
+    \begin{align*}
+        \gtsostate &\rightarrow \{\gtsoaa, \gtso, \gtsobb\}
+    \end{align*}
+
+Although all of our $\GTS$ simulations are based on a stochastic master equation formulation of the system, it is helpful to consider the more straightforward deterministic formulation when trying to understand the system's overall behavior (see supplemental Table S1 for the deterministic rate equations). For a given set of parameters, the fixed points of the deterministic formulation can be found. For all of the parameter sets we used in our simulations there are three fixed points in terms of $\gtsbma$, two stable fixed points and one unstable fixed point. One of the stable fixed points corresponds to the state with a high level of $\gtsa$ and a low level of $\gtsb$, and the other stable fixed point corresponds to the state with a low level of $\gtsa$ and a high level of $\gtsb$. We refer to these two states as $\statea$ and $\stateb$, respectively.
+
+We wanted to be able to tune the rarity of the $\atob$ event without disrupting the overall dynamics of $\GTS$. To do so, we added a relative protein turnover parameter $\theta$. The rate constants of all of the expression and decay reactions for both $\gtsa$ and $\gtsb$ are multiplied by $\theta$. Since $\theta$ does not affect the birth/death ratio of each protein, the steady state levels of both $\gtsa$ and $\gtsb$ are constant with respect to $\theta$. However, $\theta$ does have a large effect on the rate of $\atob$ switching. We used three different variants of $\GTS$ in our simulations, $\GTSSLOWEST$, $\GTSSLOWER$, and $\GTSSLOW$, see \tableref{tab:gts} for complete parameters.
+
+For all \abr{FFPilot} simulations we used $\gtsbma$ as the order parameter. We tiled the state space in terms of $\gtsbma$ by placing $\lambda_0$ at $\gtsbma = -27$, $\lambda_N$ at $\gtsbma = 27$, and then placing 11 more interfaces evenly spaced in between.
+
+As with $\SRG$, we were interested in the distribution of phase 0 inter-event times of $\GTS$ in order to establish the validity of \eqref{eq:optimizing_equation_ffpilot} with respect to $\GTS$. \figref{fig:name_gts_-_ffpilot_phase_zero_dwell_time_dist} shows the results of our phase 0 inter-event time distribution simulations. The phase 0 distributions of the different $\GTS$ variants differ a great deal, but interestingly their $\frac{\pwvtrueshortx{0}}{\pwtruesqx{0}}$ values (the ratio of moments required for \eqref{eq:optimizing_equation_ffpilot}) are very similar. $\frac{\pwvtrueshortx{0}}{\pwtruesqx{0}}$ was found to be 8.15, 8.15, and 8.41 for $\GTSSLOWEST$, $\GTSSLOWER$, and $\GTSSLOW$, respectively.
+
+We next ran a test to examine how well the full \abr{FFPilot} protocol was able to control sampling error in estimations of $\mfpttrue$ of the $\atob$ switching process. We executed 1000 \abr{FFPilot} simulations of $\GTSSLOWEST$, $\GTSSLOWER$, and $\GTSSLOW$ using error goals 1\%, 3.2\%, and 10\%. We estimated $\mfpttrue$ for each simulation, then found the percent errors relative to the results from high accuracy \abr{DS} simulations of equivalent models, which were run with a 0.62\% error goal.
+
+The percent errors of the $\mfpttrue$ estimates are shown in \figref{fig:name_gts_-_error_goal_test_complete_-_theta_all}. As can be seen in the figure, the 95th error percentiles (marked by the red lines) are located somewhat above $x=y$, indicating that the overall errors in the estimated \abr{MFPT} values are above the desired errors. The 95th percentile lines do decrease along with error goal, implying that \abr{FFPilot} partially but not completely controls error in simulations of $\GTS$. The anomalous dispersion decreases as the height of the barrier between $\statea$ and $\stateb$ in probability space decreases. This implies that the extra error is caused by a system dependent property and is not directly related to undersampling.
+
+We again found that phase 0 contributed significantly to the cost of $\GTS$ simulations. From parameters listed in \tableref{tab:gts} and \eqref{eq:cost_target_func}, we calculated the share of total simulation time consumed by phase 0, which was found to be $19\%$, $23\%$, and  $33\%$ for $\GTSSLOWEST$, $\GTSSLOWER$, and $\GTSSLOW$, respectively.
+
+\subsection{Interface Landscape Error in Genetic Toggle Switch}
+\label{sec:landscape_error}
+%\begin{odone}
+%    \1 Extra error in $\GTS$ simualations is concentrated in phases 3, 4, and 5.
+%    \1 Landscape error is the source of extra error in $\GTS$ simulations.
+%        \2 Suc   
+%\end{odone}
+
+We sought to understand the causes of the extra error in the $\GTS$ simulations. We chose the condition with the largest anomalous errors, $\GTSSLOW$ executed with an error goal of 10\%, and examined the phase weight estimates produced by each of the 1000 replicate simulations we had run with that condition. These phase weights are shown in the top half of \figref{fig:name_gts_-_phase_weight_percent_error_-_error_goal_1.0e-01_-_theta_1.0e+01}. The phase weights estimated by an equivalent \abr{FFPilot} simulation run with an error goal of 0.1\% are shown as dashed lines, and serve as a point of reference (there is no exact method for extracting the phase weights from a \abr{DS} simulation). The dispersion of phase weight estimates around the reference weight is much greater in certain phases, especially phases 4 and 5. By itself, this is not an indication that \abr{FFPilot} is failing to correctly estimate sampling counts for these phases. By design, \abr{FFPilot} allows for different levels of dispersion in different phases when it is determining the optimal simulation plan.
+
+In order to determine how much of the phase weight dispersion represents \abr{FFPilot} functioning as intended and how much of the dispersion is truly anomalous, we calculated an optimal set of error goal targets for each simulation phase. From the \opteq{} (\eqref{eq:optimizing_equation_ffpilot}) we derived analytic expressions for the per-phase error goals:
+    \begin{align}
+        \label{eq:per_phase_target_moe}
+        \begin{split}
+            \moex{i=0} &= \moe \sqrt{\frac{\sqrt{\frac{\pwvtrueshortx{0} \pctruex{0}}{\pwtruesq}}}{\sqrt{\frac{\pwvtrueshortx{0} \pctruex{0}}{\pwtruesq}} + \sum_{j=1}^{N} \sqrt{\frac{\left(1 - p_j\right) \pctruex{j}}{p_j}}}}, \\
+            \moex{i>0} &= \moe \sqrt{\frac{\sqrt{\frac{\left(1 - p_i\right) \pctrue}{p_i}}}{\sqrt{\frac{\pwvtrueshortx{0} \pctruex{0}}{\pwtruesq}} + \sum_{j=1}^{N} \sqrt{\frac{\left(1-p_j\right) \pctruex{j}}{p_j}}}}.
+        \end{split}
+    \end{align}
+Just as with the overall error goal, in any given phase $100\cdot\alpha\%$ percent of simulations will have a level of sampling error in the phase weight estimate at or below the relevant per-phase error goal $\moex{i}$. We parameterized \eqref{eq:per_phase_target_moe} using the phase weight and phase cost estimates from the very high accuracy (0.1\% error goal) \abr{FFPilot} simulation of $\GTSSLOW$ mentioned above.
+
+The error goal targets we calculated are shown as the dashed lines in the bottom half of \figref{fig:name_gts_-_phase_weight_percent_error_-_error_goal_1.0e-01_-_theta_1.0e+01}. The phase weight percent errors (calculated relative to the estimates from the 0.1\% error goal simulation) are shown as dots, and the red lines mark the 95th percentiles of the errors. If the red line and the dashed line overlap for a particular phase, it means that the error in this phase is dominated by sampling error, which \abr{FFPilot} is able to completely account for. If the red line is above the dashed line, then there is more error occurring in that phase than was predicted by \abr{FFPilot}, and the magnitude of the separation of the two lines represents the magnitude of the anomalous (as opposed to the predicted) error. Interestingly, \abr{FFPilot} estimates the majority of phase weights to within the desired error goal. The extra error in the $\mfpttrue$ estimate appears to be due primarily to extra error in only three of the phase weight estimates, those from phases 3-5. Further, the bulk of the extra error is concentrated in just two of those phase weight estimates, those from phases 4 and 5. Interfaces $\lambda_4$ and $\lambda_5$ also happen to be the interfaces immediately preceding the transition midpoint.
+
+We hypothesized that there must be some particular feature of the state space landscape of $\GTS$ that the simulations are exploring during phases 4 and 5 that is responsible for the anomalous error. We further reasoned that the same features that are responsible for what Allen and coworkers call landscape variance\supercite{Allen:2006ch} could be related to the increased error. Here we define a new source of error, which we call landscape error, that is due to two factors: (1) misrepresentation of some regions of the state space in the set of trajectory starting points at $\lambda_i$, and (2) significant differences in $P\left(\lambda_{i}|\lambda_{i-1}\right)$ as a function of trajectory starting state. The total probability factor $P\left(\lambda_{i}|\lambda_{i-1}\right)$ that is measured in each phase $i>0$ can be thought of as a mixture of many independent probabilities, one for each state along $\lambda_{i-1}$, weighted by the (normalized) count of times the state is used as a starting point for a phase $i$ trajectory. If either of factors (1) or (2) occurs alone, $P\left(\lambda_{i}|\lambda_{i-1}\right)$ will still be correctly estimated. However, if the factors occur together they can lead to significant errors. In other words, if the landscapes assembled at $\lambda_3$ and $\lambda_4$ are heterogeneous across replicate simulations, and if differences in those landscapes can lead to differences in the effective value of $P\left(\lambda_{i}|\lambda_{i-1}\right)$, then landscape error may be the cause of the anomalous simulation error we observe in our simulations of $\GTS$. Of particular importance is the fact that the landscape error in phase $i$ is due to errors in the landscape assembled from the endpoints of successful trajectories launched during phase $i-1$. Thus, no amount of extra sampling performed during phase $i$ alone can completely abolish landscape error.
+
+We wanted to test if the conditions for landscape error were present in \abr{FFPilot} simulations of $\GTSSLOW$. To this end, we chose two simulations, which we will call replicate 6 and replicate 8, that had a large divergence in their $\mfpttrue$ estimates. Looking at the phase weights estimates produced by these two simulations (\figref{fig:name_gts_-_phase_weights_-_rep_6_8_-_theta_1.0e+01}), the divergence in the $\mfpttrue$ estimates can be seen to be mostly due to divergence in the phase weight 4 and 5 estimates (as expected). Exploring phase 5 in greater depth, we calculated the landscape occupancy along $\lambda_4$ in terms of the orthogonal order parameter $\gtsbpa$. The $\lambda_4$ occupancies for replicates 6 and 8 $P\left(\gtsbpa | \gtsostate, \lambda_4\right)$ (which are binned by $\gtsbpa$ and operator state $\gtsostate$), are shown in the lower left-hand subplots of \figref{fig:name_gts_-_phase_weight_4_split_by_operator_-_rep_6_8_-_theta_1.0e+01} as lines colored blue or gold, respectively. Replicate 6 has somewhat higher occupancy in the $\gtsoaa$ and $\gtso$ states, and replicate 8 has higher occupancy in the $\gtsobb$ states. Thus, condition (1) for landscape error in phase 5, heterogeneous occupancies along $\lambda_4$, is indeed satisfied.
+
+Next, we launched $10^6$ independent trajectories from each starting state along $\lambda_4$ that had non-zero occupancy in either replicate 6 or 8. Just as in a normal \abr{FFPilot} simulation, we stopped each trajectory when it either reached the next interface or fell back into the initial basin, and we took note of the stopping states. This gave us a highly accurate estimate of $P\left(\lambda_{5} | \lambda_{4}\right)$ as a function of trajectory starting state. These state-dependent probability values $P\left(\lambda_{5} | \gtsbpa, \gtsostate, \lambda_4\right)$, (which are also binned by $\gtsbpa$ and operator state $\gtsostate$), are shown as filled circles in \figref{fig:name_gts_-_phase_weight_4_split_by_operator_-_rep_6_8_-_theta_1.0e+01}. $P\left(\lambda_{5} | \gtsbpa, \gtsostate, \lambda_4\right)$ varies a great deal across both $\gtsbpa$ and  $\gtsostate$, meaning that condition (2) is also satisfied for our simulations of $\GTSSLOW$, and that landscape error is indeed a possible explanation for the anomalous error.
+ 
+In order to test if landscape error alone is a sufficient explanation for the observed anomalous error, we recalculated the phase 4 and 5 weights of replicates 6 and 8 from their landscapes alone, according to:
+\begin{equation}
+\label{eq:reconstituted_phase_weights}
+	P\left(\lambda_{5} | \lambda_{4}\right) = \sum\limits_{\gtsbpa} \sum\limits_{\gtsostate} \left[ P\left(\lambda_{5}|\gtsbpa, \gtsostate, \lambda_{4}\right) \times P\left(\gtsbpa, \gtsostate|\lambda_{4}\right) \right].
+\end{equation}
+If landscape error is indeed the sole cause of the anomalous error, we expected that the phase weights derived from \eqref{eq:reconstituted_phase_weights} would closely match those originally estimated by replicates 6 and 8, even though these original estimates vary greatly between the replicates. In this view, the phase $\phasegz$ weight estimate produced by each simulation converges (with increasing trajectory count) to a unique value of $P\left(\lambda_{i}|\lambda_{i-1}\right)$, as determined by their heterogeneous samples of the landscape along $\lambda_{i-1}$. The recalculated phase weight values are plotted as empty circles in \figref{fig:name_gts_-_phase_weights_-_rep_6_8_-_theta_1.0e+01}, and they do indeed closely agree with the original estimates. Thus, we conclude that sampling error is indeed being handled correctly by \abr{FFPilot}, and the anomalous error in our $\GTS$ simulation results is due to landscape error.
+
+\subsection{Eliminating Landscape Error in $\GTS$ via Oversampling}
+\label{sec:oversampling}
+
+Although a complete mathematical treatment of landscape error is beyond the scope of this paper, we wanted to investigate strategies for eliminating landscape error within the limited context of $\GTS$. To this end we ran \abr{FFPilot} simulations of $\GTSSLOW$ under a variety of different oversampling schemes. As can be seen in \figref{fig:name_gts_-_phase_weight_percent_error_-_error_goal_1.0e-01_-_theta_1.0e+01}, for $\GTSSLOW$ landscape error is mainly an issue in phases 3-5. Based on this, we initially we hypothesized that increasing sampling by 10X in phases 2-4 (\ie increasing sampling in each of the phases preceding the problematic phases) would abolish landscape error.
+
+The results from 1000 simulations of $\GTSSLOW$ with 10X phase 2-4 sampling at an error goal of 10\% are shown in the second column of \figref{fig:name_gts_-_stage_fpt_percent_error_-_landscape_fudge_several_-_error_goal_1.0e-01_-_theta_1.0e+01}. Oversampling in these phases alone has only a minor effect on simulation error. Under these conditions the 95th percentile of error was ~38\%, whereas the error without oversampling is ~47\%. Based on these results, we tried out a more expansive oversampling strategy. In addition to oversampling by 10X in phases 2-4, we oversampled by 20X in phase 0 and 10X in phase 1 as well. The results from 1000 simulations run with 20X phase 0, 10X phase 1-4 oversampling are shown in the last column of \figref{fig:name_gts_-_stage_fpt_percent_error_-_landscape_fudge_several_-_error_goal_1.0e-01_-_theta_1.0e+01}. Error is reduced dramatically under these conditions, to just under 10\%. We also tried 10X phase 0 oversampling, but found that it was not quite sufficient to eliminate landscape error (see supplemental Fig S5).
+
+Thus, oversampling in phases 2-4 alone had almost no effect, but oversampling in phases 0-4 was enough to eliminate the landscape error. In order to understand this difference, we eliminated oversampling in each phase individually. The results from these simulations are shown in supplemental Fig S6. The effect of skipping oversampling in phase 0 is particularly dramatic, leading to an increase in simulation error of nearly 25\%. So long as phase 0 is being oversampled, the increase in simulation error from skipping oversampling in any of phases 1-4 is less dramatic (2\%-7\%) but still significant. This implies that landscape errors are correlated. Effectively, defects in the sampled landscape distribution at any $\lambda_i$ may carry over to $\lambda_{i+1}$.
+
+\subsection{Theoretical Efficiency of DS, FFS, and FFPilot Simulations}
+\label{sec:efficiency}
+
+Enhanced sampling is commonly assumed to be more efficient than \abr{DS}. By controlling for simulation error, a direct comparison can be made between \abr{DS} and \abr{FFPilot} simulations, and the speedup of one simulation method versus the other can be assessed.
+
+It is straightforward to derive an expression for the cost of a \abr{DS} simulation $\Costds$ as a function of the error goal. Plugging \eqref{eq:ds_optimizing} into \eqref{eq:cost_mfptestds} yields:
+    \begin{equation}
+       \label{eq:ds_cost}
+        \Costds = \mfpttrue \frac{\zscoresq}{\moesq}.
+    \end{equation}
+
+The cost of an \abr{FFS} simulation $\Costffs$ is given by \eqref{eq:cost_target_func}: $\Costffs = \sum_{i=0}^{\Phase} \samplecount \pctrue$. We can plug the \opteq{} (\eqref{eq:optimizing_equation_ffpilot}) into \eqref{eq:cost_target_func} in order to expand the $\samplecount$ values. This yields an expression for $\Costffsopt$, the cost of an optimized \abr{FFS} simulation given \apriori knowledge of the parameters required for the optimizing equation:
+    \begin{equation}
+        \label{eq:ffs_opt_cost}
+        \Costffsopt = \frac{\zscoresq}{\moesq} \left(\sqrt{\frac{\pctruex{0} \pwvtruex{0}}{\pwtruesqx{0}}} + \sum_{\phase=1}^\Phase \sqrt{\frac{\pctrue \left( 1-\probphase \right)}{\probphase}} \right)^2.
+    \end{equation}
+
+Next, we examined the theoretical efficiency of the \abr{FFPilot} approach. Due to the \opteq{}, the production stage of an \abr{FFPilot} simulation can be thought of the most computationally efficient \abr{FFS} simulation possible with respect to a given error goal. However, if the pilot stage is too expensive it may be possible that in general \abr{FFPilot} is inefficient relative to the traditional \abr{FFS} algorithm. Thus we wanted to determine if \abr{FFPilot} simulation is reasonably efficient, and, if so, under what conditions.
+
+The total cost of an \abr{FFPilot} simulation $\Costffpilot$ can be found by adding a second term to the RHS of \eqref{eq:ffs_opt_cost} that specifically accounts for the extra runs performed during the pilot stage:
+    \begin{equation}
+    \label{eq:ffpilot_cost}
+        \Costffpilot = \frac{\zscoresq}{\moesq}\left(\sqrt{\frac{\pctruex{0} \pwvtruex{0}}{\pwtruesqx{0}}} + \sum_{\phase=1}^\Phase \sqrt{\frac{\pctrue \left( 1-\probphase \right)}{\probphase}} \right)^2 + \samplecountpilot \left( \pctruex{0} + \sum _{j=1}^\Phase \frac{\pctruex{j}}{\probphasex{j}} \right).
+    \end{equation}
+
+\eqref{eq:ffpilot_cost} gives $\Costffpilot$ as a function of error goal. The production stage cost increases with error goal  $\frac{\moesq}{\zscoresq}$ whereas the pilot stage cost remains fixed. For a low enough error goal, the pilot stage term in $\Costffpilot$ will be negligible compared to the overall simulation cost. For simulations run with $\samplecountpilot = 10^4$ the approximation $\Costffpilot \approx \Costffsopt$ holds when the error goal was \textless 5\% (see \figref{fig:name_srg_-_speedup_plot_-_simtime_vs_moe}).
+
+\subsection{Speedup of FFPilot vs DS in Simulations with Equivalent Error}
+\label{sec:speedup}
+
+%\begin{odone}
+%\1 Figures
+%    \2 \figref{fig:toy_model_simulation_time_scaling_with_percent_error}: simulation time vs percent error
+%    \2 \figref{fig:simulation_time_vs_theta}: simulation time vs theta
+%    \2 \figref{fig:simulation_time_vs_mfpt}: simulation time vs system \abr{MFPT}
+%\end{odone}
+%\begin{odone}
+%\1 The optimizing equations let us for the first time determine if an ideal implementation of \abr{FFS} is indeed faster than an ideal implementation of \abr{DS}.
+%    \2 and if so, by how much?
+%    \2 Since runtime for both \abr{FFS} and DS is dependent on error (and vice-versa), we need to constrain our models to a single fixed error goal when comparing runtimes
+%    \2 The optimizing equations ensure that we are considering shortest possible runtime for a given error goal and sampling method
+%\1 A direct comparison of the the minimum computational effort required to achieve a predetermined sampling error when using DS vs \abr{FFS} revealed several trends
+%    \2 When looking at error vs simulation time, both \abr{FFS} and DS have an inverse power law relationship
+%    \2 When looking at event rarity vs simulation time (for a fixed error goal), both DS and \abr{FFS} have a power law relationship
+%        \3 simulation time $=$ scale $\cdot$ rarity$^{\mathrm{shape}}$
+%        \3 Rarity here is equivalent to the slowest $\mfpttrue$ in the system
+%    \2 Both the shape and the scale parameters are significantly smaller for \abr{FFPilot} compared to DS
+%\1 By extrapolating on the observed trends in \abr{FFS} and DS times, we can determine several things
+%    \2 The rarer an event, the better \abr{FFPilot} performs compared to DS for a fixed error goal
+%    \2 Could potentially be a speedup of tens of orders of magnitude for a system with extremely divergent timescales
+%\end{odone}
+
+We determined the speedup of \abr{FFPilot} vs \abr{DS} both as a function of simulation error and as a function of switching event rarity. We also examined the model dependence of the speedup. For SRG the speedup of \abr{FFPilot} over DS is considerable and scales directly with switching event rarity (see top of \figref{fig:name_srg_-_speedup_plot_-_simtime_vs_moe} and supplemental Fig S9). Given a 1\% error goal, for $\SRGSLOW$ the speedup of \abr{FFPilot} over DS is 44X, whereas for $\SRGSLOWEST$ the speedup increases to 323X.
+
+%For DS simulations of GTS, we found that the observed error in the final results matched with the error goal. For \abr{FFPilot} simulations, however, the observed error was always somewhat above the error goal, due to the extra landscape error.
+For GTS, the \abr{FFPilot} vs DS speedup results are somewhat more complicated to interpret, due to the extra landscape error in \abr{FFPilot}. In order to make a fair comparison between \abr{FFPilot} and DS simulations of GTS, we oversampled our \abr{FFPilot} simulations (see \secref{sec:oversampling}) such that the observed error matched the error goal. The extra computational cost imposed by the oversampling must be taken into account when considering the speedup. The cost of an oversampled \abr{FFPilot} simulation can be found by multiplying each sample count by its oversampling factor.
+    
+As with SRG, the simulation times of GTS simulations, both \abr{FFPilot} and DS, were found to scale with switching event rarity roughly as a power law (see bottom of \figref{fig:name_srg_-_speedup_plot_-_simtime_vs_moe} and \figref{fig:name_theta_-_speedup_plot_-_simtime_vs_mfpt_-_error_goal_1.0e-02}). If the effects of landscape error are ignored, then the \abr{FFPilot} over DS speedups are as considerable for GTS as for SRG. Given a 1\% error goal, the speedup for $\GTSSLOW$ is 21X, while the speedup for $\GTSSLOWEST$ is 647X. However, if the oversampling required to correct for landscape error in GTS simulations is taken into account, the \abr{FFPilot} speedup shrinks. With oversampling, given a 1\% error goal the speedup for $\GTSSLOW$ is 2X, while the speedup for $\GTSSLOWEST$ is 80X.
+
+%The GTS speedups with the oversampling factored in are the most representative of the current state of the \abr{FFPilot} algorithm with respect to the simulation of systems with complex landscapes. The larger GTS speedups should be considered as the theoretical maximum performance of the \abr{FFPilot} algorithm if a more efficient way of dealing with the landscape can be found.
+
+%The percent errors of the $\mfpttrue$ calculated in each of these 9000 simulations of $\SRG$ are shown in \figref{fig:name_srg_-_percent_error_vs_error_goal_-_kind_mfpt_-_reps_100_-_pzsm_1.0e+01 }. The percent errors were calculated relative to the $\mfpttrue$ value estimated by an equivalent simulation with an error goal of 0.1\%. As before, if \abr{FFPilot} works as intended, then the middle of the  red lines (which mark the 95th percentiles of the errors) shown in \figref{fig:name_srg_-_percent_error_vs_error_goal_-_kind_mfpt_-_reps_100_-_pzsm_1.0e+01} should be at or bellow the $x=y$ lines in each subfigure.
+
+% & \\
+%    \ce{2A <=> A2}          &\ce{2B <=> B2}          \\
+%    \ce{O + A2 <=> OA2}     &\ce{O + B2 <=> OB2}     \\
+%    \ce{OA2 -> OA2 + A}     &\ce{OB2 -> OB2 + B}
+
+%The Margin of Error of a distribution is defined as 
+
+
+%\subsection{Derivation of the Optimizing Equations}
+%\begin{odraft}
+%\1 Focusing solely on the sampling error of switching time calculations, we want to be able to specify an a priori error goal for our simulations
+%    \2 Need an equation that tells us how many trajectories to launch in order to achieve a given error goal
+%    \2 We can build on previously derived equations: (number of trajectories) $\rightarrow$ (sampling error), but the solution to the inverse problem is ambiguous
+%    \2 Can use Lagrange Multipliers to determine a single optimal solution, if it exists
+%        \3 in terms of number of runs
+%        \3 in terms of computational effort
+%\end{odraft}
+%
+%\subsubsection{Direct Sampling}
+%\begin{odraft}
+%\1 Straightforward, based on a single variable (how many replicates?). Approximate as exponential, then derive formula for relative confidence interval from literature formula for confidence interval of mean value of exponential distribution as a function of number of samples
+%\1 start with literature formula for confidence interval of exponential
+%    \2 ${t}_{bound} = \frac{2n\widehat{t}}{\chi^2 \sub{p,2n}}$
+%    \2 variables:
+%        \3 $t$ is the $\mfpttrue$
+%        \3 $\widehat{t}$ is your estimate of $t$ (for MLE estimator, this is just the mean of all sampled t's)
+%        \3 n is the number of samples
+%        \3 $\chi^2_{p, v}$ is the 100(p) percentile of the chi squared distribution with v degrees of freedom
+%        \3 p is $1 - \frac{\alpha}{2}$ for the lower interval bound and $\frac{\alpha}{2}$ for the upper interval bound
+%\1 derive formula for relative confidence interval 
+%    \2 rewrite confidence interval formula in terms of a percent error with respect to the $\mfpttrue$ estimator ($\widehat{t}$)
+%        \3 $RCI = \frac{\widehat{t} - \frac{2n\widehat{t}}{\chi^2_{p,2n}}}{\widehat{t}}$
+%        \3 $RCI = 1 - \frac{2n}{\chi^{2}_{p,2n}}$
+%\1 solve RCI formula in terms of n
+%    \2 pass 
+%\end{odraft}
+%
+%\subsubsection{FFS}
+%\begin{odraft}
+%\1 More complicated than DS version, need to specify $tiles - 1$ independent-ish variables (how many runs in each phase)
+%\1 Break Forward Flux down into a set of simple processes with established statistical descriptions
+%    \2 (NEEDS MORE ANALYSIS) phase 0 is a "blank" process
+%        \3 hypotheses to test
+%            \4 it is an exponential process
+%            \4 it is a Poisson process
+%            \4 it is a combination of a diffusive process (when far from interface) and a random walk (when close to interface)
+%            \4 can't be mapped to a simple process, calculate variance using a bootstrap instead of an analytical formula
+%    \2 The rest of the phases are Bernoulli processes
+%        \3 A trajectory launched in phase N either crosses tile N or falls back into tile 0
+%            \4 Can be described with a single probability of success $p$ with a corresponding probability of failure $1 - p$
+%\1 Derive formula for variance of product in terms of the variances of the individual terms
+%    \2 $\mfpttrue$ is calculated as the product of the simple process parameters
+%    \2 Derive product variance formula from the definition of variance
+%    \2 Plug in expressions for expectation value/variance of the phases
+%    \2 Expand expression for variance of product
+%        \3 notice that all of the terms have at least one factor of $n_i$ in their denominators
+%\end{odraft}
+
+%\subsection{Controlling Error in a Simplified Model of the Genetic Toggle Switch}
+%\begin{ohline}
+%\1 Figures
+%    \2 \figref{fig:toy_model_estimator_distributions}: distributions of simplified model estimator outcomes
+%\end{ohline}
+
+
+%\begin{odraft}
+%\1 There are two main sources of error in \abr{FFS} simulations.
+%    \2 Sampling error
+%    \2 Landscape error
+%\1 In order to isolate how well \abr{FFPilot} controls sampling error vs landscape error, we first tried the algorithm out on a simplified version of the genetic toggle switch that does not have landscape error.
+%    \2 Instead of drawing samples from ensembles of stochastically simulated trajectories, we instead assume that each simulation phase follows exactly the distributions described in section \ref{sec:phrv_forms}.
+%    \2 Realizations of the simplified model are created by sampling from the appropriate random variable corresponding to the simulation phase distributions.
+%    \2 The random variables of the simplified model are parameterized using simulation data from the full CME model of the genetic toggle switch.
+%\1 The switching time results from both DS and FFS simulations of the simplified GTS model agree with each other and with the optimizing equation
+%    \2 Distributed exactly as predicted by the Delta Method.
+%        \3 See \figref{fig:toy_model_estimator_distributions}
+%    \2 Even for the simulations with a relatively low error goal, enough samples have been taken that the $\mfpttrue$ estimators do indeed converge to their predicted asymptotic distributions.
+%        \3 See \figref{fig:toy_model_actual_error_vs_predicted_error} and \figref{fig:toy_model_actual_error_vs_predicted_error_-_boxplot}
+%\end{odraft}    
+
+%\1 In order to determine if the approximations involved in the derivation were reasonable, we first tested the optimizing equations on GREM
+%    \2 Used the version that is only affected by sampling error
+%    \2 For our tests, GREM was parameterized based on $\mathrm{GTS}_{1.0}$
+
+%\subsection{Tunable Genetic Toggle Switch}
+%\begin{odraft}
+%\1 Need a fully detailed rare event model with a molecular basis on which to test our error control methods
+%    \2 Chose genetic toggle switch model, as it is a minimal model with various desired traits
+%        \3 NESS
+%            \4 complex, non-overlapping state transition pathways
+%        \3 stochastic switching
+%        \3 2+ distinct states (depends on variant)
+%    \2 "hydrogen atom" of rare event studies
+%\1 In order to investigate how event rarity affects errors/runtime in simulations of full CME models, we built a version of the genetic toggle switch with a tunable switching rate.
+%    \2 started with existing Exclusive genetic toggle switch (ten Wolde 2006)
+%        \3 exactly 2 states
+%    \2 added $\phi$, a relative protein churn rate parameter
+%\1 Switching time varies along with $\phi$ according to a straightforward inverse power law
+%    \2 Results based on $10^5$ DS trajectories
+%\end{odraft}
+
+%\subsection{Controlling Error in a Full CME Model of the Genetic Toggle Switch}
+%\subsubsection{Test of Vanilla \abr{FFPilot}}
+%\begin{odraft}
+%    \1 We tested out the \abr{FFPilot} algorithm on our suite of GTS models
+%        \2 DS comparison set uses $2 \cdot 10^5$ trajectories, resulting in sub-1\% error level
+%    \1 As can be seen in fig \ref{cme_model_percent_error_vs_error_goal_boxplot}, \abr{FFPilot} does not do as good a job of predicting margin of error with the full CME model as it did with the simplified model.
+%        \2 Results from $GTS_{\theta=0.1}$ show only a little overdispersion
+%        \2 Whereas results from $GTS_{\theta=10}$ show a great deal of overdispersion
+%    \1 A possible clue as to why \abr{FFPilot} does better with $\theta=0.1$ than it does with $\theta=10$ can be found in \figref{fig:ffluxBFHistsLargePanel}, the epigenetic landscapes of the GTS variants.
+%        \2 Essentially, the landscape of the transition path of $GTS_{\theta=10}$ is much wider than that of $GTS_{\theta=0.1}$.
+%        \2 This extra width directly results in more landscape error, as (will be) described in sec \ref{sec:sources_of_error}.
+%\end{odraft}
+
+%\subsubsection{Oversampling \abr{FFPilot} phase 0}
+%\begin{odraft}
+%    \1 The overdispersion of the \abr{FFPilot} $\mfpttrue$ estimator for $GTS_{\theta=10}$ can be greatly reduced by oversampling phase 0 relative to the sample count determined by the optimization equation.
+%        \2 10X phase 0 sampling seems to be the sweet spot
+%        \2 See \figref{fig:cme_model_percent_error_vs_error_goal_at_different_phase_zero_mults}, \figref{fig:ffpilot_phase_weight_percent_errors_vs_predicted_errors}, and \figref{fig:mfpt_vs_theta}
+%    \1 Although it can be seen from \figref{fig:ffpilot_phase_weight_percent_errors_vs_predicted_errors} that sampling error in phase 0 may also be to blame for the overdispersion.
+%        \2 We assumed that the distribution of waiting times in between flux events during \abr{FFPilot} phase 0 was exponential.
+%            \3 As can be seen in \figref{fig:ffpilot_phase_zero_dwell_time_cdf}, the waiting time distribution is in fact not well fit by an exponential
+%        \2 In other words, part of the overdispersion is likely due to landscape error (which is unaccounted for by \abr{FFPilot} in any case), and part of it is likely due to an inaccurate approximation of the moments of the phase 0 waiting time distribution (which is potentially a correction that can be incorporated into future versions of \abr{FFPilot}).
+%\end{odraft}
+
+%\1 (SUPPLEMENTAL?) The number of tiles used in a Forward Flux simulation does not seem to have much of an effect on the sampling error.
+%    \2 We only tested evenly spaced tilings
+%    \2 Literature supports the conclusion for other tiling variations as well
+%    - (OPTIONAL) For example, if you were trying to model circadian oscillations from the molecular to the organismal scale
+%    - In theory, Forward Flux-type methods will always be as fast or faster than Direct Sampling for any system
+%    - In practice, more optimization work will be required to approach this bound, but it should be possible (put some profiling info in supplemental?)
+%    - (NEED TO GENERATE FIGURE) Wall clock time comparison 
+
+%\subsubsection{Mean First Passage Times}
+%%\rule{\textwidth}{1pt} \\
+%%- Figures \\
+%%    \par\noindent\hspace{0.25in} - \figref{fig:error_goal_performance_for_different_theta}: actual error vs error goal in simulated $\mfpttrue$ of ten replicates. From top plot to bottom, $\theta=10, 1, 0.1$ \\
+%%    \par\noindent\hspace{0.25in} - \figref{fig:effect_of_landscape_on_ffpilot_-_fpt_error}: actual error vs error goal in simulated $\mfpttrue$ of ten replicates of $\theta=10$. From top plot to bottom, phase 0 sampling multiplier = 1X, 10X, 100X. \\
+%%    \par\noindent\hspace{0.25in} - \figref{fig:effect_of_landscape_on_ffpilot_-_probability_error}: actual error vs error goal in $P(\lambda_{0}|\lambda_{n})$ of ten replicates of $\theta=10$. From top plot to bottom, phase 0 sampling multiplier = 1X, 10X, 100X. \\
+%%    \par\noindent\hspace{0.25in} - \figref{fig:mfpt_vs_theta}: comparison of Direct Sampling and \abr{FFPilot} $\mfpttrue$ at 1\% error and 10X phase 0 sampling. \\
+%%\rule{\textwidth}{1pt} \\
+%
+%\begin{ohline}
+%\1 Figures
+%    \2 \figref{fig:error_goal_performance_for_different_theta}: actual error vs error goal in simulated $\mfpttrue$ of ten replicates. From top plot to bottom, $\theta=10, 1, 0.1$
+%    \2 \figref{fig:effect_of_landscape_on_ffpilot_-_fpt_error}: actual error vs error goal in simulated $\mfpttrue$ of ten replicates of $\theta=10$. From top plot to bottom, phase 0 sampling multiplier = 1X, 10X, 100X.
+%    \2 \figref{fig:effect_of_landscape_on_ffpilot_-_probability_error}: actual error vs error goal in $p(\lambda_{0}|\lambda_{n})$ of ten replicates of $\theta=10$. From top plot to bottom, phase 0 sampling multiplier = 1X, 10X, 100X.
+%    \2 \figref{fig:mfpt_vs_theta}: comparison of Direct Sampling and \abr{FFPilot} $\mfpttrue$ at 1\% error and 10X phase 0 sampling.
+%\end{ohline}
+%
+%
+%\begin{odraft}
+%\1 We tested how well \abr{FFPilot} controls errors in calculations of the time it takes GTS to switch from one state to the other
+%    \2 We used $\mfpttrue$ as a measure of switching time
+%\1 Unlike for GREM simulations, error goal of GTS simulations does not tend to be in good agreement with actual error
+%    \2 Actual error is correlated with error goal, but is not bounded by it as intended
+%    \2 Error goal performance gets worse as $\theta$ increases
+%\1 The disagreement between error goal and actual error can be explained by landscape error (LE)
+%    \2 LE in phase i can be reduced by sampling more in phase i - 1 (in theory)
+%    \2 For GTS, LE will be greatest for phase 1, since the landscape is widest there
+%\1 The majority of landscape error can be dealt with by oversampling by a multiplier during phase 0
+%    \2 For $\theta = 10$, a 10X multiplier improves results
+%    \2 A 100X multiplier nearly eliminates landscape error
+%\1 A phase 0 sampling multiplier (PZM) reduces not only phase 0 sampling error but also errors in the other phase weights
+%    \2 Some effect is through reducing phase 0 sampling error
+%    \2 Most of the effect is through reducing error in the phase weights
+%        \3 This is demonstrated by the fact that increasing the PZM reduces error in the product of the phase weights $p(\lambda_{0}|\lambda_{n})$
+%\1 When using a 10X phase 0 sampling multiplier, a comparison of high accuracy Direct Sampling and 1\% error goal \abr{FFPilot} $\mfptest$ shows good agreement
+%    \2 Although 10X does not seem to be sufficient for $\theta=10$ (the log scale is somewhat deceptive)
+%\end{odraft}
+%
+%\subsubsection{Epigenetic Landscapes}
+%\begin{ohline}
+%\1 Figures
+%    \2 \figref{fig:ffluxBFHistsLargePanel}: epigenetic landscape plots calculated using Direct Sampling and \abr{FFPilot}
+%\end{ohline}
+%
+%\begin{odraft}
+%\1 In order to examine how \abr{FFPilot} constrains the errors in calculations of system properties other than switching time, we used it to generate maps of the GTS suite's epigenetic landscapes.
+%    \2 Although a fully detailed method for controlling the errors in landscape plots it outside of the scope of this paper, we are able to use \abr{FFPilot} to produce landscapes with low apparent error
+%    \2 In part, this is due to the fact that the bin weights in a Landscape calculated using a FFS-based technique are all proportional to the $\mfpttrue$
+%\end{odraft}
+
+%\subsection{Parallelizing the FFS Algorithm}
+%\begin{markdown}
+%- phase 0
+%    - multiple trajectories should equivalent to single long trajectory
+%        - make argument via ergodicity
+%- phase one
+%    - challenge of short runs
+%        - need very efficient interprocess communication
+%            - MPI
+%            - message batching
+%            - rotating message queue
+%\end{markdown}
+
+%%\subsubsection{Direct Sampling}
+%\begin{markdown}
+%- The DS estimator 
+%- Use the smallest appropriate value as determined by the confidence interval formula
+%\end{markdown}
+%
+%\subsubsection{Forward Flux}
+%\begin{markdown}
+%- Expand formula for RCI of a product of random variables and collect terms with like denominators. Group the terms by the order of their denominators, ie how many factors of $n\sub{i}$ they contain. It is trivial to show that the higher order terms fall off as $1/({n\sub{i}}^{order})$. Derive 1st order approximation of confidence interval formula in which each separate term only contains one factor of $n\sub{i}$ by throwing out the higher order terms.
+%    - In order to ensure that this is a reasonable approximation of the product variance, enforce a floor on the value of $n\sub{i}$. For example, ensure that $n\sub{i} \geq {10}^{4}$.
+%- also need to consider the differences in average run cost for each of the different phases
+%    - approximate formula based on tile width in state space (Allen)
+%    - alternatively, the average cost of each phase can easily be determined empirically
+%- solution: use the method of Lagrange Multipliers to minimize cost while keeping the confidence interval fixed
+%- derivation
+%    - the objective and constraint functions
+%    - rewrite the constraint function as g[x] = 0
+%    - write out the Lagrangian
+%    - take the gradient of $\mathcal{L}$
+%    - we now have a system of count(phases) + 1 equations (same number of variables), solve
+%    - end up with a formula with $n_i$, the optimal number of runs per phase, alone on the LHS
+%- Unfortunately, the above formula cannot be used with standard Forward Flux simulation since it requires us to know all of the phase probability factors beforehand
+%    - This is where \abr{FFPilot} comes in
+%\end{markdown}
+
+%\end{document}
+

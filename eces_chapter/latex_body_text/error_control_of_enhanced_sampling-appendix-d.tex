@@ -1,0 +1,41 @@
+%\documentclass[class=article, float=false, crop=false]{standalone}
+%\documentclass[10pt,letterpaper]{article}
+%
+%\input{error_control_of_enhanced_sampling-header}
+%
+%\begin{document}
+        
+\section{Estimating the Parameters of \opteq{}}
+\label{sec:pilot_param_est}
+An \abr{FFPilot} simulation begins with running a pilot stage. The \opteq{}  (\eqref{eq:optimizing_equation_ffpilot}) is then parameterized based on the outputs of that stage. Each parameter can be thought of as belonging to one of four different types ($\pctruex{0}, \pwvtruex{0}, \probphasex{\phase > 1}, \textrm{or} \pctrue$). We developed separate estimators for each type, based on what we knew of their statistics. In general, we sought to bias the estimators so as to ensure that the per-phase sample counts $\samplecount$ calculated from \eqref{eq:optimizing_equation_ffpilot} are at least as large as they would be if the parameter values were known exactly. This in turn helps to ensure that the overall simulation error is at most equal to the user-specified error goal.
+
+In theory, this biased estimation approach increases the accuracy of the production stage at the cost of some quantity of extra computational effort. In practice, we have found that this interval estimation approach helps to keep the \abr{FFPilot} algorithm stable in the case of systems with small $p_\phase$ values in an automated and computationally inexpensive fashion (as opposed to manually increasing the number of trajectories executed during the pilot stage).
+
+The actual estimator we use is:
+    \begin{equation}
+        \probphasex{\phase > 1}
+    \end{equation}
+
+\subsection{Estimating the Phase Weights $\pwtrue$ from the Pilot Stage}
+\label{sec:pw_estimation}
+
+
+
+See \figref{fig:blind_optimization_-_percent_error_vs_pi_-_several_success_counts}
+
+\todo{finish \secref{sec:pw_estimation}} 
+
+\subsection{Estimating the Phase Variances $\pwvtrue$ from the Pilot Stage}
+\label{sec:pwv_estimation}
+\todo{finish \secref{sec:pwv_estimation}}
+
+
+\subsection{Estimating the Phase Costs $\pctrue$ from the Pilot Stage}
+\label{sec:pc_estimation}
+The accuracy of the phase costs $\pctrue$ has no effect on the accuracy of the final result of an \abr{FFPilot} production stage (only on the quantity of computational effort spent to achieve that final result). There is no clear advantage to either over- or underestimating $\pctrue$. Thus, we simply use the sample mean as our estimator $\pcest$.
+\todo{finish \secref{sec:pc_estimation}} 
+
+\clearpage
+
+%\end{document}
+

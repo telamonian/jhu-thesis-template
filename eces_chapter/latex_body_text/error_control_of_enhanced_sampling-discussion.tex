@@ -1,0 +1,53 @@
+%\documentclass[class=article, float=false, crop=false]{standalone}
+%\documentclass[10pt,letterpaper]{article}
+%
+%\input{error_control_of_enhanced_sampling-header}
+%
+%\begin{document}
+%\vspace*{0.2in}
+
+\section{Discussion}
+
+%*  Summary of results
+%- Pilot approach enables us to account for varying computational costs along the transition path.
+%- Output of the pilot run can be used to quickly evaluate the choice of interfaces and order parameters.
+%- FFPilot controls sampling error correctly. Results for 1D systems are produced within precise error bounds.
+
+Above, we presented our FFPilot approach for automatically parameterizing a FFS simulation to both minimize simulation time and constrain sampling error at a user specified margin of error and confidence interval. By performing an inexpensive pilot simulation we obtain estimates of the weights and computational costs at each FFS interface, which are used to optimize a more thorough production simulation. Our pilot simulation approach also provides the advantage that individual interface placement, weights, and costs can be quickly evaluated before a potentially costly simulation is performed, if desired.
+
+Unlike previous FFS optimization techniques, our method accounts for the statistics of phase 0 and also for varying computational cost along the order parameter. Both of these features are important for ensuring that error is controlled while minimizing simulation time. Particularly, optimizing the time spent in phase 0 is important as our results indicate that these calculations can consume a significant fraction of the total simulation time.
+
+Our results show that FFPilot correctly controls the sampling error in FFS simulations. For one-dimensional systems, the \abr{MFPT} estimates fall precisely within the specified error bounds. For higher dimensional systems, our testing reveals that while sampling error is well controlled by FFPilot, error due to the system dependent landscape pushes the total error outside of the specified bounds.
+
+%* Discussion of GTS results
+%- GTS simulations fall outside of the error bounds due to landscape error.
+%- Higher dimensional systems may have different relaxation rates in different degrees of freedom. In this case, GTS doesn't relax fast enough along omega during a transition.
+%- The assumption of independence between phase weights is weakened.
+
+In the genetic toggle switch (GTS), substantial oversampling (from 10X--20X) in some phases is required to achieve the desired margin of error. As revealed by a detailed analysis, the anomalous error is due to underrepresentation of some parts of phase space in the crossing sets of early interfaces, especially phase 0. In the case of GTS, the system has a much higher probability of switching $\atob$ from the $\Omega = \mathrm{OB_2}$ state, but this state is rarely occupied during early phases and is thus subject to greater statistical variation. Additionally, the system relaxes much more slowly in the $\Omega$ dimension than in the other degrees of freedom, causing the crossing probability distributions at successive interfaces to be correlated in $\Omega$. Errors in the estimation of early crossing distributions therefore lock-in and cannot relax during later phases. These combined effects cause greater variability in the estimation of the phase weights than predicted and an increase in the total error.
+
+%* What is needed to control for landscape error
+%- Study the convergence properties of the phase distributions in the full phase space.
+%- Sample each interface until the distribution along the interface converges to a given level.
+%- Assumption of independence of variance between phase weights needs to be relaxed.
+%- Landscape error will be correlated between various interfaces so necessary to increase the sampling starting at phase 0. Convergence checks must emphasize the importance of earlier phases over later phases.
+%- When the relaxation in certain dimensions is much slower, the system can be thought of as having multiple transition paths (or possibly nonproduction pathways).
+%- Also possible that alternate order parameters might not exhibit the same degree of landscape error: what is OP also included a factor of omega?
+
+Since all multi-dimensional systems of significant complexity likely relax more quickly in some degrees of freedom than others, a general approach is needed to control for landscape error in FFS while minimizing simulation time. If the relationship between convergence of the crossing distributions and error were known these factors could be included in our optimization equation. 
+
+
+%* What is needed to study systems with many metastable states.
+%- Studying systems with many metastable states will be increasingly important as regulatory and developmental networks continue to be elucidated.
+%- How to handle intermediate states along the the transition path in terms of landscape error.
+%- How to handle multiple transition paths.
+%- Possible to study each transition path separately using a branching approach and then recombine the results.
+
+Studying stochastic biochemical systems with metastable states will become increasingly important as more regulatory and developmental networks are elucidated in sufficient detail to permit quantitative modeling. Our findings raise the important issue of what other obstacles exist for efficient rare event sampling of these systems using FFS. For example, how to control landscape error in systems with many metastable states, with multiple transition paths, or with metastable intermediates? One possibility would be to study each transition path separately, using a branching approach, and then recombine the results based on the branching probabilities.
+
+%* Summary
+%- FFPilot provides a significant speedup compared to direct simulation of systems with rare event dynamics.
+%- Even with oversampling to control landscape error, speedups on the order of 100X for systems with long first passage times can be expected.
+
+In summary, our FFPilot method provides a significant speedup compared to direct simulation of systems with rare event dynamics. Even with oversampling to control landscape error, speedups on the order of 100X for systems with long first passage times can be expected. The automatic optimization of simulation parameters to achieve a desired level of sampling error through the use of our optimization equation makes FFS simulations more robust and efficient.
+

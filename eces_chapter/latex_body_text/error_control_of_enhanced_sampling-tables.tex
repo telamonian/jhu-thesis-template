@@ -1,0 +1,147 @@
+%\documentclass[class=article, float=false, crop=false]{standalone}
+%\usepackage{standalone}
+%\usepackage{varioref}
+
+\section*{Tables}
+
+\begin{table}[h]
+    \caption{\label{tab:rem}Parameterization and other simulation data from our simplified \remname{} (\remabbrev{}). The phase weights $\pwtrue$ were copied from those of $\GTSSLOWER$ (see \tableref{tab:gts}). All sample costs $\pcsymb$ were set to $1$.}
+    \begin{tabularx}{\textwidth}{XX}
+    \hline\hline
+        \begin{tabular}{r|CCCCC}
+            phase & \fnm{1}\pwtrue & \fnm{2}\cost_\phase^f & \fnm{3}\cost_\phase^s & \fnm{4}\cost_\phase & \fnm{5}n_\phase \times 10^{-3} \\ \hline
+            0     & 45.3     & \textemdash     & \textemdash     & 1     & 1834     \\
+            1     & .092     & 1     & 1     & 1     & 2020     \\
+            2     & .274     & 1     & 1     & 1     & 1047     \\
+            3     & .136     & 1     & 1     & 1     & 1621  \\
+            4     & .150     & 1     & 1     & 1     & 1527     \\
+            5     & .242     & 1     & 1     & 1     & 1138     \\
+            6     & .636     & 1     & 1     & 1     & 486     \\
+            7     & .711     & 1     & 1     & 1     & 410     \\
+            8     & .858     & 1     & 1     & 1     & 261     \\
+            9     & .913     & 1     & 1     & 1     & 199     \\
+            10    & .973     & 1     & 1     & 1     & 107     \\
+            11    & .989     & 1     & 1     & 1     & 67     \\
+            12    & .998     & 1     & 1     & 1     & 30     \\ \hline
+            MFPT  & \multicolumn{5}{C}{1.074 \cdot 10^{6}}
+        \end{tabular} \\
+    \hline\hline
+    \end{tabularx}
+\end{table}
+\footnotetext[1]{The phase weight of phase $\phase$.}
+\footnotetext[2]{The expected cost of a failed phase $\phase$ trajectory.}
+\footnotetext[3]{The expected cost of a successful phase $\phase$ trajectory.}
+\footnotetext[4]{The expected cost of a phase $\phase$ sample.}
+\footnotetext[5]{The phase $\phase$ sample count (in thousands) for a 1\% error goal with 95\% confidence.}
+\clearpage
+
+\begin{table}[h]
+    \caption{\label{tab:srg_reactions}Reaction scheme for our \srgname{} (\srgabbrev{}) models.}
+
+    % reactions
+    \begin{tabularx}{\textwidth}{XX}
+    \hline\hline
+        % species
+        \begin{tabular}{rcl}
+            Reactions & Rates & Description \\ \hline
+            \ce{$\varnothing$ -> A} & $\srgklow + \left(\srgkhigh - \srgklow\right)\frac{\text{A}^h}{\srgkmid^h + \text{A}^h}$ & expression \\
+            \ce{A -> $\varnothing$} & $\beta \text{A}$ & decay  \\
+        \end{tabular} \\
+    \hline\hline
+    \end{tabularx}
+\end{table}
+\clearpage
+
+\begin{table}[h]
+    \caption{\label{tab:srg}Parameterizations and other simulation data from our \srgabbrev{} models. Per-phase weights, costs, and sample counts were estimated from the average results of 1000 \abr{FFPilot} simulations (1\% error goal). \abr{MFPT} values were estimated from the results of $10^5$ \abr{DS} simulations, plus or minus the 95\% confidence interval bounds.}
+    \begin{tabularx}{\textwidth}{XX}
+    \hline\hline
+        \begin{tiny}
+        \begin{tabular}{r|CCCCCC|CCCCCC|CCCCCC}
+            \multicolumn{1}{r|}{parameter} & \multicolumn{6}{C}{\SRGSLOWEST} & \multicolumn{6}{C}{\SRGSLOWER} & \multicolumn{6}{C}{\SRGSLOW} \\ \hline
+            $h$                            & \multicolumn{6}{C|}{2.4}  & \multicolumn{6}{C|}{2.3 }  & \multicolumn{6}{C}{2.2}  \\
+            $\srgklow$                     & \multicolumn{6}{C|}{10 }  & \multicolumn{6}{C|}{10  }  & \multicolumn{6}{C}{10 }  \\
+            $\srgkhigh$                    & \multicolumn{6}{C|}{200}  & \multicolumn{6}{C|}{200 }  & \multicolumn{6}{C}{200}  \\
+            $\srgkmid$                     & \multicolumn{6}{C|}{91 }  & \multicolumn{6}{C|}{92.5}  & \multicolumn{6}{C}{94 }  \\
+            $\beta$                        & \multicolumn{6}{C|}{1  }  & \multicolumn{6}{C|}{1   }  & \multicolumn{6}{C}{1  }  \\ \hline
+            phase & \cc{\fnm{1}\ifacei} & \cc{\fnm{2}\pwtrue} & \cc{\fnm{3}\cost_\phase^f} & \cc{\fnm{4}\cost_\phase^s} & \cc{\fnm{5}\cost_\phase} & \ccl{\fnm{6}n_\phase \times 10^{-3}} & \cc{\ifacei} & \cc{\pwtrue} & \cc{\cost_\phase^f} & \cc{\cost_\phase^s} & \cc{\cost_\phase} & \ccl{n_\phase \times 10^{-3}} & \cc{\ifacei} & \cc{\pwtrue} & \cc{\cost_\phase^f} & \cc{\cost_\phase^s} & \cc{\cost_\phase} & \cc{n_\phase \times 10^{-3}} \\ \hline
+            0   & 23.0  & 9.66     & \cc{\textemdash}       & \cc{\textemdash}       & 9.66      & 641   & 23.0  & 6.89     & \cc{\textemdash}       & \cc{\textemdash}       & 6.89      & 703    & 23.0  & 4.78     & \cc{\textemdash}       & \cc{\textemdash}       & 4.78      & 762      \\
+            1   & 33.6  & .007     & .130     & .913     & .135     & 26395 & 34.1  & .010     & .137     & .936     & .150      & 18975  & 34.6  & .018     & .138     & .846     & .151     & 12067    \\
+            2   & 44.2  & .071     & 1.56      & 1.21      & 1.53      & 2383  & 45.2  & .112     & 1.65      & 1.20      & 1.60      & 1620   & 46.2  & .140     & 1.64      & 1.30      & 1.60      & 1253     \\
+            3   & 54.8  & .277     & 2.89      & 1.14      & 2.41      & 850   & 56.2  & .296     & 2.99      & 1.24      & 2.47      & 714    & 57.8  & .354     & 3.05      & 1.23      & 2.41      & 556      \\
+            4   & 65.3  & .565     & 4.22      & 1.30      & 2.57      & 447   & 67.3  & .580     & 4.35      & 1.28      & 2.57      & 387    & 69.3  & .572     & 4.45      & 1.39      & 2.70      & 337      \\
+            5   & 75.9  & .855     & 5.45      & 1.12      & 1.75      & 254   & 78.4  & .825     & 5.63      & 1.23      & 2.00      & 237    & 80.9  & .814     & 5.78      & 1.23      & 2.08      & 212      \\
+            6   & 86.5  & .962     & 6.48      & 1.03      & 1.24      & 147   & 89.5  & .946     & 6.75      & 1.08      & 1.39      & 147    & 92.5  & .924     & 7.01      & 1.24      & 1.67      & 141      \\
+            7   & 97.1  & .993     & 7.35      & .844     & .890     & 73    & 101   & .986     & 7.71      & .926     & 1.02      & 85     & 104   & .977     & 8.12      & 1.09      & 1.25      & 88       \\
+            8   & 108   & .999     & 8.11      & .700     & .709     & 34    & 112   & .997     & 8.56      & .836     & .862     & 46     & 116   & .993     & 9.07      & .905     & .959     & 53       \\
+            9   & 118   & 1.00     & 8.83      & .767     & .769     & 16    & 123   & .999     & 9.42      & .825     & .833     & 25     & 127   & .997     & 10.0      & .981     & 1.00      & 32       \\
+            10  & 129   & 1.00      & \cc{\textemdash}       & .779     & .779     & 8     & 134   & 1.00      & 10.4      & .894     & .897     & 14     & 139   & .999     & 11.0      & .955     & .965     & 20       \\
+            11  & 139   & 1.00      & \cc{\textemdash}       & 1.05      & 1.05      & 5     & 145   & 1.00      & \cc{\textemdash}       & 1.07      & 1.07      & 9      & 150   & .999     & 12.3      & 1.24      & 1.25      & 14       \\
+            12  & 150   & 1.00      & \cc{\textemdash}       & 1.33      & 1.33      & 3     & 156   & 1.00      & \cc{\textemdash}       & 1.44      & 1.44      & 6      & 162   & 1.00      & 13.8      & 1.48      & 1.49      & 10       \\ \hline
+            \multicolumn{1}{r|}{MFPT} & \multicolumn{6}{C|}{(1.521 \pm .0094) \cdot 10^{5}} & \multicolumn{6}{C|}{(4.661 \pm .029) \cdot 10^{4}} & \multicolumn{6}{C}{(1.271 \pm .0079) \cdot 10^{4}}    \\
+        \end{tabular}
+        \end{tiny} \\
+    \hline\hline
+    \end{tabularx}
+\end{table}
+\footnotetext[1]{The position of interface $\phase$ in terms of order parameter $\srga$.}
+\footnotetext[2]{The phase weight of phase $\phase$.}
+\footnotetext[3]{The expected cost of a failed phase $\phase$ trajectory.}
+\footnotetext[4]{The expected cost of a successful phase $\phase$ trajectory.}
+\footnotetext[5]{The expected cost of a phase $\phase$ sample.}
+\footnotetext[6]{The phase $\phase$ sample count (in thousands) for a 1\% error goal with 95\% confidence.}
+\clearpage
+
+\begin{table}[h]
+    \caption{\label{tab:gts_reactions}Reaction scheme for our \gtsname{} (\gtsabbrev{}) models.}
+    \begin{tabularx}{\textwidth}{XX}
+    \hline\hline
+        \begin{tabular}{r@{}c@{}l r@{}c@{}l c c l}
+            \multicolumn{6}{c}{\jumpul{Reactions}} & \multicolumn{2}{l}{\jumpul{Rate Constants}} & \jumpul{Description} \\
+            \multicolumn{3}{c}{\footnotesize{\textit{Protein A}}} & \multicolumn{3}{c}{\footnotesize{\textit{Protein B}}} & \footnotesize{\textit{forward}} & \footnotesize{\textit{reverse}} & \\ \hline
+            \ce{O &->& O + A}         & \ce{O &->& O + B}         & $\theta$     &       & expression       \\
+            \ce{A &->& $\varnothing$} & \ce{B &->& $\varnothing$} & $\theta/4$ &       & decay            \\
+            \ce{2A &<=>& A2}          & \ce{2B &<=>& B2}          & $5$          & $5$ & dimerization     \\
+            \ce{O + A2 &<=>& OA2}     & \ce{O + B2 &<=>& OB2}     & $5$          & $1$   & operator binding \\
+            \ce{OA2 &->& OA2 + A}     & \ce{OB2 &->& OB2 + B}     & $\theta$     &       & bound expression \\
+        \end{tabular} \\
+    \hline\hline
+    \end{tabularx}
+\end{table}
+\clearpage
+
+\begin{table}[h]
+    \caption{\label{tab:gts}Parameterizations and other simulation data from our \gtsabbrev{} models. Per-phase weights, costs, and sample counts were estimated from the average results of 1000 \abr{FFPilot} simulations (1\% error goal). \abr{MFPT} values were estimated from the results of $10^5$ \abr{DS} simulations, plus or minus the 95\% confidence interval bounds.}
+    \begin{tabularx}{\textwidth}{XX}
+    \hline\hline
+        \begin{tiny}
+        \begin{tabular}{rY|CCCCC|CCCCC|CCCCC}
+            \multicolumn{2}{r|}{parameter} & \multicolumn{5}{C}{\GTSSLOWEST} & \multicolumn{5}{C}{\GTSSLOWER} & \multicolumn{5}{C}{\GTSSLOW} \\ \hline
+            \multicolumn{2}{r|}{$\theta$}  & \multicolumn{5}{C|}{.1} & \multicolumn{5}{C|}{1} & \multicolumn{5}{C}{10}                         \\ \hline
+            \multicolumn{1}{c}{phase} & \fnm{1}\ifacei & \cc{\fnm{2}\pwtrue} & \cc{\fnm{3}\cost_\phase^f} & \cc{\fnm{4}\cost_\phase^s} & \cc{\fnm{5}\cost_\phase} & \ccl{\fnm{6}n_\phase \times 10^{-3}} & \cc{\pwtrue} & \cc{\cost_\phase^f} & \cc{\cost_\phase^s} & \cc{\cost_\phase} & \ccl{n_\phase \times 10^{-3}} & \cc{\pwtrue} & \cc{\cost_\phase^f} & \cc{\cost_\phase^s} & \cc{\cost_\phase} & \cc{n_\phase \times 10^{-3}} \\ \hline
+            0  & -27.0  & 453     & \cc{\textemdash}         & \cc{\textemdash}        & 453     & 1664     & 45.3     & \cc{\textemdash}     & \cc{\textemdash}   & 45.3     & 1337     & 4.52     & \cc{\textemdash}     & \cc{\textemdash}        & 4.52     & 985 \\
+            1  & -22.5  & .092     & 19.7       & 63.5       & 23.7    & 8010     & .092     & 1.97     & 6.35     & 2.37     & 6436     & .090     & .197 & .643     & .238    & 4698 \\
+            2  & -18.0  & .271     & 148        & 113        & 138     & 1728     & .274     & 14.8     & 11.2     & 13.8     & 1382     & .281     & 1.51     & 1.12      & 1.40     & 977 \\
+            3  & -13.5  & .128     & 307        & 176        & 290     & 1897     & .136     & 30.7     & 17.1     & 28.8     & 1482     & .170     & 3.13     & 1.46      & 2.85     & 946 \\
+            4  & -9.0   & .111     & 442        & 120        & 406     & 1738     & .150     & 44.0     & 10.5     & 38.9     & 1201     & .339     & 4.46     & .597      & 3.15     & 568 \\
+            5  & -4.5   & .082     & 536        & 131        & 503     & 1849     & .242     & 52.6     & 10.1     & 42.3     & 859      & .676     & 4.98     & .529      & 1.97     & 356 \\
+            6  & 0.0    & .437     & 659        & 118        & 423     & 684      & .636     & 61.4     & 8.93     & 28.0     & 451      & .872     & 5.14     & .463      & 1.06     & 268 \\
+            7  & 4.5    & .632     & 830        & 167        & 411     & 467      & .711     & 73.6     & 12.7     & 30.3     & 365      & .873     & 5.83     & .657      & 1.32     & 240 \\
+            8  & 9.0    & .861     & 994        & 140        & 259     & 310      & .858     & 85.1     & 11.1     & 21.6     & 276      & .918     & 6.43     & .599      & 1.08     & 208 \\
+            9  & 13.5   & .940     & 1153       & 165        & 225     & 209      & .913     & 97.3     & 14.4     & 21.6     & 210      & .925     & 7.08     & .861      & 1.33     & 178 \\
+            10 & 18.0   & .988     & 1283       & 122        & 135     & 116      & .973     & 108      & 11.5     & 14.1     & 140      & .960     & 7.58     & .809      & 1.08     & 141 \\
+            11 & 22.5   & .997     & 1397       & 156        & 159     & 53       & .989     & 117      & 15.4     & 16.5     & 81       & .972     & 8.14     & 1.27      & 1.46     & 102 \\
+            12 & 27.0   & 1.00     & 1493       & 150        & 150     & 19       & .998     & 126      & 14.9     & 15.1     & 37       & .989     & 8.61     & 1.36      & 1.44     & 63 \\ \hline
+            \multicolumn{2}{r|}{MFPT} & \multicolumn{5}{C|}{(7.015 \pm .043) \cdot 10^{7}} & \multicolumn{5}{C|}{(1.074  \pm .0067) \cdot 10^{6}} & \multicolumn{5}{C}{(7.701 \pm .048) \cdot 10^{3}}    \\
+        \end{tabular}
+        \end{tiny} \\
+    \hline\hline
+    \end{tabularx}
+\end{table} 
+\footnotetext[1]{The position of interface $\phase$ in terms of order parameter $\gtsbma$.}
+\footnotetext[2]{The phase weight of phase $\phase$.}
+\footnotetext[3]{The expected cost of a failed phase $\phase$ trajectory.}
+\footnotetext[4]{The expected cost of a successful phase $\phase$ trajectory.}
+\footnotetext[5]{The expected cost of a phase $\phase$ sample.}
+\footnotetext[6]{The phase $\phase$ sample count (in thousands) predicted by \abr{FFPilot} to achieve a 1\% error goal, 95\% confidence.}
+\clearpage

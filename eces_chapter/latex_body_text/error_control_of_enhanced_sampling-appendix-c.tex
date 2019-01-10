@@ -1,0 +1,31 @@
+%\documentclass[class=article, float=false, crop=false]{standalone}
+%\documentclass[10pt,letterpaper]{article}
+%
+%\input{error_control_of_enhanced_sampling-header}
+%
+%\begin{document}
+
+\section{Blind Optimization Method}
+\label{sec:blind_opt}
+Taken as a whole, the \abr{FFPilot} approach to optimizing simulations can function reliably only if the results of the pilot stage are highly accurate (at least in terms of the individual parameter estimates) and computationally inexpensive (relative to the production stage). No prior knowledge of the system under study is used in the setup of the pilot stage. Thus, a ``blind'' optimization method, one that uses no information about the current phase or any other, must be used during this initial stage.
+
+The blind optimization method that we use during the \abr{FFPilot} pilot stage works by altering the conditions under which a simulation phase is terminated. During a standard \abr{FFS} simulation, simulation phase $\phasegz$ is terminated once a fixed number of trajectories $\samplecount$ have launched from $\ifaceimo$ and have ended, regardless of where (in state space) those trajectories have ended. During a pilot stage, we instead terminate phase $\phasegz$ only once a fixed number $\successcount = \samplecountpilot$ of \textit{successful} trajectories (\ie the ones that reach $\ifacei$) have been observed.
+
+The advantage of using our blind optimization method is that it is able to produce estimates of the phase weight $\pwtruex{\phasegz} = \probphasex{\phase}$ with constrained maximum error. The margin of error for a single phase $\phasegz$ can be calculated from \eqrefTwo{eq:product_estimator_zeta}{eq:phrv_moments}:
+    \begin{equation*}
+        \moefuncx{}{\probphaseest} = \zscore \sqrt{\frac{1 - \probphase}{\probphase \samplecount}}.
+    \end{equation*}
+The total count of trajectories $\samplecount$ required to produce $\samplecountpilot$ successful trajectories in phase $\phasegz$ converges to $\frac{\samplecountpilot}{\probphase}$. Thus, with respect to the pilot stage the above equation can be rewritten as:
+\begin{equation}
+    \label{eq:blind_opt_moe}
+        \moefuncx{}{\probphaseest} = \zscore \sqrt{\frac{1 - \probphase}{\samplecountpilot}}.
+    \end{equation}
+The error increases as $\probphase$ becomes smaller, but it remains within a finite bound even as $\probphase$ goes to zero (see supplemental Fig S10). By default and throughout this paper we use the fixed values of $\samplecountpilot = 10^4$ and $\zscore = \zscorex{.95} \approx 1.96$ for all phases of the pilot stage. These values of $\samplecountpilot$ and $\zscore$ give a maximum $\probphaseest$ margin of error of 2\%.
+
+During phase 0, the distribution of samples taken from the underlying random variable $\phrvx{0}$ (\ie the set of observed waiting times in between $\ifacez$ forward crossing events) is model dependent. This means that no formulation equivalent to \eqref{eq:blind_opt_moe} is possible for the phase weight $\pwtruex{0} = \Simtimeatoz$. However, the estimator $\Simtimeatozest$ can be in general assumed to be \ncon (as described in \secrefTwo{sec:moe_from_simulation_params}{sec:phase_weight_moments}). Plugging \eqrefTwo{eq:gaussian_ci_bound}{eq:pwest_moments} into \eqref{eq:moe_definition} gives the asymptotic margin of error for phase 0 of the pilot stage:
+    \begin{equation}
+        \moefuncx{}{\Simtimeatozest} = \frac{\zscore}{\sqrt{\samplecountpilot}} \frac{\sqrt{\pwvtruex{0}}}{\Simtimeatoz}.
+    \end{equation}
+It can be ensured that $\Simtimeatoz \approx \sqrt{\pwvtruex{0}}$ through appropriate placement of  $\phrvx{0}$ (\ie away from a basin of attraction). Given that $\Simtimeatoz$ and $\pwvtruex{0}$ are appropriately matched, the margin of of error of phase 0 will be roughly proportional to $\frac{\zscore}{\sqrt{\samplecountpilot}}$. For $\samplecountpilot = 10^4$ and $\zscore \approx 1.96$, this also works out to a $\Simtimeatozest$ margin of error of about 2\%. Thus, the blind optimization approach used in the FFPilot pilot stage controls error in $\Simtimeatozest$, though not in such a conveniently bounded fashion as $\probphaseest$.
+
+%\end{document}
