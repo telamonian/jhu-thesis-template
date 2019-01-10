@@ -1,4 +1,15 @@
 \chapter{Discussion and Conclusion}
 \label{chap:conclusion}
 
-Foo bar
+The epigenetic landscapes of complex genetic regulation networks can be mapped using stochastic simulation. The presence of rare events in these regulatory networks makes the traditional stochastic methods non-practical (in terms of computation time). Our theoretical analysis shows for the first time that a complete \abr{FFS} simulation (including phase $0$) can indeed be used to significantly speed up stochastic simulation of complex systems with rare events. We also show that there are significant sources of error in the \abr{FFS} approach that have not been fully considered by the existing analyses.
+
+The \abr{FFPilot} method is an enhanced sampling method that controls error in an optimal way. For simulations of simple enough systems, this error control is exact and precise. For any system with a 1D landscape, \abr{FFPilot} will produce results with a consistent, predictable, user-set upper bound on the margin of error. For multi-dimensional systems without rough landscapes, error is still controlled, but not precisely. For these more complex systems there is an anomalous extra error that is not fully accounted for by the theory and algorithms that drive \abr{FFPilot}. The reasons why are complicated, but can be summarized with one word: covariance. We established that correlations between the sets of states used in each phase to launch new trajectories are sufficient to explain the anomalous error.
+
+It is possible to perform an alternative derivation of the simulation variance that takes the phase-by-phase covariance into account. Instead of zeroing out the covariances in \eqref{eq:PWest_variance_expansion}, they can be left as-is. This will end up giving what is effectively an extra term in the definition of the margin of error given in \eqref{eq:product_estimator_zeta}:
+\begin{align*}
+    \moefunc{\PWest} &= \zscore \sqrt{\sum_i \sum_j \frac{\sigma_{ij}}{\pwtruex{i} \pwtruex{j} \sqrt{n_i} \sqrt{n_j}}}, \\
+    \moefunc{\PWest} &= \zscore \sqrt{\sum_i \frac{\pwvtrue}{\pwtruesq n_i} + \sum_i \sum_{j \neq i} \frac{\sigma_{ij}}{\pwtruex{i} \pwtruex{j} \sqrt{n_i} \sqrt{n_j}}}.
+\end{align*}
+Initial investigation suggests that a simple closed form equation that optimizes the run counts $n_i$ and $n_j$ (like \eqref{eq:optimizing_equation_general} or \eqref{eq:optimizing_equation_ffpilot}) cannot be found when the covariance term is included. However, it is still likely that a reasonable optimization scheme (probably involving some numerical minimization) can be developed. Additionally, it should be possible to estimate the phase-by-phase covariances $\sigma_{ij}$ using some variant of the scheme currently used by \abr{FFPilot} to estimate the phase zero variance $\pwvtruex{0}$. Thus, it is likely that an \abr{FFPilot} version 2 could be developed that would fully take the covariances into account.
+
+In summary, we show that it is possible to get speedups on the order of 100x when simulating genetic regulatory networks by using enhanced sampling methods. As the enhanced sampling methods, and the theory behind them, are further refined, it should be possible to get the fullest possible speedup in a completely automated way, one that is no more complex to use than standard stochastic simulation methods.

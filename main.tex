@@ -154,14 +154,10 @@ backend = bibtex,
 %natbib = true
 ]{biblatex}
 
-%\bibliography{CT_Skull_Stripping_Bib}
-%\bibliography{CT_ICH_Segmentation}
-%\bibliography{extra_bibs_addon}
-%\bibliography{fslr/muschelli}
-%\AtEveryBibitem{
-%\clearfield{note}
-%\clearfield{month}
-%}
+\AtEveryBibitem{
+\clearfield{note}
+\clearfield{month}
+}
 
 %\renewcommand{\cite}[1]{\citep{#1}}
 %\renewcommand{\citet}[1]{\citep{#1}}
@@ -259,20 +255,16 @@ Doctor of Philosophy }\\
 \printbibliography[title={References}]
 \end{refsection}
 
-%% If using Overleaf, you'll have to upload the resulting tex file & figures
-%% since Overleaf does not support Rnw files right now (April 13, 2016)
-%\begin{refsection}[rnw_chapter/rnw_chapter.bib]
-%\include{rnw_chapter/rnw_chapter}
-%\cleardoublepage
-%\printbibliography[title={References}]
-%\end{refsection}
-
-\begin{refsection}[bib/error_control_of_enhanced_sampling.bib]
+%\begin{refsection}[bib/error_control_of_enhanced_sampling.bib]
 \include{conclusion_chapter/conclusion_chapter}
 \cleardoublepage
-\printbibliography[title={References}]
-\end{refsection}
+%\end{refsection}
 
+\chapter*{Tutorial - enhanced sampling using Lattice Microbes and FFPilot}
+\addcontentsline{toc}{chapter}{Tutorial - enhanced sampling using Lattice Microbes and FFPilot}
+\includepdf[pages={-}]{lmes_chapter/latex/lmes_enhanced_sampling.pdf}
+%, pagecommand={\thispagestyle{plain}}
+%\cleardoublepage
 
 % CV PDF file downloaded from the moderncv template available at Overleaf
 % https://www.overleaf.com/latex/templates/modern-cv-and-cover-letter-2015-version/sttkgjcysttn#.Vw6PFRMrL65
