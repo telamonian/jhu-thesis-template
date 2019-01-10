@@ -17,7 +17,7 @@ ${fname}.pdf: ${fname}.tex \
 	bibtex ${fname}
 	bibtex ${fname}1-blx
 	bibtex ${fname}2-blx
-	bibtex ${fname}3-blx
+	#bibtex ${fname}3-blx
 	# Add more if you have more chapters
 	pdflatex ${fname}
 	pdflatex ${fname}
