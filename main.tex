@@ -175,6 +175,13 @@ backend = bibtex,
 
 \setcounter{tocdepth}{4}
 \setcounter{secnumdepth}{4}
+
+% power through the running out of footnote symbols error
+\makeatletter
+\gdef\@ctrerr{%
+  \@latex@warning{Counter too large}}
+\makeatother
+
 \begin{document}
 
 \newcommand{\bm}[1]{ \mbox{\boldmath $ #1 $} }

@@ -8,27 +8,20 @@ ${fname}.pdf: ${fname}.tex \
 	bib/thesis_intro.bib \
 	eces_chapter/error_control_of_enhanced_sampling.tex \
 	bib/error_control_of_enhanced_sampling.bib \
-	conclusion_chapter/conclusion_chapter.tex \
-	bib/error_control_of_enhanced_sampling.bib
+	conclusion_chapter/conclusion_chapter.tex # \
+	#bib/error_control_of_enhanced_sampling.bib
 	if [ -e ${fname}.aux ]; \
 	then \
 	rm ${fname}.aux; \
 	fi;
-	echo "running pdflatex ${fname}"
 	pdflatex ${fname}
-	echo "running pdflatex ${fname}"
-	pdflatex ${fname}
-	echo "running bibtex ${fname}"
+	#pdflatex ${fname}
 	bibtex ${fname}
-	echo "running bibtex ${fname}1-blx"
 	bibtex ${fname}1-blx
-	echo "running bibtex ${fname}2-blx"
 	bibtex ${fname}2-blx
 	#bibtex ${fname}3-blx
 	# Add more if you have more chapters
-	echo "running pdflatex ${fname}"
 	pdflatex ${fname}
-	echo "running pdflatex ${fname}"
 	pdflatex ${fname}
 	cp ${fname}.pdf PhD_Thesis.pdf
 	open PhD_Thesis.pdf
