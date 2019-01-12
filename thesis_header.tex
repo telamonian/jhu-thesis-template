@@ -41,6 +41,14 @@
 % don't split long footnotes across several pages
 \interfootnotelinepenalty=10000
 
+%% use symbols instead of numbers for footnotes, so they don't conflict with bibtex citations
+%\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+%\usepackage{perpage}
+%\MakePerPage{footnote}
+%
+%% alias for helping to squeeze footnotes into nicely formatted tables
+%\newcommand{\fnm}[1]{\footnotemark[#1]}
+
 \usepackage[export]{adjustbox}[2011/08/13]
 
 %%%% DEPRECATED STUFF %%%%

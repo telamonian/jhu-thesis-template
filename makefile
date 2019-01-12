@@ -1,5 +1,6 @@
 fname=main
 ${fname}.pdf: ${fname}.tex \
+    thesis_header.tex \
 	abstract/abstract.tex \
 	committee/committee.tex \
 	acknowledgments/acknowledgments.tex \
@@ -13,13 +14,21 @@ ${fname}.pdf: ${fname}.tex \
 	then \
 	rm ${fname}.aux; \
 	fi;
+	echo "running pdflatex ${fname}"
 	pdflatex ${fname}
+	echo "running pdflatex ${fname}"
+	pdflatex ${fname}
+	echo "running bibtex ${fname}"
 	bibtex ${fname}
+	echo "running bibtex ${fname}1-blx"
 	bibtex ${fname}1-blx
+	echo "running bibtex ${fname}2-blx"
 	bibtex ${fname}2-blx
 	#bibtex ${fname}3-blx
 	# Add more if you have more chapters
+	echo "running pdflatex ${fname}"
 	pdflatex ${fname}
+	echo "running pdflatex ${fname}"
 	pdflatex ${fname}
 	cp ${fname}.pdf PhD_Thesis.pdf
 	open PhD_Thesis.pdf

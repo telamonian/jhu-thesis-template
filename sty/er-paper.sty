@@ -36,6 +36,12 @@
 \newcolumntype{Y}{D..{1.2}}    % like `d` columns, but intercolumn spacing works better for some reason
 \newcommand{\cc}[1]{\multicolumn{1}{c}{$#1$}}    % alias for temporarily escaping weird revtex column types
 \newcommand{\ccl}[1]{\multicolumn{1}{c|}{$#1$}}
+
+% use symbols instead of numbers for footnotes, so they don't conflict with bibtex citations
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+\usepackage{perpage}
+%\MakePerPage{footnote}
+
 % alias for helping to squeeze footnotes into nicely formatted tables
 \newcommand{\fnm}[1]{\footnotemark[#1]}
 
