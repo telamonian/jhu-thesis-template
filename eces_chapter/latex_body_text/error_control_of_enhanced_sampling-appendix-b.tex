@@ -5,7 +5,7 @@
 %
 %\begin{document}
 
-\subsection{The Upper Bound of the Variance of a Sum of Bernoulli Distributions}
+\subsection{The upper bound of the variance of a sum of Bernoulli distributions}
 \label{sec:bernoulli_mixture_var}
 The overall process of launching trajectories in order to determine the phase weight during each phase of \abr{FFS} simulation can be thought of as a single draw from a sum of many independent Bernoulli distributions, also called a \abr{PBD}. This viewpoint emphasizes the statistical equivalence between the outcome of the $\sample$th trajectory in an \abr{FFS} phase, which will either fall back into its starting basin or flux forward to the next interface, and the outcome of the $\sample$th Bernoulli random variable in a \abr{PBD}, which will take on a value of either 0 or 1. In both cases ``success'' (fluxing forward, drawing a 1) occurs with some probability $\probbern$ inherent to the individual process, while ``failure'' (returning to basin, drawing a 0) occurs with probability $(1 - \probbern)$. The expected value and the variance of a draw from a \abr{PBD} of $\samplecountbern$ terms (\ie the sum over an independent draw from each of its constituent Bernoulli random variables) is:
     \begin{align}

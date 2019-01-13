@@ -41,7 +41,7 @@ In this subsection we find the choice of number trajectories to launch in each \
 
 %The relationship we will derive is valid for the class of estimators that can be written as the product of one or more independent $\sqrt{n}$-consistent estimators of some function of simulation observables.
 
-\subsubsection{The Moments and Distribution of the \abr{FFS} $\mfpttrue$ Estimator $\PWest$}
+\subsubsection{The moments and distribution of the \abr{FFS} $\mfpttrue$ estimator $\PWest$}
 \label{sec:phase_weight_moments}
 
 %In distinguishing between exact values such as $\PWtrue$ and estimators such as $\PWest$, it is important to note that while $\PWtrue$ has a single true value, $\PWest$ is a random variable with a distribution of values.
@@ -350,7 +350,7 @@ The result in \eqref{eq:PWest_variance} agrees with and is similar to the establ
 
 %So long as the initial interface \abr{FFS} interface, $\lambda_0$, is placed outside of the initial steady state, we can assume that the distribution of flux events converges to a Poisson distribution. This is true for the same reasons as in the \abr{DS} case. Further, it is known that
 
-\subsubsection{Margin of Error of $\PWest$}
+\subsubsection{Margin of error of $\PWest$}
 %\begin{odone}
 %    \1 The formula for the relative margin of error of a Gaussian random variable $X$ at confidence level $\alpha$ is
 %        \begin{equation*}
@@ -379,7 +379,7 @@ Plugging \eqref{eq:PWest_ci_bound} into the margin of error definition (given by
         \moefunc{\PWest} = \zscore \sqrt{\sum_i \frac{\pwvtrue}{\pwtruesq n_i}}.
     \end{equation}
 
-\subsubsection{Derivation of the General Optimizing Equation}
+\subsubsection{Derivation of the general optimizing equation}
 %\begin{odone}
 %    \1
 %        \2 Computational effort is defined in terms of total simulation time
@@ -493,7 +493,7 @@ Now we eliminate $\lambda $ from our expression for $n_i$ in \eqref{eq:ni_in_ter
 %\end{equation}
 %where $\pcest_i$ is an estimator of the computational cost of a single trajectory launched during phase $i$, and $\pwest$ and $\pwvestshort_i$ are estimators of the mean and the variance of the distribution of the waiting times in between phase 0 forward flux events (for $i=0$), or estimators of the mean and variance of the distribution of per-trajectory forward flux indicator values (for $i>0$). 
 
-\subsubsection{The Optimizing Equation for FFS}
+\subsubsection{The optimizing equation for FFS}
 \label{sec:opt_eq_for_ffs}
 %\begin{odone}
 %    \1 For \abr{FFS}, we need two slightly different versions of the optimization equation.
@@ -548,7 +548,7 @@ Of the assumptions made in deriving \eqref{eq:optimizing_equation_ffpilot}, two 
 
 Ensuring that the uncorrelatedness assumption is satisfied is altogether trickier. Most of the preexisting \abr{FFS} literature takes the uncorrelatedness of the phases as a given\supercite{Allen:2006ch,Borrero:2008il,Becker:2012fl}, but in practice we have found this to not always be the case. This issue is discussed in detail in \secref{sec:landscape_error}. In brief, systems with complex, high dimensional state spaces tend to have correlations between the outcomes of trajectories across the different phases. This results in non-zero covariance between the different phase weights, which effectively like adding an extra term to \eqref{eq:PWest_variance}. In other words, when the phases are correlated, our approach will somewhat underestimate the actual variance, and \eqref{eq:optimizing_equation_ffpilot} will somewhat underestimate the number of samples required to achieve a particular error goal.
 
-\subsection{FFPilot: A Sampling Algorithm Designed to Take Advantage of the Optimization Equation}
+\subsection{FFPilot: a sampling algorithm designed to take advantage of the optimizing equation}
 \label{sec:ffpilot_definition}
 \begin{odone}
     \1 We'd like to be able to apply the optimizing equation to real biochemical networks, but we can't do this without some prior knowledge of the system under study
@@ -597,7 +597,7 @@ In terms of the error in the final simulation results, the optimization equation
 
 The effectiveness of the pilot stage blind optimization method can be related to an earlier finding of Borerro {\etal}\supercite{Borrero:2008il}. They showed that a fixed quantity of computational effort is optimally spent during an \abr{FFS} simulation when the interfaces and the trajectory counts per phase are arranged in such a way that each interface encounters an equal flux of trajectories crossing them. Although we do not constrain the computational effort spent during our blind optimization, our approach produces equal flux across each interface as well.
 
-\subsection{Rare Event Model}
+\subsection{Rare event model}
 \label{sec:rem}
 %\begin{odone}
 %    \1 Distribution of Calculated $\mfpttrue$s
@@ -632,7 +632,7 @@ Next, we tested how well the \abr{FFPilot} approach was able to control sampling
 
 The percent errors of the $\mfpttrue$ calculated in each of these simulations are shown in \figref{fig:toy_model_actual_error_vs_predicted_error}. The percent errors were calculated relative to the analytically determined $\mfpttrue$. As can be seen, the 95th error percentiles (marked by the red lines) are located along $x=y$, indicating that overall error in the \abr{MFPT} estimates was constrained to the error goal. $\REM$ has no source of error aside from sampling error, and under these conditions \abr{FFPilot} precisely controls the total simulation error.
 
-\subsection{Self Regulating Gene Model}
+\subsection{Self regulating gene model}
 \label{sec:srg}
 %\begin{odone}
 %    \1 phase 0 Inter-Event Time Distribution
@@ -688,7 +688,7 @@ The errors are shown in \figref{fig:name_srg_-_error_goal_test_complete_-_h_all}
 
 We also looked at the contribution of phase 0 to the overall cost of the pilot stage. Applying \eqref{eq:cost_target_func} to values from \tableref{tab:srg}, we found that for all variants of $\SRG$ phase 0 required around ${\sim} 35\%$ of the total simulation time. This finding is in contrast to the longstanding assumption in the \abr{FFS} literature that phase 0 does not significantly contribute to the cost of a simulation and should therefore be extensively sampled.
 
-\subsection{Genetic Toggle Switch Model}
+\subsection{Genetic toggle switch model}
 \label{sec:gts}
 %\begin{odone}
 %    \1 phase 0 Inter-Event Time Distribution
@@ -739,7 +739,7 @@ The percent errors of the $\mfpttrue$ estimates are shown in \figref{fig:name_gt
 
 We again found that phase 0 contributed significantly to the cost of $\GTS$ simulations. From parameters listed in \tableref{tab:gts} and \eqref{eq:cost_target_func}, we calculated the share of total simulation time consumed by phase 0, which was found to be $19\%$, $23\%$, and  $33\%$ for $\GTSSLOWEST$, $\GTSSLOWER$, and $\GTSSLOW$, respectively.
 
-\subsection{Interface Landscape Error in Genetic Toggle Switch}
+\subsection{Interface landscape error in genetic toggle switch}
 \label{sec:landscape_error}
 %\begin{odone}
 %    \1 Extra error in $\GTS$ simualations is concentrated in phases 3, 4, and 5.
@@ -774,7 +774,7 @@ In order to test if landscape error alone is a sufficient explanation for the ob
 \end{equation}
 If landscape error is indeed the sole cause of the anomalous error, we expected that the phase weights derived from \eqref{eq:reconstituted_phase_weights} would closely match those originally estimated by replicates 6 and 8, even though these original estimates vary greatly between the replicates. In this view, the phase $\phasegz$ weight estimate produced by each simulation converges (with increasing trajectory count) to a unique value of $P\left(\lambda_{i}|\lambda_{i-1}\right)$, as determined by their heterogeneous samples of the landscape along $\lambda_{i-1}$. The recalculated phase weight values are plotted as empty circles in \figref{fig:name_gts_-_phase_weights_-_rep_6_8_-_theta_1.0e+01}, and they do indeed closely agree with the original estimates. Thus, we conclude that sampling error is indeed being handled correctly by \abr{FFPilot}, and the anomalous error in our $\GTS$ simulation results is due to landscape error.
 
-\subsection{Eliminating Landscape Error in $\GTS$ via Oversampling}
+\subsection{Eliminating landscape error in $\GTS$ via oversampling}
 \label{sec:oversampling}
 
 Although a complete mathematical treatment of landscape error is beyond the scope of this paper, we wanted to investigate strategies for eliminating landscape error within the limited context of $\GTS$. To this end we ran \abr{FFPilot} simulations of $\GTSSLOW$ under a variety of different oversampling schemes. As can be seen in \figref{fig:name_gts_-_phase_weight_percent_error_-_error_goal_1.0e-01_-_theta_1.0e+01}, for $\GTSSLOW$ landscape error is mainly an issue in phases 3-5. Based on this, we initially we hypothesized that increasing sampling by 10X in phases 2-4 (\ie increasing sampling in each of the phases preceding the problematic phases) would abolish landscape error.
@@ -783,7 +783,7 @@ The results from 1000 simulations of $\GTSSLOW$ with 10X phase 2-4 sampling at a
 
 Thus, oversampling in phases 2-4 alone had almost no effect, but oversampling in phases 0-4 was enough to eliminate the landscape error. In order to understand this difference, we eliminated oversampling in each phase individually. The results from these simulations are shown in \sfigref{fig:name_gts_-_stage_fpt_percent_error_-_landscape_fudge_skips_-_error_goal_1.0e-01_-_theta_1.0e+01}. The effect of skipping oversampling in phase 0 is particularly dramatic, leading to an increase in simulation error of nearly 25\%. So long as phase 0 is being oversampled, the increase in simulation error from skipping oversampling in any of phases 1-4 is less dramatic (2\%-7\%) but still significant. This implies that landscape errors are correlated. Effectively, defects in the sampled landscape distribution at any $\lambda_i$ may carry over to $\lambda_{i+1}$.
 
-\subsection{Theoretical Efficiency of DS, FFS, and FFPilot Simulations}
+\subsection{Theoretical efficiency of DS, FFS, and FFPilot simulations}
 \label{sec:efficiency}
 
 Enhanced sampling is commonly assumed to be more efficient than \abr{DS}. By controlling for simulation error, a direct comparison can be made between \abr{DS} and \abr{FFPilot} simulations, and the speedup of one simulation method versus the other can be assessed.
@@ -810,7 +810,7 @@ The total cost of an \abr{FFPilot} simulation $\Costffpilot$ can be found by add
 
 \eqref{eq:ffpilot_cost} gives $\Costffpilot$ as a function of error goal. The production stage cost increases with error goal  $\frac{\moesq}{\zscoresq}$ whereas the pilot stage cost remains fixed. For a low enough error goal, the pilot stage term in $\Costffpilot$ will be negligible compared to the overall simulation cost. For simulations run with $\samplecountpilot = 10^4$ the approximation $\Costffpilot \approx \Costffsopt$ holds when the error goal was \textless 5\% (see \figref{fig:name_srg_-_speedup_plot_-_simtime_vs_moe}).
 
-\subsection{Speedup of FFPilot vs DS in Simulations with Equivalent Error}
+\subsection{Speedup of FFPilot vs DS in simulations with equivalent error}
 \label{sec:speedup}
 
 %\begin{odone}

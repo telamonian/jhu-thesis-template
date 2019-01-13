@@ -6,10 +6,10 @@
 %\begin{document}
 %\vspace*{0.2in}
 
-\section{Theory and Methods}
+\section{Theory and methods}
 \label{sec:methods}
 
-\subsection{Simulation of Rare Events in Stochastic Processes}
+\subsection{Simulation of rare events in stochastic processes}
 \label{sec:ds_es_description}
 %\begin{odone}
 %    \1 \abr{FFS} speeds up simulation by ratcheting state space along an order parameter
@@ -58,7 +58,7 @@ where $\Simtimeatoz$ is the expected waiting time in between $\ifacez$ crossing 
 
 %In the original version of \abr{FFS}\supercite{Allen:2005wy}, the phase 0 trajectories are terminated once a fixed simulation time $\Simtimefixed$ has elapsed. The number of forward flux events across $\ifacez$ during $\Simtimefixed$ are counted. We reformulated the algorithm in terms of $\samplecount$ instead of $\Simtimefixed$. This small change allows us to unify the sampling statistics of phase 0 with those of the other phases (see \secref{sec:phase_weight_moments}). We also found that the error in phase 0 inversely scales with the value of $\samplecount$ in a largely predictable fashion. Thus, the reformulation is also beneficial when running simulations of novel systems with unknown properties.
 
-\subsection{Estimating Values of Interest from DS and ES Stochastic Simulations}
+\subsection{Estimating values of interest from DS and ES stochastic simulations}
 %\begin{odone}
 %    \1 \abr{DS}
 %        \2 the estimator of any ensemble average is the arithmetic mean of the appropriate observable taken over the appropriate time course or set of replicate simulations
@@ -102,7 +102,7 @@ where $\mfptestffs$ is the estimator of $\mfpttrue$ specific to \abr{FFS} simula
 
 %In general, \abr{FFS} simulation returns biased results that can be transformed into unbiased results  by multiplying them with the appropriate combination of phase weights.
 
-\subsection{Predicting Simulation Error in Terms of Margin of Error}
+\subsection{Predicting simulation error in terms of margin of error}
 %The observables of a stochastic simulations are not fixed, but are instead random variables, each with their own associated distributions. Each sample that is taken of an observable can be thought of as equivalent to taking a single draw from the distribution of possible observations. In order to calculate a statistic (eg mean, median, variance, etc.) of an observable, many samples are produced and then plugged into the appropriate estimator. These statistic estimates are in turn also random variables with distributions. Thus, error in the values of interest such as $\mfpttrue$ (which is the mean of a distribution of waiting times) can be quantified in terms of these estimate distributions.
 %
 %Often, stochastic simulations are run in order to calculate some statistic (eg mean, median, variance, etc.) of an observable of the system being modeled. Due to the nature of stochastic simulation, every time a set of simulations is run the calculated value of any statistic  value of, say, the $\mfpttrue$ (which is calculated as the mean of the waiting times) is produced,
@@ -118,7 +118,7 @@ For many values of interest $\moefunc{X}$ is dependent on simulation parameters 
 
 %Thus, if the margin of error of $\mfpttrue$ can be determined, predictions can be made along the lines of ``$100 \cdot \alpha$ percent of the time, this given simulation protocol will produce an estimate of $\mfpttrue$ that will have no more than $100 \cdot \moefunc{\mfptest}$ percent error with respect to the true value''.
 
-\subsection{Determining Margin of Error from Simulation Parameters}
+\subsection{Determining margin of error from simulation parameters}
 \label{sec:moe_from_simulation_params}
 It is straightforward to determine the margin of error of an estimator that depends on a single underlying observable. For example, consider the margin of error of an $\mfpttrue$ estimate as determined via \abr{DS} simulation, $\moefunc{\mfptestds}$. It has been shown that observations of first passage times between two well separated states follow an exponential distribution during \abr{DS} simulations\supercite{Becker:2012ej}. Given this distribution of first passage times, the central limit theorem\supercite{Olive:2014by} gives the distribution of $\mfpttrue$ estimates in the limit of large sample size:
     \begin{equation}
@@ -148,7 +148,7 @@ Thus, if say, $10^5$ replicate trajectories are produced during a \abr{DS} simul
 
 %for a wide variety of values of interest $X$, given that the distribution of $\est{X}$ obeys certain regularity conditions (mainly that $\E{\est{X}}$ and $\V{\est{X}}$ exist) \todo{REF}.
 
-\subsection{Minimizing the Computational Cost Required to Achieve a Desired Error Goal}
+\subsection{Minimizing the computational cost required to achieve a desired error goal}
 We define the computational cost $\Cost$ of a simulation to be equivalent to the average in-simulation time required to complete it (alternatively, one may use the count of simulation steps). When estimating $\mfpttrue$ using \abr{DS} simulation, the computational cost is:
     \begin{equation}\label{eq:cost_mfptestds}
         \Costds = \samplecountds \cdot \mfpttrue,

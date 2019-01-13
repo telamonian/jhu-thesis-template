@@ -49,6 +49,12 @@
 \newcommand{\fnt}[2]{\fnm{#1}\footnotesize{#2}}
 \newcommand{\mfnt}[3]{\multicolumn{#1}{l}{\footnotesize{\fnm{#2}#3}} \\}
 
+% command for creating an unlabeled section and adding/linking it to the toc
+\newcommand{\secnolabel}[1]{\phantomsection\section*{#1} \addcontentsline{toc}{section}{#1}}
+
+% command for labeling the subsections of a section with a letter
+\newcommand{\sublet}[1]{\renewcommand{\thesection}{\arabic{chapter}.#1} \setcounter{subsection}{0}}
+
 % Set the section styles.
 %\usepackage{sectsty}
 %\sectionfont{\normalsize}
