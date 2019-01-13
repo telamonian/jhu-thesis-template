@@ -170,7 +170,6 @@ backend = bibtex,
 
 %\makeglossary % enable the glossary
 \graphicspath{{thesis_intro/}{eces_chapter/}}
-%\graphicspath{{rnw_chapter/figure/}{rnw_chapter/}} % change it accordingly!
 
 
 \setcounter{tocdepth}{4}
@@ -233,27 +232,11 @@ Doctor of Philosophy }\\
 \pagestyle{plain}
 \baselineskip=24pt
 \tableofcontents
-% for the three lines below, change the page numbers if needed!
-%\addtocontents{toc}{\contentsline{chapter}{Table of Contents}{iii}}
-%\addtocontents{toc}{\protect\contentsline{chapter}{\protect\numberline{}Table of Contents}{iii}}
-%\addtocontents{toc}{\protect\contentsline{chapter}{\protect\numberline{}List of Tables}{iv}}
-%\addtocontents{toc}{\protect\contentsline{chapter}{\protect\numberline{}List of Figures}{v}}
-%\listoftables
-%\listoffigures
+\listoftables
+\listoffigures
 
 \cleardoublepage % Needed because our intro chapter doesn't really have anything
 \pagenumbering{arabic}
-
-
-% add your chapters, best way is to have separate TeX files for each chapter
-%\include{chapter0}
-%\include{chapter1}
-
-%% The above was the recommended setup by https://github.com/weitzner/jhu-thesis-template but it's no longer needed
-%% after Muschelli's changes which stores different chapters in their
-%% respective directories. You will still need to add your chapters as
-%% TeX files or Rnw files (see rnw_chapter as an example) and please
-%% remember to update the makefile accordingly.
 
 \begin{refsection}[bib/thesis_intro.bib]
 \include{thesis_intro/thesis_intro}
@@ -283,11 +266,5 @@ Doctor of Philosophy }\\
 % CV PDF file downloaded from the moderncv template available at Overleaf
 % https://www.overleaf.com/latex/templates/modern-cv-and-cover-letter-2015-version/sttkgjcysttn#.Vw6PFRMrL65
 %\includepdf[pages={-}, pagecommand={\thispagestyle{plain}}]{moderncv-2015.pdf}
-
-
-%\newpage
-%\footnotesize
-%\bibliographystyle{unsrt}
-%\bibliography{bib/error_control_of_enhanced_sampling,bib/thesis_intro}
 
 \end{document}

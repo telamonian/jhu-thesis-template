@@ -18,7 +18,7 @@
     \includegraphics[width=8.45cm,height=\textheight,keepaspectratio]{{eces_chapter/model_schematics/schematic_composite_vertical}.pdf}
     \end{center}
 %    \tracingmacros=1
-    \caption{Schematics of the model systems investigated. \subplotcap{top} The \remname{} (\remabbrev{}, see \secref{sec:rem} and \tableref{tab:rem} for complete details). \subplotcap{middle} \srgname{} (\srgabbrev{}, see \secref{sec:srg} and \tablerefTwo{tab:srg_reactions}{tab:srg}). \subplotcap{bottom} \gtsname{} (\gtsabbrev{}, see \secref{sec:gts} and \stableref{tab:gts_odes}.}
+    \caption[Schematics of the model systems investigated]{Schematics of the model systems investigated. \subplotcap{top} The \remname{} (\remabbrev{}, see \secref{sec:rem} and \tableref{tab:rem} for complete details). \subplotcap{middle} \srgname{} (\srgabbrev{}, see \secref{sec:srg} and \tablerefTwo{tab:srg_reactions}{tab:srg}). \subplotcap{bottom} \gtsname{} (\gtsabbrev{}, see \secref{sec:gts} and \stableref{tab:gts_odes}.}
 %    \tracingmacros=0
     \label{fig:model_schematics}
 \end{figure}
@@ -47,7 +47,7 @@
     \begin{center}
         \includegraphics{{eces_chapter/Figures/toy_model_estimator_distributions_-_eg_1.0e-02_-_theta_1.0e+00_-_samples_1.6e5}.pdf}
     \end{center}
-    \caption{\abr{MFPT} estimates for \abr{REM} calculated using (left) \abr{DS} and (right) \abr{FFPilot}. Shown are (blue bars) binned $\mfpttrue$ estimates from $1.6\cdot 10^5$ simulations with a 1\% error goal and (black lines) $\mfpttrue$ estimate distributions from \eqref{eq:fpt_clt_distribution} and \eqref{eq:PWest_asymptotic_dist}, respectively.}
+    \caption[\abr{MFPT} estimates for \abr{REM}]{\abr{MFPT} estimates for \abr{REM} calculated using (left) \abr{DS} and (right) \abr{FFPilot}. Shown are (blue bars) binned $\mfpttrue$ estimates from $1.6\cdot 10^5$ simulations with a 1\% error goal and (black lines) $\mfpttrue$ estimate distributions from \eqref{eq:fpt_clt_distribution} and \eqref{eq:PWest_asymptotic_dist}, respectively.}
     \label{fig:toy_model_estimator_distributions}
 \end{figure}
 \clearpage
@@ -56,7 +56,7 @@
     \begin{center}
         \includegraphics{{eces_chapter/Figures/toy_model_acutal_error_vs_predicted_error_-_cropped}.pdf}
     \end{center}
-    \caption{Actual error vs error goal of \abr{FFPilot} simulations of the \abr{REM}. Each strip shows the \abr{MFPT} estimation error from (blue dots) 1000 independent \abr{FFPilot} simulations and (red lines) the 95th percentiles of the errors. Jitter was added to the x-position of the dots for visualization.}
+    \caption[Actual error vs error goal of \abr{FFPilot} simulations of the \abr{REM}]{Actual error vs error goal of \abr{FFPilot} simulations of the \abr{REM}. Each strip shows the \abr{MFPT} estimation error from (blue dots) 1000 independent \abr{FFPilot} simulations and (red lines) the 95th percentiles of the errors. Jitter was added to the x-position of the dots for visualization.}
     \label{fig:toy_model_actual_error_vs_predicted_error}
 \end{figure}
 \clearpage
@@ -94,7 +94,7 @@
     \begin{center}
         \includegraphics{{eces_chapter/Figures/name_srg_-_ffpilot_phase_zero_dwell_time_dist}.pdf}
     \end{center}
-    \caption{Waiting times between forward crossing events during phase 0 of forward flux simulations of the \abr{SRG} models. Each line shows a distribution calculated from $10^6$ samples from a single phase 0 trajectory of (blue) $\SRGSLOWEST$, (orange) $\SRGSLOWER$ , and (green) $\SRGSLOW$.}
+    \caption[Times between events during phase 0 of forward flux simulations of \abr{SRG}]{Waiting times between forward crossing events during phase 0 of forward flux simulations of the \abr{SRG} models. Each line shows a distribution calculated from $10^6$ samples from a single phase 0 trajectory of (blue) $\SRGSLOWEST$, (orange) $\SRGSLOWER$ , and (green) $\SRGSLOW$.}
     \label{fig:name_srg_-_ffpilot_phase_zero_dwell_time_dist}
 \end{figure}
 \clearpage
@@ -103,7 +103,7 @@
     \begin{center}
         \includegraphics{{eces_chapter/Figures/name_h_-_stage_percent_error_-_error_goal_all_-_h_all}.pdf}
     \end{center}
-    \caption{Actual error vs error goal of \abr{FFPilot} simulations for (top) $\SRGSLOWEST$, (middle) $\SRGSLOWER$, and (bottom) $\SRGSLOW$. Each strip shows (blue dots) 1000 independent \abr{FFPilot} simulations and (red lines) the 95th percentiles of the errors.}
+    \caption[Actual error vs error goal of \abr{FFPilot} simulations of \abr{SRG}]{Actual error vs error goal of \abr{FFPilot} simulations for (top) $\SRGSLOWEST$, (middle) $\SRGSLOWER$, and (bottom) $\SRGSLOW$. Each strip shows (blue dots) 1000 independent \abr{FFPilot} simulations and (red lines) the 95th percentiles of the errors.}
     \label{fig:name_srg_-_error_goal_test_complete_-_h_all}
 \end{figure}
 \clearpage
@@ -112,7 +112,7 @@
     \begin{center}
         \includegraphics{{eces_chapter/Figures/name_gts_-_ffpilot_phase_zero_dwell_time_dist}.pdf}
     \end{center}
-    \caption{Waiting times between forward crossing events during phase 0 of \abr{FFS} simulations of the \abr{GTS} models. Each line shows a distribution calculated from $10^6$ samples from a single phase 0 trajectory of (blue) $\GTSSLOWEST$, (orange) $\GTSSLOWER$, and (green) $\GTSSLOW$.}
+    \caption[Times between events during phase 0 of forward flux simulations of \abr{GTS}]{Waiting times between forward crossing events during phase 0 of \abr{FFS} simulations of the \abr{GTS} models. Each line shows a distribution calculated from $10^6$ samples from a single phase 0 trajectory of (blue) $\GTSSLOWEST$, (orange) $\GTSSLOWER$, and (green) $\GTSSLOW$.}
     \label{fig:name_gts_-_ffpilot_phase_zero_dwell_time_dist}
 \end{figure}
 \clearpage
@@ -121,7 +121,7 @@
     \begin{center}
         \includegraphics{{eces_chapter/Figures/name_theta_-_stage_percent_error_-_error_goal_all_-_theta_all}.pdf}
     \end{center}
-    \caption{Actual error vs error goal of \abr{FFPilot} simulations for (top) $\GTSSLOWEST$, (middle) $\GTSSLOWER$, and (bottom) $\GTSSLOW$. Each strip shows (blue dots) 1000 independent \abr{FFPilot} simulations and (red lines) the 95th percentiles of the errors.}
+    \caption[Actual error vs error goal of \abr{FFPilot} simulations of \abr{GTS}]{Actual error vs error goal of \abr{FFPilot} simulations for (top) $\GTSSLOWEST$, (middle) $\GTSSLOWER$, and (bottom) $\GTSSLOW$. Each strip shows (blue dots) 1000 independent \abr{FFPilot} simulations and (red lines) the 95th percentiles of the errors.}
     \label{fig:name_gts_-_error_goal_test_complete_-_theta_all}
 \end{figure}
 \clearpage
@@ -130,7 +130,7 @@
     \begin{center}
         \includegraphics{{eces_chapter/Figures/name_theta_-_phase_weight_percent_error_-_error_goal_1.0e-01_-_theta_1.0e+01_enlarged}.pdf}
     \end{center}
-    \caption{$\GTSSLOW$ phase weight estimates and errors. \subplotcap{top} The phase weights as estimated by (blue dots) 1000 independent \abr{FFPilot} simulations run to a 10\% error goal. The dashed black lines show the phase weights from an FFPilot simulation with a 0.1\% error goal. \subplotcap{bottom} The blue dots show the percent error of each phase weight estimate given in the top subplot, relative to the 0.1\% error goal simulation. Also shown are (red lines) the observed 95th error percentiles, and (dashed black lines) the expected 95th error percentiles.}
+    \caption[$\GTSSLOW$ phase weight estimates and errors]{$\GTSSLOW$ phase weight estimates and errors. \subplotcap{top} The phase weights as estimated by (blue dots) 1000 independent \abr{FFPilot} simulations run to a 10\% error goal. The dashed black lines show the phase weights from an FFPilot simulation with a 0.1\% error goal. \subplotcap{bottom} The blue dots show the percent error of each phase weight estimate given in the top subplot, relative to the 0.1\% error goal simulation. Also shown are (red lines) the observed 95th error percentiles, and (dashed black lines) the expected 95th error percentiles.}
     \label{fig:name_gts_-_phase_weight_percent_error_-_error_goal_1.0e-01_-_theta_1.0e+01}
 \end{figure}
 \clearpage
@@ -139,7 +139,7 @@
     \begin{center}
         \includegraphics{{eces_chapter/Figures/name_gts_-_phase_weights_-_rep_6_8_-_theta_1.0e+01_-_enlarged}.pdf}
     \end{center}
-    \caption{The phase weights of two replicates: (blue x) Replicate 6 and (gold +) Replicate 8, from a $\GTSSLOW$ \abr{FFPilot} simulation run to an error goal of 10\%. Circles show weights for phases 4 and 5 calculated via an alternative method using \eqref{eq:reconstituted_phase_weights}.}
+    \caption[The phase weights of two \abr{GTS} replicates, highlighting their differences]{The phase weights of two replicates: (blue x) Replicate 6 and (gold +) Replicate 8, from a $\GTSSLOW$ \abr{FFPilot} simulation run to an error goal of 10\%. Circles show weights for phases 4 and 5 calculated via an alternative method using \eqref{eq:reconstituted_phase_weights}.}
     
     %The phase weights of phases 4 and 5 were recalculated using an alternative method that only used the landscapes assembled by the replicates, rather than the outcomes of the simulations in the given phase. These recalculated phase weights are shown as hollow circles (Replicate 6 in blue, Replicate 8 in gold).}
 %    \caption{The phase weights of two replicates, Replicate 6 \inlinelegend{{eces_chapter/Figures/name_gts_-_phase_weights_-_rep_6_8_-_theta_1.0e+01_marker_0}.pdf} and Replicate 8 \inlinelegend{{eces_chapter/Figures/name_gts_-_phase_weights_-_rep_6_8_-_theta_1.0e+01_marker_1}.pdf}, of an \abr{FFPilot} simulation of the genetic toggle switch (with $\theta=10$) run to an error goal of 10\%. In phases 4 and 5, which are the two phases leading up to the midpoint of the transition path, the phase weights of these two replicates diverge greatly. The phase weights of phases 4 and 5 were recalculated using an alternative method that only used the landscapes assembled by the replicates, rather than the outcomes of the simulations in the given phase. These recalculated phase weights are shown as hollow circles (Replicate 6 \inlinelegend{{eces_chapter/Figures/name_gts_-_phase_weights_-_rep_6_8_-_theta_1.0e+01_marker_2}.pdf}, Replicate 8 \inlinelegend{{eces_chapter/Figures/name_gts_-_phase_weights_-_rep_6_8_-_theta_1.0e+01_marker_3}.pdf}}).
@@ -153,7 +153,7 @@
 %        \includegraphics{{eces_chapter/Figures/name_gts_-_phase_weight_4_split_by_operator_-_rep_6_8_-_theta_1.0e+01_-_dots}.pdf}
 %        \includegraphics{{eces_chapter/Figures/name_gts_-_phase_weight_4_split_by_operator_-_rep_6_8_-_theta_1.0e+01_-_dists_filled}.pdf}
     \end{center}
-    \caption{Breakout of the calculation of phase weight 5 for replicates 6 and 8. Each group of three plots show data from a slice of \abr{GTS} state space with a different $\gtsostate$, the state of the operator DNA. Each subplot within a group shows different probability data. (dots) The probability of a trajectory launched from a point on $\ifacex{4}$ fluxing forward to $\ifacex{5}$ vs the orthogonal order parameter $\gtsbpa$. (lines) The occupancy along $\gtsbpa$ at interface $\ifacex{4}$ for (blue) replicate 6 and (gold) replicate 8. (bars) The cumulative probability of fluxing forward across $\ifacex{5}$ when starting at the specified $\gtsostate$ for (blue) replicate 6 and (gold) replicate 8.}
+    \caption[Detailed breakout of phase weight calculation for two very different replicates of \abr{GTS}]{Breakout of the calculation of phase weight 5 for replicates 6 and 8. Each group of three plots show data from a slice of \abr{GTS} state space with a different $\gtsostate$, the state of the operator DNA. Each subplot within a group shows different probability data. (dots) The probability of a trajectory launched from a point on $\ifacex{4}$ fluxing forward to $\ifacex{5}$ vs the orthogonal order parameter $\gtsbpa$. (lines) The occupancy along $\gtsbpa$ at interface $\ifacex{4}$ for (blue) replicate 6 and (gold) replicate 8. (bars) The cumulative probability of fluxing forward across $\ifacex{5}$ when starting at the specified $\gtsostate$ for (blue) replicate 6 and (gold) replicate 8.}
     \label{fig:name_gts_-_phase_weight_4_split_by_operator_-_rep_6_8_-_theta_1.0e+01}
 \end{figure}
 \clearpage
@@ -181,7 +181,7 @@
     \begin{center}
         \includegraphics{{eces_chapter/Figures/name_gts_-_stage_fpt_percent_error_-_landscape_fudge_several_-_error_goal_1.0e-01_-_theta_1.0e+01_-_enlarged}.pdf}
     \end{center}
-    \caption{Errors from simulations executed with various oversampling schemes. The extent of oversampling in each phase for the separate schemes is indicated beneath each column of results. All simulations were of $\GTSSLOW$ run to an error goal of 10\%. Red lines show the 95th error percentiles.}
+    \caption[Errors from \abr{FFPilot} simulations of \abr{GTS} executed with various oversampling schemes]{Errors from simulations executed with various oversampling schemes. The extent of oversampling in each phase for the separate schemes is indicated beneath each column of results. All simulations were of $\GTSSLOW$ run to an error goal of 10\%. Red lines show the 95th error percentiles.}
     \label{fig:name_gts_-_stage_fpt_percent_error_-_landscape_fudge_several_-_error_goal_1.0e-01_-_theta_1.0e+01}
 \end{figure}
 \clearpage
@@ -190,7 +190,7 @@
     \begin{center}
         \includegraphics{{eces_chapter/Figures/name_theta_-_name_h_-_speedup_plot_-_simtime_vs_error_goal}.pdf}
     \end{center}
-    \caption{Simulation time vs error goal for several \abr{SRG} and \abr{GTS} models. Simulation time was calculated using \eqref{eq:ds_cost} for (red lines) \abr{DS}, and \eqref{eq:ffpilot_cost} for (blue lines) \abr{FFPilot} and (dashed line) \abr{FFPilot} with oversampling to correct the landscape error. Parameters were taken from \tablerefTwo{tab:srg}{tab:gts}. (top) Data from (circles) $\SRGSLOWEST$ and (triangles) $\SRGSLOW$. (bottom) Data from (circles) $\GTSSLOWEST$ and (triangles) $\GTSSLOW$.}
+    \caption[Simulation time vs error goal for several \abr{SRG} and \abr{GTS} models]{Simulation time vs error goal for several \abr{SRG} and \abr{GTS} models. Simulation time was calculated using \eqref{eq:ds_cost} for (red lines) \abr{DS}, and \eqref{eq:ffpilot_cost} for (blue lines) \abr{FFPilot} and (dashed line) \abr{FFPilot} with oversampling to correct the landscape error. Parameters were taken from \tablerefTwo{tab:srg}{tab:gts}. (top) Data from (circles) $\SRGSLOWEST$ and (triangles) $\SRGSLOW$. (bottom) Data from (circles) $\GTSSLOWEST$ and (triangles) $\GTSSLOW$.}
     \label{fig:name_srg_-_speedup_plot_-_simtime_vs_moe}
 \end{figure}
 \clearpage
@@ -199,7 +199,7 @@
     \begin{center}
         \includegraphics{{eces_chapter/Figures/name_theta_-_speedup_plot_-_simtime_vs_mfpt_-_error_goal_1.0e-02}.pdf}
     \end{center}
-    \caption{Simulation time vs \abr{MFPT} for several \abr{GTS} models. Simulation times are shown for (red dots) \abr{DS}, (blue dots) \abr{FFPilot}, and (blue dots with dashed line) \abr{FFPilot} with oversampling to correct for landscape error. The simulation times shown are averaged across 1000 simulations. Connecting lines added for illustration.}
+    \caption[Simulation time vs \abr{MFPT} for several \abr{GTS} models]{Simulation time vs \abr{MFPT} for several \abr{GTS} models. Simulation times are shown for (red dots) \abr{DS}, (blue dots) \abr{FFPilot}, and (blue dots with dashed line) \abr{FFPilot} with oversampling to correct for landscape error. The simulation times shown are averaged across 1000 simulations. Connecting lines added for illustration.}
     \label{fig:name_theta_-_speedup_plot_-_simtime_vs_mfpt_-_error_goal_1.0e-02}
 \end{figure}
 \clearpage

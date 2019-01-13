@@ -383,13 +383,13 @@ Technically, any reaction not in \eqref{eq:hazard_elementary} should be consider
 
 \subsection{The stochastic simulation algorithm}
 
-The Gillespie algorithm, or (as Gillespie himself refers to it\supercite{Gillespie:2013kk}) the \abr{SSA}, was first proposed by Gillespie in 1976\supercite{Gillespie:1976bj}. Though there have been many improvements developed for the implementation\supercite{Gibson:2000jqa,Cao:2004cua,Lok:2005ii,McCollum:2006hj} of the algorithm, the basic algorithm (specifically the \abr{DM} variant) itself remains 40 plus years later the gold standard of stochastic simulation.\todo{add something here about matrices and constructing the vector of hazards.}
+The Gillespie algorithm, or (as Gillespie himself refers to it\supercite{Gillespie:2013kk}) the \abr{SSA}, was first proposed by Gillespie in 1976\supercite{Gillespie:1976bj}. Though there have been many improvements developed for the implementation\supercite{Gibson:2000jqa,Cao:2004cua,Lok:2005ii,McCollum:2006hj} of the algorithm, the basic algorithm (specifically the \abr{DM} variant) itself remains (40 plus years later) the gold standard of stochastic simulation method.\todo{add something here about matrices and constructing the vector of hazards.}
 
-\abr{SSA} treats the underlying chemical system as a Markov process. This means that the next state that a system occupies is determined (in a probabilistic sense) solely by its present state\footnote{Although the framework is also flexible enough to allow factors that are explicitly time-dependent, such as externally applied chemical driving forces}. The probability of each possible next state can be calculated by means of probability expressions of the form:
+\abr{SSA} treats the underlying chemical system as a Markov process. This means that the next state that a system occupies is determined (in a probabilistic sense) solely by its present state\footnote{Although the framework is also flexible enough to allow for the presence of explicitly time-dependent factors, such as externally applied chemical driving forces}. The probability of each possible next state can be calculated by means of probability expressions of the form:
 \begin{align}\label{eq:stoch_transition_dist}
     \transp \dt \equiv&\, \parbox[t]{0.63\linewidth}{probability that the next reaction in the system takes place in the instantaneous interval $\timeintp$ and is of the type $\rxn$.}
 \end{align}
-The goal of \abr{SSA} is to generate trajectories (\ie time series) of the underlying stochastic chemical system by means of successively calculating and then drawing a random sample from the probability distribution $\transp$ described in \eqref{eq:stoch_transition_dist}.
+The goal of \abr{SSA} is to generate trajectories (\ie time series) of the underlying stochastic chemical system by means of an iterative cycle. First the the probability distribution $\transp$ (described in \eqref{eq:stoch_transition_dist} above) is calculated, then a random sample is drawn from $\transp$. The state of the system is updated based on the outcome of the random sample, then the calculation of $\transp$ is updated based on the new state of the system, and the processes is repeated many, many times.
  
 The \abr{DM} variant of \abr{SSA} is based on the fact that $\transp$ can be split into two independent distributions:
 \begin{equation*}
@@ -424,7 +424,7 @@ The actual \abr{DM} algorithm can be though of as a ``kinetic" Monte Carlo metho
         \end{equation*} 
     \end{enumerate}
     \item Update the current time as $t + t'$, update the current species counts as $\spsx{} + \stoichmatx{\rxni}$, where $\stoichmatx{\rxni}$ is the $\rxni$th column of the stoichiometry matrix $\stoichmat$ (see \secrefTwo{sec:quant_models}{sec:ode_models}).
-    \item Write out any desired information about the state, then either terminate the simulation (given an appropriate condition has been met), or continue by returning to step \ref{it:ds_update_state}.
+    \item Write out any desired information about the state, then either terminate the simulation (given that an appropriate condition has been met), or continue by returning to step \ref{it:ds_update_state}.
 \end{enumerate}
 After running (and recording) many such iterations, the data collected can be thought of as an exact realization of one replicate from the ensemble of the modeled system. In real computational experiments, typically many such replicates are run and the data from them are combined to produce a final analysis. For example, the epigenetic landscape of a system can be calculated by simply binning (\ie into a histogram) the species count data of one or more replicates.
 
@@ -517,7 +517,7 @@ There are now dozens (if not hundreds) of different enhanced sampling methods, a
 
 Beginning with the proposal of \abr{FFS} in 2005\supercite{Allen:2005wy}, a number of different enhanced sampling methods have been developed for use in stochastic simulations of biochemical systems. Along with \abr{FFS}, \abr{NEUS} and \abr{WE} are also highly cited methods.
 
-\abr{FFS}, \abr{NEUS} and \abr{WE} have a number of features in common. Each method requires the user to specify a function of their system's complete state to use as an order parameter:
+\abr{FFS}, \abr{NEUS}, and \abr{WE} have a number of features in common. Each method requires the user to specify a function of their system's complete state to use as an order parameter:
 \begin{equation*}
     \oparamx{} \cstateall = \left( \opvalx{0}, \opvalx{1}, \cdots \right)
 \end{equation*}
