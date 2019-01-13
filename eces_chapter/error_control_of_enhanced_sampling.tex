@@ -23,19 +23,20 @@ See supplementary material for additional derivations and figures.
 \section*{Acknowledgments}
 The authors thank the members of Roberts lab for discussions. This work was supported by the National Science Foundation under grant number PHY-1707961, and by the National Institutes of Health under grant T32 GM008403.
 
-\begin{appendices}
+\newpage
+\begin{subappendices}
 
 %\input{eces_chapter/latex_body_text/error_control_of_enhanced_sampling-appendix-a}
 
-\renewcommand{\thesection}{A\arabic{section}}
+%\renewcommand{\thesection}{A\arabic{section}}
+
+\section{Appendices}
 
 \input{eces_chapter/latex_body_text/error_control_of_enhanced_sampling-appendix-b}
 
 \input{eces_chapter/latex_body_text/error_control_of_enhanced_sampling-appendix-c}
 
 %\input{eces_chapter/latex_body_text/error_control_of_enhanced_sampling-appendix-d}
-
-\end{appendices}
 
 %\newpage
 %\footnotesize
@@ -44,10 +45,18 @@ The authors thank the members of Roberts lab for discussions. This work was supp
 
 \newpage
 \normalsize
+
+\renewcommand{\thesection}{\arabic{chapter}.T}
 \input{eces_chapter/latex_body_text/error_control_of_enhanced_sampling-tables}
+
+\renewcommand{\thesection}{\arabic{chapter}.F}
 \input{eces_chapter/latex_body_text/error_control_of_enhanced_sampling-figures}
 
-%\include{error_control_of_enhanced_sampling-supplemental_ref}
+\newpage
+\renewcommand{\thesection}{\arabic{chapter}.S}
+\section{Supplemental}
 
+\input{eces_chapter/error_control_of_enhanced_sampling-supplemental_ref}
 
+\end{subappendices}
 %\end{document}

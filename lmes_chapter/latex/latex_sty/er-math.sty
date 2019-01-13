@@ -1,0 +1,44 @@
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{chemarr}
+
+% 2009-07-07; Elijah Roberts: created
+% 2010-05-03; Elijah Roberts: added \mathpl
+
+\usepackage{unicode-math}
+%\setmathfont{XITS Math}
+\setmathfont{Cambria Math}
+
+\newcommand{\ddt}[1]{\frac{d#1}{dt}} 
+\newcommand{\pd}[1]{\frac{\partial}{\partial #1}} 
+\newcommand{\pdd}[1]{\frac{\partial^2}{\partial #1^2}} 
+\newcommand{\pdda}[2]{\frac{\partial^2}{\partial #1 \partial #2}}
+
+% Ensemble average.
+\newcommand{\ens}[1]{\langle #1 \rangle}
+
+% Big O notation.
+\newcommand{\bigO}{{\mathcal O}}
+
+% sequence notation
+\newcommand{\nseq}[2]{ \left\{ #1_0 \comma \cdots \comma #1_{#2} \right\} }
+
+% Unit vectors.
+\newcommand{\iv}{\hat{i}}
+\newcommand{\jv}{\hat{j}}
+\newcommand{\kv}{\hat{k}}
+
+% Scientific notation.
+\newcommand{\sci}[2]{$\mathrm{\mathsf{#1{\times}10^{#2}}}$\xspace}
+\newcommand{\scimath}[2]{#1{\times}10^{#2}}
+
+% Math without font formatting.
+\newcommand{\mathpl}[1]{$\mathrm{\mathsf{#1}}$}
+
+% math mode comma, to be used in expressions such as {a, b, c, ...}
+\newcommand{\comma}{\,, \;}
+
+% domains
+\newcommand{\ints}{\mathbb{N}}
+\newcommand{\intnonnegs}{{\ints}_{\geq 0}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\realnonnegs}{{\reals}_{\geq 0}}

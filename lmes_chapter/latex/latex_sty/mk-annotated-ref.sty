@@ -1,0 +1,29 @@
+\usepackage{amsmath,amsthm,amssymb}
+
+\newcommand{\xref}[2]{{#1} \ref{#2}}
+\newcommand{\xrefTwo}[3]{{#1} \ref{#2} and \ref{#3}}
+\newcommand{\xrefRange}[3]{{#1} \ref{#2}-\ref{#3}}
+\newcommand{\xrefThree}[4]{{#1} \ref{#2}, \ref{#3}, and \ref{#4}}
+
+\newcommand{\appendref}[1]{\xref{Appendix}{#1}}
+\newcommand{\appendrefTwo}[2]{\xrefTwo{Appendices}{#1}{#2}}
+\newcommand{\appendrefThree}[3]{\xrefThree{Appendices}{#1}{#2}{#3}}
+
+\renewcommand{\eqref}[1]{Eq \ref{#1}}
+\newcommand{\eqrefTwo}[2]{Eqs \ref{#1} and \ref{#2}}
+\newcommand{\eqrefTwoOr}[2]{Eqs \ref{#1} or \ref{#2}}
+\newcommand{\eqrefThree}[3]{Eqs \ref{#1}, \ref{#2}, and \ref{#3}}
+\newcommand{\eqrefThreeOr}[3]{Eqs \ref{#1}, \ref{#2}, or \ref{#3}}
+
+\newcommand{\figref}[1]{Fig \ref{#1}}
+\newcommand{\figrefTwo}[2]{Figs \ref{#1} and \ref{#2}}
+\newcommand{\figrefThree}[3]{Figs \ref{#1}, \ref{#2}, and \ref{#3}}
+
+\newcommand{\secref}[1]{\xref{Sec}{#1}}
+\newcommand{\secrefTwo}[2]{\xrefTwo{Secs}{#1}{#2}}
+\newcommand{\secrefRange}[2]{\xrefRange{Secs}{#1}{#2}}
+\newcommand{\secrefThree}[3]{\xrefThree{Secs}{#1}{#2}{#3}}
+
+\newcommand{\tableref}[1]{Table \ref{#1}}
+\newcommand{\tablerefTwo}[2]{Tables \ref{#1} and \ref{#2}}
+\newcommand{\tablerefThree}[3]{Tables \ref{#1}, \ref{#2}, and \ref{#3}}

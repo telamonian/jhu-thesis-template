@@ -1,0 +1,57 @@
+%\documentclass[class=article, float=false, crop=false]{standalone}
+%\documentclass[10pt,letterpaper]{article}
+%
+%\input{error_control_of_enhanced_sampling-header}
+%
+%\begin{document}
+
+\beginsupplemental
+
+\subsection{Alternative Derivation of Variance of the $\mfpttrue$ Estimator}
+\label{sec:sup_alt_var}
+Instead of using the delta method as in \secref{sec:phase_weight_moments} of the main paper, the variance of the \abr{FFS} $\mfpttrue$ estimator can also be derived from the fundamental properties of variance (though no explicit information about the underlying distribution of $\mfptest$ is gained this way). From the general properties of variance it is known that for independent random variables $X_0, X_1, ..., X_i$:
+        \begin{equation}
+        \label{eq:product_variance_compact}
+            \V{\prod_i X_i} = \prod_i \left(\V{X_i} + \E{X_i}^2\right) - \prod_i \E{X_i}^2.
+        \end{equation}
+The righthand side of the above \eqref{eq:product_variance_compact} can be rewritten in terms of a generalized variance $\gvarsymb$\cite{Goodman:1962uc}:
+        \begin{equation}
+        \label{eq:product_variance_gvar_grouped}
+            \V{\prod_i X_i} = \prod_i \E{X_i}^2 \left( \sum_i \GVAR{X_i} + \sum_{i_0 < i_1} \GVAR{X_{i_0}} \GVAR{X_{i_1}} + \sum_{i_0 < i_1 < i_2} \GVAR{X_{i_0}} \GVAR{X_{i_1}} \GVAR{X_{i_2}} + \cdots, \right)
+        \end{equation}
+where $\GVAR{X} = \frac{\V{X}}{\E{X}^2}$. If the expected values are much larger than the variances, the higher order terms of $\V{\prod_i X_i}$ can be ignored without a large loss of accuracy. The condition:
+    \begin{equation}
+    \label{eq:product_variance_approx_condition}
+        \E{X_i} >> \V{X_i} \quad \forall X_i,
+    \end{equation}
+implies that:
+    \begin{align*}
+        \GVAR{X_{i_0}} &>> \GVAR{X_{i_0}}\GVAR{X_{i_1}} &\quad &\forall X_{i_0}, X_{i_1}, \\
+        \GVAR{X_{i_0}} &>> \GVAR{X_{i_0}}\GVAR{X_{i_1}}\GVAR{X_{i_2}} &\quad &\forall X_{i_0}, X_{i_1}, X_{i_2},\\
+        \vdots
+    \end{align*}
+This regime yields an easy to work with approximation of \eqref{eq:product_variance_gvar_grouped} as a series of of independent terms that only depend on a single $X_i$:
+    \begin{equation}
+    \label{eq:product_variance_approx}
+        \V{\prod_i X_i} \approx \prod_i \E{X_i}^2 \sum_i \GVAR{X_i}.
+    \end{equation}
+
+Each \abr{FFS} simulation phase $\phase$ can be conceptualized as taking a series of samples from a random variable $\phrv$ (see \secref{sec:ds_es_description} in the main paper). The phase weight estimator $\pwest$ is then the mean of the $\phrv$ samples. The moments of each $\pwest$ can be derived using the standard expected value and variance identities\cite{Borovkov:2013hf}, giving:
+    \begin{align}
+    \label{eq:pwest_moments_alternative}
+        \begin{split}
+            \E{\pwest} &= \pwtrue, \\
+            \V{\pwest} &= \frac{\V{\phrv}}{n_i}.
+        \end{split}
+    \end{align}
+Since $\V{w_i}$ is a fixed value, the value of each $\V{\pwest}$ term trends monotonically downward as $\samplecount$ increases. If $n_i$ is assumed to be set to a large value, then it is reasonable to assume that $\E{\pwest} >> \V{\pwest}$ as well. In this regime the condition in \eqref{eq:product_variance_approx_condition} is satisfied, and so we can apply the simplified formula for the product variance to the phase weights. Plugging the moments in \eqref{eq:pwest_moments_alternative} into \eqref{eq:product_variance_approx} yields:
+    \begin{equation*}
+        \V{\mfptest} = \V{\prod_\phase \pwest} \approx \prod_i \E{\pwest}^2 \sum_i \frac{\GVAR{\pwest}}{n_i} = \prod_j \pwtruesqx{j} \sum_i \frac{\V{\phrv}}{\pwtruesq n_i}.
+    \end{equation*}
+    
+%$\phrvx{0}$ draws from the distribution of waiting times in between forward flux events across $\ifacex{0}$, whereas $\phrvx{i>0}$ draws from the distribution of trajectory outcomes (\ie 0 for trajectories that fall back, 1 for trajectories that flux forward).
+
+%and so
+%        \begin{equation*}
+%            \V{\PWest} = \prod_i \E{\pwest}^2 \left( \sum_i \GVAR{\pwest} + \sum_{i_0 < i_1} \GVAR{\pwestx{i_0}} \GVAR{\pwestx{i_1}} + \cdots \right)
+%        \end{equation*}

@@ -1,0 +1,32 @@
+%\documentclass[class=article, float=false, crop=false]{standalone}
+%\documentclass[10pt,letterpaper]{article}
+%
+%\input{error_control_of_enhanced_sampling-header}
+%
+%\begin{document}
+
+\continuesupplemental
+
+\subsection{Supplemental Tables}
+\begin{table}[h]
+    \caption{\label{tab:gts_odes}Deterministic ordinary differential equation model of the \gtsabbrev{}.}
+    \newcolumntype{Z}{>{\centering\arraybackslash}X}%
+    \begin{tabularx}{\textwidth}{Z}
+        \hline\hline
+        \text{Deterministic Genetic Toggle Switch Equations} \\
+        \hline
+        {\begin{align*}
+            \frac{d\gtsa}{dt}   &= -10 \gtsa^2 + 10 \gtsaa + \theta \left( -\frac{\gtsa}{4} + \gtsoaa + \gtso \right) \\
+            \frac{d\gtsaa}{dt}  &= 5 \gtsa^2 + \gtsoaa - 5 \gtsaa \left( \gtso + 1 \right)                            \\
+            \frac{d\gtsoaa}{dt} &= -\gtsoaa + 5 \gtsaa \cdot \gtso                                                    \\
+            \frac{d\gtsb}{dt}   &= -10 \gtsb^2 + 10 \gtsbb + \theta \left( -\frac{\gtsb}{4} + \gtsobb + \gtso \right) \\
+            \frac{d\gtsbb}{dt}  &= 5 \gtsb^2 + \gtsobb - 5 \gtsbb \left( \gtso + 1 \right)                            \\
+            \frac{d\gtsobb}{dt} &= -\gtsobb + 5 \gtsbb \cdot \gtso                                                    \\
+            \frac{d\gtso}{dt}   &= 1 - \gtsoaa - \gtsobb
+        \end{align*}} \\
+        \hline\hline
+    \end{tabularx}
+\end{table}
+\clearpage
+
+%\end{document}

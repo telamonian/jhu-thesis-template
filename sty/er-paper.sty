@@ -23,7 +23,8 @@
 %\usepackage[left=1.0in,top=1.0in,right=1.0in,bottom=1.0in,nohead,foot=0.5in]{geometry}
 %%\usepackage[doublespacing]{setspace}
 
-\usepackage[toc,page]{appendix}
+%\usepackage[toc,page]{appendix}
+\usepackage{appendix}
 
 % tabular stuff for revtex
 \usepackage{dcolumn}
@@ -42,8 +43,11 @@
 \usepackage{perpage}
 \MakePerPage{footnote}
 
-% alias for helping to squeeze footnotes into nicely formatted tables
+% alias for helping to squeeze footnote marks into nicely formatted tables
 \newcommand{\fnm}[1]{\footnotemark[#1]}
+% alias for fake footnotes (ie footnotetext) for tables
+\newcommand{\fnt}[2]{\fnm{#1}\footnotesize{#2}}
+\newcommand{\mfnt}[3]{\multicolumn{#1}{l}{\footnotesize{\fnm{#2}#3}} \\}
 
 % Set the section styles.
 %\usepackage{sectsty}
@@ -121,7 +125,7 @@
 \newcommand{\beginsupplemental}{%
     \setcounter{figure}{0}%
     %\setcounter{page}{0}%
-    \setcounter{section}{0}%
+%    \setcounter{section}{0}%
     \setcounter{table}{0}%
     \continuesupplemental%
 }
@@ -130,7 +134,7 @@
 \newcommand{\continuesupplemental}{%
     \renewcommand{\thefigure}{S\arabic{figure}}%
     %\renewcommand{\thepage}{S\arabic{section}}%
-    \renewcommand{\thesection}{S\arabic{section}}%
+%    \renewcommand{\thesection}{S\arabic{section}}%
     \renewcommand{\thetable}{S\arabic{table}}%
 }
      

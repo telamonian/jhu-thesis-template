@@ -1,0 +1,144 @@
+%\pdfminorversion=5
+
+% enumitem package for better lists
+\usepackage{enumitem}
+
+% Define some colors.
+\usepackage[usenames]{color}
+\definecolor{orange}{rgb}{1,0.65,0}
+
+% Set helvetica as the document font.
+\usepackage{fontspec}
+\setmainfont{Helvetica}
+
+% Set T1 font encoding so underscore will be an actual character in the output PDFs.
+%\usepackage[T1]{fontenc}
+
+% Set the page size.
+\usepackage[left=1.0in,top=1.0in,right=1.0in,bottom=1.0in,nohead,foot=0.5in]{geometry}
+\usepackage{setspace}
+
+% Turn off paragraph indentation.
+%\edef\restoreparindent{\parindent=\the\parindent\relax}
+\usepackage{parskip}
+%\restoreparindent
+
+% Set the table of contents style
+\usepackage{tocloft}
+\renewcommand{\contentsname}{Table of Contents}
+\renewcommand{\cfttoctitlefont}{\Large\bf}
+\renewcommand{\cftloftitlefont}{\Large\bf}
+\renewcommand{\cftlottitlefont}{\Large\bf}
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftchappresnum}{Chapter } 
+\newlength{\mylen} % a "scratch" length 
+\settowidth{\mylen}{\cftchappresnum\cftchapaftersnum} % extra space 
+\addtolength{\cftchapnumwidth}{\mylen} % add the extra space 
+\makeatletter
+\newcommand*\updatechaptername{%
+   \addtocontents{toc}{\protect\renewcommand*\protect\cftchappresnum{\@chapapp\ }}
+}
+\makeatother
+
+% Set the section styles.
+\usepackage{sectsty}
+\chapterfont{\Large}
+\sectionfont{\large}
+\subsectionfont{\large}
+\subsectionfont{\normalsize}
+\subsubsectionfont{\normalfont\normalsize\itshape}
+\paragraphfont{\normalfont\normalsize\itshape}
+
+% add an appendix command
+\usepackage{calc}
+\renewcommand{\cftchappresnum}{\chaptername\space}
+\setlength{\cftchapnumwidth}{\widthof{\textbf{Appendix~999~}}}
+\makeatletter
+\g@addto@macro\appendix{%
+  \addtocontents{toc}{%
+    \protect\renewcommand{\protect\cftchappresnum}{\appendixname\space}%
+  }%
+}
+\makeatother
+
+% Affiliation commands.
+\newcommand{\affl}[1]{$\mathrm{^{#1}}$}
+
+% Editing commands.
+\newcommand{\ed} [1] {{\color{blue}#1}}
+\newcommand{\cmt} [1] {{\color{red}#1}}
+\newcommand{\editnote} [1] {{\color{red}#1}}
+\newcommand{\gr} [1] {{\color{orange}#1}}
+%\newcommand{\todo} [1] {\textcolor{green}{(TODO: #1)}}
+
+% Make latex more likely to put figures and text on the same page.
+\renewcommand\floatpagefraction{1.0}
+\renewcommand\topfraction{1.0}
+\renewcommand\bottomfraction{1.0}
+\renewcommand\textfraction{0.0}   
+\setcounter{totalnumber}{50}
+\setcounter{topnumber}{50}
+\setcounter{bottomnumber}{50}
+
+% Set the table and figure label style.
+\newcommand{\tablesize}{\small}
+\renewcommand\tablename{Table}
+\newcommand{\Table}[1]{Table \tref{#1}}
+\newcommand{\tref}[1]{\ref{#1}}
+\makeatletter
+\def\fnum@table{\tablesize{\bf\tablename\nobreakspace\thetable}}
+\makeatother
+\newcommand{\figuresize}{\small}
+\renewcommand\figurename{Figure}
+\newcommand{\Figure}[1]{\figurename~\fref{#1}}
+\newcommand{\fref}[1]{\ref{#1}}
+\newcommand{\SIFigure}[1]{\figurename~\sifref{#1}}
+\newcommand{\sifref}[1]{S\ref{#1}}
+\makeatletter
+\def\fnum@figure{\figuresize{\bf\figurename\nobreakspace\thefigure}}
+\makeatother
+\newcommand{\Algorithm}[1]{Algorithm \aref{#1}}
+\newcommand{\aref}[1]{\ref{#1}}
+
+% Load natbib and set the default behavior of the cite command. (Enable EITHER natbib OR cite).
+%\usepackage[square,comma,sort]{natbib}
+%\renewcommand{\cite}[1]{\citep{#1}}
+%\renewcommand{\citet}[1]{\citep{#1}}
+
+% Load cite and set the default behavior of the cite command. (Enable EITHER natbib OR cite).
+\usepackage{cite}
+
+% load booktab and set the default spacing above booktab tables.
+\usepackage{booktabs}
+\renewcommand\abovetopsep{0.14in}
+
+% A horizontal rule.
+\newcommand{\hr}{\noindent\rule{\textwidth}{1pt}\\}
+
+% Rotating package for sideway tables/figures.
+\usepackage{rotating}
+
+% Include the ulem package for strikeout.
+\usepackage[normalem]{ulem}
+
+\usepackage{xspace}
+
+% Font definitions.
+\newcommand{\codesize}{\footnotesize}
+
+% Courtesy caption shortcut.
+\newcommand{\courtesy}[1]{(\itshape Figure courtesy of #1)}
+
+% Create a symbolic footnote command.
+%\long\def\symbolfootnote[#1]#2{\begingroup%
+%\def\thefootnote{\fnsymbol{footnote}}\footnote[#1]{#2}\endgroup}
+\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+
+% Import hyperref package.
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,
+            urlcolor=blue}
+
+\usepackage{array}
+
+\usepackage{pdflscape}

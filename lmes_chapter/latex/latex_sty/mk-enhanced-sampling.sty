@@ -1,0 +1,98 @@
+% indices
+\newcommand{\ix}{i}
+\newcommand{\jx}{j}
+\newcommand{\kx}{k}
+\newcommand{\mx}{m}
+\newcommand{\nx}{n}
+
+% probability and conditional probability
+\newcommand{\prob}[1]{P\left( #1 \right)}
+
+\newcommand{\condprob}[2]{\prob{ #1 \mid #2 }}
+
+\newcommand{\Phasesymb}{N}
+\newcommand{\Phase}{\Phasesymb}
+
+\newcommand{\ifacesymb}{\lambda}
+\newcommand{\ifacex}[1]{{\ifacesymb}_{#1}}
+
+\newcommand{\iface}{\ifacex{}}
+\newcommand{\ifacez}{\ifacex{0}}
+\newcommand{\ifacei}{\ifacex{\ix}}
+\newcommand{\ifaceimo}{\ifacex{\ix - 1}}
+\newcommand{\ifaceipo}{\ifacex{\ix + 1}}
+\newcommand{\ifaceI}{\ifacex{\Phase}}
+\newcommand{\ifaceImo}{\ifacex{\Phase - 1}}
+
+\newcommand{\fluxatoz}{\Phi_\statea}
+
+\newcommand{\fluxprobxy}[2]{\condprob{\ifacex{#1}}{\ifacex{#2}}}
+\newcommand{\fluxprob}{\condprob{\ix}{\ix - 1}}
+
+\newcommand{\landweightsymb}{\Bbbl}
+\newcommand{\landweightx}[1]{\landweightsymb_{#1}}
+\newcommand{\landweight}{\landweightx{\ix}}
+
+\newcommand{\stageweightsymb}{\BbbS}
+\newcommand{\stageweightx}[1]{\stageweightsymb_{#1}}
+\newcommand{\stageweight}{\stageweightx{\ix}}
+
+% order parameter
+\newcommand{\oparamsymb}{\mathscr{O}}
+
+\newcommand{\oparam}{\oparamsymb}
+\newcommand{\oparamfunc}[1]{\oparamsymb \left( #1 \right)}
+
+\newcommand{\oparamvalsymb}{o}
+\newcommand{\oparamvalx}[1]{\oparamvalsymb_{#1}}
+\newcommand{\oparamval}{\oparamvalx{\ix}}
+
+\newcommand{\Oparamvalsymb}{O}
+\newcommand{\Oparamval}{\Oparamvalsymb}
+
+% order parameter implementation
+\newcommand{\oparamid}{ID}
+\newcommand{\oparamtype}{Type}
+\newcommand{\oparamcoeffs}{SpeciesCoefficients}
+\newcommand{\oparamspecids}{SpeciesIDs}
+
+% species counts for use in formal math
+\newcommand{\speciescountsymb}{s}
+\newcommand{\Speciescountsymb}{S}
+\newcommand{\Speciessamplessymb}{n}
+
+\newcommand{\speciescountx}[1]{\speciescountsymb_{#1}}
+\newcommand{\speciescounti}{\speciescountx{\ix}}
+\newcommand{\speciescountn}{\speciescountx{\Speciescountsymb}}
+
+\newcommand{\speciescountxy}[2]{\speciescountsymb_{#1_#2}}
+\newcommand{\speciescountij}{\speciescountxy{\ix}{\jx}}
+\newcommand{\speciescountxn}[1]{\speciescountxy{#1}{\Speciescountsymb}}
+\newcommand{\speciescountnn}{\speciescountxy{\Speciessamplessymb}{\Speciescountsymb}}
+
+\newcommand{\Speciescount}{\speciescountsymb}
+
+
+% species counts array
+\newcommand{\counts}{Counts}
+
+% tiling
+\newcommand{\tilingid}{ID}
+\newcommand{\tilingopid}{OrderParameterID}
+\newcommand{\tilingtype}{Type}
+\newcommand{\tilingbasins}{Basins}
+\newcommand{\tilingedges}{Edges}
+
+
+% genetic toggle switch
+\newcommand{\oparamab}{\{\textbf{A},\ \textbf{B}\}}
+\newcommand{\oparamd}{\textbf{\Delta}}
+
+% alias for transition from state A to state B
+\newcommand{\statea}{\mathcal{A}}
+\newcommand{\stateb}{\mathcal{B}}
+\newcommand{\atob}{\statea \rightarrow \stateb}
+\newcommand{\btoa}{\stateb \rightarrow \statea}
+
+% self regulating gene
+\newcommand{\oparama}{\mbfAlpha}
