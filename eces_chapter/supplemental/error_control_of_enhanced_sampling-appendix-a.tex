@@ -14,7 +14,7 @@ Instead of using the delta method as in \secref{sec:phase_weight_moments} of the
         \label{eq:product_variance_compact}
             \V{\prod_i X_i} = \prod_i \left(\V{X_i} + \E{X_i}^2\right) - \prod_i \E{X_i}^2.
         \end{equation}
-The righthand side of the above \eqref{eq:product_variance_compact} can be rewritten in terms of a generalized variance $\gvarsymb$\cite{Goodman:1962uc}:
+The righthand side of the above \eqref{eq:product_variance_compact} can be rewritten in terms of a generalized variance $\gvarsymb$\supercite{Goodman:1962uc}:
         \begin{equation}
         \label{eq:product_variance_gvar_grouped}
             \V{\prod_i X_i} = \prod_i \E{X_i}^2 \left( \sum_i \GVAR{X_i} + \sum_{i_0 < i_1} \GVAR{X_{i_0}} \GVAR{X_{i_1}} + \sum_{i_0 < i_1 < i_2} \GVAR{X_{i_0}} \GVAR{X_{i_1}} \GVAR{X_{i_2}} + \cdots, \right)
@@ -36,7 +36,7 @@ This regime yields an easy to work with approximation of \eqref{eq:product_varia
         \V{\prod_i X_i} \approx \prod_i \E{X_i}^2 \sum_i \GVAR{X_i}.
     \end{equation}
 
-Each \abr{FFS} simulation phase $\phase$ can be conceptualized as taking a series of samples from a random variable $\phrv$ (see \secref{sec:ds_es_description} in the main paper). The phase weight estimator $\pwest$ is then the mean of the $\phrv$ samples. The moments of each $\pwest$ can be derived using the standard expected value and variance identities\cite{Borovkov:2013hf}, giving:
+Each \abr{FFS} simulation phase $\phase$ can be conceptualized as taking a series of samples from a random variable $\phrv$ (see \secref{sec:ds_es_description} in the main paper). The phase weight estimator $\pwest$ is then the mean of the $\phrv$ samples. The moments of each $\pwest$ can be derived using the standard expected value and variance identities\supercite{Borovkov:2013hf}, giving:
     \begin{align}
     \label{eq:pwest_moments_alternative}
         \begin{split}
