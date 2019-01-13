@@ -515,7 +515,7 @@ There are now dozens (if not hundreds) of different enhanced sampling methods, a
 
 \section{Enhanced sampling methods for stochastic simulation of biochemistry}
 
-Beginning with the proposal of \abr{FFS} in 2005\supercite{Allen:2005wy}, a number of different enhanced sampling methods have been developed for use in stochastic simulations of biochemical systems. Along with \abr{FFS}, \abr{NEUS} and \abr{WE} are also highly cited methods.
+Beginning with the proposal of \abr{FFS} in 2005\supercite{Allen:2005wy} by Rein ten Wolde and coworkers, a number of different enhanced sampling methods have been developed for use in stochastic simulations of biochemical systems. Along with \abr{FFS}, \abr{NEUS} and \abr{WE} are also highly cited methods.
 
 \abr{FFS}, \abr{NEUS}, and \abr{WE} have a number of features in common. Each method requires the user to specify a function of their system's complete state to use as an order parameter:
 \begin{equation*}
@@ -556,16 +556,47 @@ Various extensions for the \abr{FFS} method have been developed. One of the more
 A more complete description of \abr{FFS} (including a including a step-by-step listing of the algorithm) is given later in this thesis in \secref{sec:ds_es_description}. The version given in \secref{sec:ds_es_description} differs somewhat from the original implementation of \abr{FFS}, with each change made either for the sake of parallelizing the algorithm, or to make one of the method's outputs more amenable to statistical analysis. On the other hand, the description given above is faithful to the version from the originating papers\supercite{Allen:2005wy,Allen:2006cp,Allen:2009kb}.
 
 \subsection{Nonequilibrium umbrella sampling}
-\abr{NEUS} was first proposed\supercite{Warmflash:2007dz} in 2007, a few years after \abr{FFS} was introduced, and bears it a number of similarities. Like \abr{FFS}, \abr{NEUS} requires an order parameter, as well as a set of interfaces that divide it into bins. It too stops trajectories when they intersect with those interfaces, and it too starts new trajectories based on a list of the points at which those trajectories intersected. However, the implementation of these details is completely different. 
+\abr{NEUS} was proposed by by Dinner and coworkers\supercite{Warmflash:2007dz} in 2007, a few years after \abr{FFS} was introduced, and bears it a number of similarities. Like \abr{FFS}, \abr{NEUS} requires an order parameter, as well as a set of interfaces that divide it into bins. It too stops trajectories when they intersect with those interfaces, and it too starts new trajectories based on a list of the points at which those trajectories intersected.
 
-For one thing, \abr{NEUS} allows for the use of 2- and higher-D order parameters/interfaces\footnote{In fact, it's somewhat dependent upon the restriction in the state-space volume of the bins that a high dimensional order parameter introduces.}. 
+On the surface, there are also many differences between the two methods. In contrast to \abr{FFS}, which requires the use of a 1-D order parameter, \abr{NEUS} allows for the use of 2- and higher-D order parameters/interfaces. The reason why \abr{NEUS} is able to make use of these more complex order parameters is in turn due to differences in how it implements the starting and stopping of trajectories. 
 
-\supercite{Dickson:2009gt,Dickson:2009fua}
+\figref{fig:dickson_2009_fig2} shows a schematic of a simple case of \abr{NEUS} simulation, in which a state space has been divided into 4 regions along a 2D order parameter. A \abr{NEUS} simulation proceeds with respect to a given set of regions as follows\footnote{Curiously, Dinner and coworkers have never published a full step-by-step listing of their \abr{NEUS} algorithm. On the other hand, Vanden-Eijnden and coworkers published a very complete implementation of \abr{NEUS}\supercite{VandenEijnden:2009jh}, though with a few of their own modifications (and, also curiously, they never actually use the name \abr{NEUS}).}:
+\begin{enumerate}
+    \item An initial weight term $w_i = \frac{1}{N}$ is assigned to each region $i$ (where $N$ is the count of regions), and a trajectory is started in each region.
+    \item Each trajectory is allowed to run unconstrained until it reaches one of the edges of its region. Given that the trajectory in region $\region$ reached the boundary between $\region$ and some other region $\regionalt$, two things happen:
+    \begin{enumerate}
+        \item The trajectory is terminated.% Its final state is stored in a list $C_j$ associated with $\regionalt$.
+        \item $w_i$ is decreased and $w_j$ is increased, according to the equation:
+        \begin{equation*}
+            -\Delta w_i = \Delta w_j = s w_i,
+        \end{equation*}
+        where $\Delta$ implies an additive change, and $s$ is a small constant factor.
+    \end{enumerate}
+    \item Whenever a trajectory in a region $\region$ is terminated, a new trajectory is started at one of the states $\alpha$ contained within $\region$. $\alpha$ is selected at random with probability:
+    \begin{equation*}
+        p_{\alpha} = \frac{\fluxx{\alpha}}{\sum_{\alpha} \fluxx{\alpha}},
+    \end{equation*}
+    where $\fluxx{\alpha}$ is the total flux into state $\alpha$ from all states not contained in $\region$. The flux terms $\fluxx{\alpha}$ are calculated as:
+    \begin{equation*}
+        \fluxx{\alpha} = \sum_{\beta} \frac{n_{\alpha \beta} w_{\beta}}{T_{\beta}},
+    \end{equation*}
+    where the sum is over all of the states $\beta$ that are adjacent to $\alpha$ but outside $\region$, $n_{\alpha \beta}$ is the observed count of crossings from $\beta$ into $\alpha$, $w_{\beta}$ is the weight of the region that contains $\beta$, and $T_{\beta}$ is the total simulation time of all trajectories run in the region containing $\beta$.
+\end{enumerate}
+Over time, the weight terms $w_i$ will converge\supercite{Dickson:2010gf}. At the end of a \abr{NEUS} simulation, the epigenetic landscape (\ie the steady state probability distribution) of a system can be easily calculated as:
+\begin{equation*}
+    P(\alpha) = \sum_{\phase} P_{\region} (\alpha) w_i,
+\end{equation*}
+where the $P_{\region} (\alpha)$ terms are the probability distributions seen by the unconstrained trajectories running in each separate region. These can in turn be calculated as:
+\begin{equation*}
+    P_{\region} (\alpha) = \frac{t_{\alpha}}{T_{\region}},
+\end{equation*}
+where $T_{\region}$ is the total (across all trajectories) simulation time spent in $\region$, and $t_{\alpha}$ is the total simulation time spent in $\alpha$.
 
-In a later treatment\supercite{Dickson:2010gf}
+On the other hand, \abr{NEUS} originally could not be used to calculate \abr{MFPT} values. The developers of \abr{NEUS} claimed that \abr{FFS} and \abr{NEUS} were orthogonal in their strengths and applications. \abr{FFS} could be used to get rates like \abr{MFPT}, whereas \abr{NEUS} could be used to get steady state distributions. However, while the initial \abr{NEUS} paper was in press, the developers of \abr{FFS} published a new paper showing that their method could in fact also be used to calculate steady state distributions\supercite{Valeriani:2007hv}. Symmetrically, a few years later a paper was published that showed how to use \abr{NEUS} to calculate rates\supercite{Dickson:2009fua} like the \abr{MFPT}.
 
+%Several interesting extensions have been made to \abr{NEUS}\supercite{Dickson:2009gt}
 
-\figref{fig:dickson_2009_fig2}
+In a later treatment\supercite{Dickson:2010gf} Dinner built on this convergence, and demonstrated that the differences between \abr{FFS} and \abr{NEUS} may be more superficial than they appear. He showed that, given appropriately defined regions, \abr{NEUS} will actually completely reproduce the behavior, results, and statistics of \abr{FFS}. From the viewpoint of Dinner's mathematical framework, \abr{FFS} can in fact be thought of as a subset of the nonequilibrium umbrella approach.
 
 \subsection{Weighted ensemble}
 \abr{WE} is a method that originated\supercite{Huber:1996dn} in the molecular dynamics community. More than a decade after it was first proposed, a paper\supercite{Bhatt:2010df} was published that showed how \abr{WE} could be adapted for use with stochastic biochemical simulations.
