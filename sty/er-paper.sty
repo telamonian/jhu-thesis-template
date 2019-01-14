@@ -190,3 +190,29 @@
 
 \usepackage{tikz}
 \usetikzlibrary{snakes,arrows,shapes}
+
+\usepackage[font=small,labelfont=bf]{caption}
+
+% Wide environments for figures and tables -------------------------------------
+\usepackage{environ}
+
+% An easy way to make a figure span the full width of the page
+\NewEnviron{widefigure}[1][]{
+\begin{figure}[#1]
+\advance\leftskip-2cm
+\begin{minipage}{\dimexpr\textwidth+4cm\relax}%
+  \captionsetup{margin=2cm}
+  \BODY
+\end{minipage}%
+\end{figure}
+}
+
+\NewEnviron{widetable}[1][]{
+\begin{table}[#1]
+\advance\leftskip-2cm
+\begin{minipage}{\dimexpr\textwidth+4cm\relax}%
+  \captionsetup{margin=2cm}
+  \BODY
+\end{minipage}%
+\end{table}
+}

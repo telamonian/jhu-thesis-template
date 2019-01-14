@@ -1,10 +1,10 @@
 \usepackage[mathscr]{euscript}
 
 % define xits math font, used for some symbols
-%\newfontfamily{\xitsmath}{xits-math.otf}
+\newfontfamily{\xitsmath}{xits-math.otf}
 
 % define cambria math font, used for some symbols
-%\newfontfamily{\cambriamath}{Cambria Math}
+\newfontfamily{\cambriamath}{Cambria Math}
 
 % symbol for general value of interest
 \newcommand{\voisymb}{\mathbb{X}}
@@ -27,10 +27,10 @@
 \newcommand{\Costffpilotover}{{\Cost}_{\textrm{ffpilot-over}}}
 
 % symbol for per phase computational cost
-%\DeclareRobustCommand\costsymb{%
-%    \mathrel{\text{\normalfont\cambriamath\symbol{119992}}}%
-%}
-\newcommand{\costsymb}{\mathfrak{c}}
+\DeclareRobustCommand\costsymb{%
+    \mathrel{\text{\normalfont\cambriamath\symbol{119992}}}%
+}
+%\newcommand{\costsymb}{\mathfrak{c}}
 
 \newcommand{\costx}[1]{\costsymb_{#1}}
 \newcommand{\cost}{\costsymb}
@@ -46,15 +46,16 @@
 \newcommand{\Simtimefixed}{T}
 
 % symbol for the random variable associated with the overall simulation process
-\newcommand{\strv}{\mathfrak{W}}
+\newcommand{\strv}{\Bbbw}
+%\newcommand{\strv}{\mathfrak{W}}
 
 % symbol for the random variable associated with the individual phase processes
 \newcommand{\phzrv}{\tau}
 
-%\DeclareRobustCommand\phrvsymb{%
-%    \mathrel{\text{\normalfont\xitsmath\symbol{120168}}}%
-%}
-\newcommand{\phrvsymb}{\mathfrak{w}}
+\DeclareRobustCommand\phrvsymb{%
+    \mathrel{\text{\normalfont\xitsmath\symbol{120168}}}%
+}
+%\newcommand{\phrvsymb}{\mathfrak{w}}
 
 \newcommand{\phrvx}[1]{\phrvsymb_{#1}}
 \newcommand{\phrv}{\phrvx{\ix}}

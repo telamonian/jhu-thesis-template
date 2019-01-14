@@ -12,54 +12,70 @@
 %% This was the setup recommended at https://github.com/weitzner/jhu-thesis-template
 % \documentclass[12pt,oneside,final]{thesis}
 
-\pdfminorversion=4\relax
-\pdfobjcompresslevel=0\relax
+%\pdfminorversion=4\relax
+%\pdfobjcompresslevel=0\relax
 %% Followed the information from https://www.overleaf.com/latex/examples/creating-pdf-slash-a-and-pdf-slash-x-files/bbbycnbyqhnm#.Vw6_XBMrLm1 to create a PDF/A file in Overleaf
 \usepackage[a-1b]{pdfx} % Need this to create a PDF/A file
 
 \usepackage{pdfpages}
 
-\pagestyle{myheadings}
+%\pagestyle{myheadings}
 %\topmargin=0.25in
-\topmargin=0.05in
-\textheight=8.15in
-\textwidth=5.6in
-\oddsidemargin=0.7in
-\raggedbottom
+%\topmargin=0.05in
+%\textheight=8.15in
+%\textwidth=5.6in
+%\oddsidemargin=0.7in
+%\raggedbottom
+
+\usepackage{fontspec}
+\setmainfont{Helvetica}
+
+\usepackage[left=1.5in,top=1.0in,right=1.0in,bottom=1.0in,nohead,foot=0.5in]{geometry}
+\usepackage{setspace}
+%\setstretch{1.05}
+
 \newdimen \jot \jot=5mm
 \brokenpenalty=10000
 
  \include{thesis_header}
  
+\RequirePackage[pdfa]{hyperref}
+
+% Dark blue colour for all links
+\usepackage{color}
+\definecolor{link}{rgb}{0.45,0.51,0.67}
+\hypersetup{
+    unicode,%
+    linktocpage,%
+    colorlinks=true,%
+    citecolor=link,%
+    filecolor=link,%
+    linkcolor=link,%
+    urlcolor=link
+}
+ 
 %\usepackage[utf8]{inputenc} % Seems to cause a conflict with fontenc and lmodern
 %\DeclareUnicodeCharacter{00A0}{ }
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-\DeclareUnicodeCharacter{0302}{ }
-\usepackage{lmodern} % load a font with all the characters
+%\usepackage[T1]{fontenc}
+%\usepackage[utf8]{inputenc}
+%\DeclareUnicodeCharacter{0302}{ }
+%\usepackage{lmodern} % load a font with all the characters
 %\usepackage{hyperref}
-\usepackage{tocbibind} % need this to contents adding for TOC
-\usepackage{setspace}
-\setstretch{1.05}
-\usepackage{RJournal_nogeom} % Changes the colors of links among other things
+
+%\usepackage{RJournal_nogeom} % Changes the colors of links among other things
 %\usepackage[all]{hypcap}
+
+\usepackage{tocbibind} % need this to contents adding for TOC
 \usepackage[hypcap=true]{caption}
-\hypersetup{linktocpage}
-\usepackage{amsmath,amssymb,array}
+%\hypersetup{linktocpage}
 \usepackage{booktabs}
 \usepackage{subfig}
 
 %% load any required packages here
 \usepackage{graphicx}
 \usepackage{float}
-\usepackage{tikz}
 \usepackage{graphics} 
 \usetikzlibrary{positioning}
-\usetikzlibrary{shapes,arrows}
-\usepackage{dcolumn}
-% A math shortcut frequently used by John Muschelli
-\newcommand{\bbeta}{\mbox{\boldmath $\beta$}}
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -158,11 +174,6 @@ backend = bibtex,
 \clearfield{note}
 \clearfield{month}
 }
-
-%\renewcommand{\cite}[1]{\citep{#1}}
-%\renewcommand{\citet}[1]{\citep{#1}}
-
-%\usepackage[superscript,biblabel]{cite}
 \usepackage{enumitem}
 
 

@@ -586,13 +586,13 @@ Over time, the weight terms $w_i$ will converge\supercite{Dickson:2010gf}. At th
 \begin{equation*}
     P(\alpha) = \sum_{\phase} P_{\region} (\alpha) w_i,
 \end{equation*}
-where the $P_{\region} (\alpha)$ terms are the probability distributions seen by the unconstrained trajectories running in each separate region. These can in turn be calculated as:
+where the $P_{\region} (\alpha)$ terms are the probability distributions seen by the trajectories running in each separate region. These can in turn be calculated as:
 \begin{equation*}
     P_{\region} (\alpha) = \frac{t_{\alpha}}{T_{\region}},
 \end{equation*}
-where $T_{\region}$ is the total (across all trajectories) simulation time spent in $\region$, and $t_{\alpha}$ is the total simulation time spent in $\alpha$.
+where $T_{\region}$ is the total simulation time (across all trajectories) spent in region $\region$, and $t_{\alpha}$ is the total simulation time spent in state $\alpha$.
 
-On the other hand, \abr{NEUS} originally could not be used to calculate \abr{MFPT} values. The developers of \abr{NEUS} claimed that \abr{FFS} and \abr{NEUS} were orthogonal in their strengths and applications. \abr{FFS} could be used to get rates like \abr{MFPT}, whereas \abr{NEUS} could be used to get steady state distributions. However, while the initial \abr{NEUS} paper was in press, the developers of \abr{FFS} published a new paper showing that their method could in fact also be used to calculate steady state distributions\supercite{Valeriani:2007hv}. Symmetrically, a few years later a paper was published that showed how to use \abr{NEUS} to calculate rates\supercite{Dickson:2009fua} like the \abr{MFPT}.
+On the other hand, \abr{NEUS} originally could not be used to calculate \abr{MFPT} values. The developers of \abr{NEUS} claimed that \abr{FFS} and \abr{NEUS} were orthogonal in their strengths and applications: \abr{FFS} could be used to get rates like \abr{MFPT}, whereas \abr{NEUS} could be used to get steady state distributions. However, while the initial \abr{NEUS} paper was in press, the developers of \abr{FFS} published a new paper showing that their method could in fact also be used to calculate steady state distributions\supercite{Valeriani:2007hv}. Symmetrically, a few years later a paper was published that showed how to use \abr{NEUS} to calculate rates\supercite{Dickson:2009fua}.
 
 %Several interesting extensions have been made to \abr{NEUS}\supercite{Dickson:2009gt}
 
