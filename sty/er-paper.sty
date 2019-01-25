@@ -5,6 +5,8 @@
 % 2010-05-03; Elijah Roberts: changed to use \color instead of \textcolor for text coloring
 % 2010-07-12; Elijah Roberts: added figure and table specific referencing macros
 
+\usepackage{lscape}
+
 %\usepackage[justification=justified,singlelinecheck=false]{caption}
 \usepackage{comment}
 %\usepackage{bm}
@@ -33,7 +35,9 @@
 \usepackage{tabularx}
 
 % hacks for tabular stuff for revtex
+\newcolumntype{L}{>{$}l<{$}}    % left math mode column type
 \newcolumntype{C}{>{$}c<{$}}    % centering math mode column type
+\newcolumntype{R}{>{$}r<{$}}    % left math mode column type
 \newcolumntype{Y}{D..{1.2}}    % like `d` columns, but intercolumn spacing works better for some reason
 \newcommand{\cc}[1]{\multicolumn{1}{c}{$#1$}}    % alias for temporarily escaping weird revtex column types
 \newcommand{\ccl}[1]{\multicolumn{1}{c|}{$#1$}}

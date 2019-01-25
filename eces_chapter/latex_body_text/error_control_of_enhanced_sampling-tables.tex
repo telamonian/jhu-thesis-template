@@ -46,9 +46,10 @@
 \end{table}
 \clearpage
 
-\begin{widetable}[h]
+\begin{landscape}
+\begin{table}[h]
     \caption[Simulation data from our \srgname{} (\srgabbrev{}) models]{\label{tab:srg}Parameterizations and other simulation data from our \srgabbrev{} models. Per-phase weights, costs, and sample counts were estimated from the average results of 1000 \abr{FFPilot} simulations (1\% error goal). \abr{MFPT} values were estimated from the results of $10^5$ \abr{DS} simulations, plus or minus the 95\% confidence interval bounds.}
-    \begin{tiny}
+    \begin{footnotesize}
     \begin{tabular}{r|CCCCCC|CCCCCC|CCCCCC}
         \hline\hline
         \multicolumn{1}{r|}{parameter} & \multicolumn{6}{C}{\SRGSLOWEST} & \multicolumn{6}{C}{\SRGSLOWER} & \multicolumn{6}{C}{\SRGSLOW} \\ \hline
@@ -80,8 +81,9 @@
         \mfnt{19}{5}{The expected cost of a phase $\phase$ sample.}
         \mfnt{19}{6}{The phase $\phase$ sample count (in thousands) for a 1\% error goal with 95\% confidence.}
     \end{tabular}
-    \end{tiny}
-\end{widetable}
+    \end{footnotesize}
+\end{table}
+\end{landscape}
 
 \clearpage
 
@@ -101,10 +103,11 @@
 \end{table}
 \clearpage
 
-\begin{widetable}[h]
+\begin{landscape}
+\begin{table}[h]
     \caption[simulation data from our \gtsname{} (\gtsabbrev{}) models]{\label{tab:gts}Parameterizations and other simulation data from our \gtsabbrev{} models. Per-phase weights, costs, and sample counts were estimated from the average results of 1000 \abr{FFPilot} simulations (1\% error goal). \abr{MFPT} values were estimated from the results of $10^5$ \abr{DS} simulations, plus or minus the 95\% confidence interval bounds.}
-    \begin{tiny}
-    \begin{tabular}{rY|CCCCC|CCCCC|CCCCC}
+    \begin{normalsize}
+    \begin{tabular}{cR|CCCCC|CCCCC|CCCCC}
         \hline\hline
         \multicolumn{2}{r|}{parameter} & \multicolumn{5}{C}{\GTSSLOWEST} & \multicolumn{5}{C}{\GTSSLOWER} & \multicolumn{5}{C}{\GTSSLOW} \\ \hline
         \multicolumn{2}{r|}{$\theta$}  & \multicolumn{5}{C|}{.1} & \multicolumn{5}{C|}{1} & \multicolumn{5}{C}{10}                         \\ \hline
@@ -131,6 +134,7 @@
         \mfnt{17}{5}{The expected cost of a phase $\phase$ sample.}
         \mfnt{17}{6}{The phase $\phase$ sample count (in thousands) predicted by \abr{FFPilot} to achieve a 1\% error goal, 95\% confidence.}
     \end{tabular}
-    \end{tiny}
-\end{widetable}
+    \end{normalsize}
+\end{table}
+\end{landscape}
 \clearpage
