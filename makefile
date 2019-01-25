@@ -14,15 +14,15 @@ ${fname}.pdf: ${fname}.tex \
 	then \
 	rm ${fname}.aux; \
 	fi;
-	pdflatex ${fname}
+	xelatex ${fname} --shell-escape
 	#pdflatex ${fname}
 	bibtex ${fname}
 	bibtex ${fname}1-blx
 	bibtex ${fname}2-blx
 	#bibtex ${fname}3-blx
 	# Add more if you have more chapters
-	pdflatex ${fname}
-	pdflatex ${fname}
+	xelatex ${fname} --shell-escape
+	xelatex ${fname} --shell-escape
 	cp ${fname}.pdf PhD_Thesis.pdf
 	open PhD_Thesis.pdf
 clean:
