@@ -12,9 +12,9 @@
 \newcommand{\voiest}{\est{\voisymb}}
 
 % symbols for subscript indices of indeterminate value
-\newcommand{\ix}{i}
-\newcommand{\jx}{j}
-\newcommand{\kx}{k}
+\renewcommand{\ix}{i}
+\renewcommand{\jx}{j}
+\renewcommand{\kx}{k}
 
 % symbol for the simulation total computational cost
 \newcommand{\Costsymb}{\mathcal{C}}
@@ -278,14 +278,15 @@
 \newcommand{\ifaceI}{\ifacex{\Phase}}
 \newcommand{\ifaceImo}{\ifacex{\Phase - 1}}
 
-% alias for flux
-\newcommand{\fluxsymb}{\Phi}
-\newcommand{\fluxx}[1]{\fluxsymb_{#1}}
+% alias for state A/state B fluxes
 \newcommand{\fluxatoz}{\fluxx{\statea}}
 
-\newcommand{\fluxxy}[2]{\fluxsymb_{#1, #2}}
 \newcommand{\fluxab}{\fluxxy{\statea}{\stateb}}
 \newcommand{\fluxba}{\fluxxy{\stateb}{\statea}}
+
+% alias for steady state state A/state B fluxes
+\newcommand{\steadyfluxab}{\steadyfluxxy{\statea}{\stateb}}
+\newcommand{\steadyfluxba}{\steadyfluxxy{\stateb}{\statea}}
 
 \newcommand{\parallelcount}{m}
 

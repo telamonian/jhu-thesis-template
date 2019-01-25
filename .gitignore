@@ -52,6 +52,9 @@
 # hyperref
 *.brf
 
+# jetbrains ides
+.idea/
+
 # listings
 *.lol
 
@@ -90,3 +93,6 @@ sympy-plots-for-*.tex/
 
 # minted intermediates
 _minted*
+
+# texpad
+.texpadtmp/

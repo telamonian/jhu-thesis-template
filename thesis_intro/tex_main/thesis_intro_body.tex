@@ -42,6 +42,7 @@ The same approach used to come up with \eqref{eq:simple_expression} can also be 
 \end{align}
 
 \section{Epigenetic landscapes and phenotypes}
+\label{sec:epigenetic_landscapes}
 
 Low-level models of biochemistry such as \eqref{eq:simple_expression} can be linked to higher-level phenomena via the concept of the epigenetic landscape. Waddington introduced his idea of the epigenetic landscape\supercite{Waddington:1965wf,Waddington:1957ub} by first asking the reader to imagine a cell as represented by a high-dimensional space. We call this space the cell's state space. Each dimension of the state space has a one-to-one correspondence with one of the species of metabolites or biomolecules present in the cell. The (non-negative, integer valued) coordinate along each dimension is the count of the corresponding molecule. Thus, each point in the complete state space uniquely defines a possible state of the cell. Just as there can be thousands, or tens of thousands\todo{add cite/clarify}, of distinct chemical species present in a cell, so too can a state space have thousands of dimensions.
 
@@ -69,7 +70,7 @@ There are many different representations of biochemical networks, each with thei
 
 Simple digraph representations are useful since they offer an intuitable picture of the lists of species and reactions that make up a model. Another useful network representation is the Petri net. Originally developed by Petri in the 1960's\supercite{Petri:1966vs} to model linked chemical reactions, Petri nets offer a natural way to model agent-based processes in general\footnote{When applying Petri nets to biochemical systems, the chemical species are the agents. This is in the sense that each molecule acts independently.\todo{develop the idea in this footnote or delete}}. Petri nets were first applied to problems in systems biology around the turn of the century\supercite{Goss:1998tf}, and have since been extensively developed for biological applications\supercite{Pinney:2003tz,Hardy:2004tq,Haas:2006ts}. Though less easy to understand at a glance than simple digraphs, Petri nets have the virtue of being able to encode unambiguous descriptions of biochemical systems. Due to this formal rigor, once set up they can be mechanically transcribed into various mathematical forms that can then be used as input for many different simulation techniques.
 
-Petri nets are bipartite digraphs.``Bipartite" refers to the fact that every Petri net contains two distinct sets of nodes: one set, called the places, represent chemical species, and the other, called the transitions, represent chemical reactions. For every reaction that a species participates in as a reactant there is an edge that starts at the corresponding place and ends at the corresponding reaction. Similarly, for every reaction product there is an edge that starts at the corresponding transition and ends at the corresponding place. The weight of each edge is the stoichiometry of the attached species (whether as product or reactant) with respect to the attached reaction. Additionally, a Petri net has a marking, a list that contains the initial quantities of each species.
+Petri nets are bipartite digraphs.``Bipartite" refers to the fact that every Petri net contains two distinct sets of nodes: one set, called the places, represent chemical species, and the other, called the transitions, represent chemical reactions. For every reaction that a species participates in as a reactant there is an edge that starts at the corresponding place node and ends at the corresponding transition node. Similarly, for every product a reaction creates there is an edge that starts at the corresponding transition and ends at the corresponding place. The weight of each edge is the stoichiometry of the attached species (whether as product or reactant) with respect to the attached reaction. Additionally, a Petri net has a marking, a list that contains the initial quantities of each species.
 
 Figure \ref{fig:simple_expression_petri_net} shows a Petri net representation of the simple expression model of \eqref{eq:simple_expression}. In addition to the graphical representation, a Petri net can be uniquely specified as a set of matrices $\left\{P,\ T,\ M,\ Pre,\ Post \right\}$\supercite{Wilkinson:2012tt}. For the simple expression model these matrices would be:
 \begin{gather}\label{eq:simple_expression_matrices}
@@ -181,13 +182,13 @@ Given the Petri net representation of a system, it is straightforward to constru
 \end{equation}
 where $\condet$ is a rate constant, and $\preshort_{\rxni \spsi}$ is a shorthand for the $\rxni \spsi$th entry of the $\premat$ matrix.
 
-Next, one determines the stoichiometry matrix $\stoichmat$. Essentially, the stoichiometry matrix is the difference of the $\postmat$ and $\premat$ matrices. The exact definition of $\stoichmat$ varies in the literature, but for our purposes it will be convenient to define $\stoichmat$ as the transpose of the difference:
+Next, one determines the stoichiometry matrix $\stoichmatx{}$. Essentially, the stoichiometry matrix is the difference of the $\postmat$ and $\premat$ matrices. The exact definition of $\stoichmatx{}$ varies in the literature, but for our purposes it will be convenient to define $\stoichmatx{}$ as the transpose of the difference:
 \begin{equation*}\label{eq:s_definition}
-    \stoichmat = \left( Post - Pre \right)^{\intercal}.
+    \stoichmatx{} = \left( Post - Pre \right)^{\intercal}.
 \end{equation*}
-Thus, $\stoichmat$ will be a $\spsI \times \rxnI$ matrix. With the rate laws $\rlaw$ and the stoichiometry matrix $\stoichmat$ in hand, the entire set of $\spsI$ \abrs{ODE} can be written as a single matrix equation:
+Thus, $\stoichmatx{}$ will be a $\spsI \times \rxnI$ matrix. With the rate laws $\rlaw$ and the stoichiometry matrix $\stoichmatx{}$ in hand, the entire set of $\spsI$ \abrs{ODE} can be written as a single matrix equation:
 \begin{equation}\label{eq:petri_net_odes}
-    \ddt{\placemat} = \stoichmat \rlawmat,
+    \ddt{\placemat} = \stoichmatx{} \rlawmat,
 \end{equation}
 where $\placemat$ is the places matrix, $\ddt{\placemat}$ is a column vector of the \abrs{ODE}, and $\rlawmat$ is a column vector in which the $i$th entry is the rate law $\rlaw$. 
 
@@ -210,10 +211,10 @@ The nature of the compact form given in \eqref{eq:petri_net_odes} is most easily
     \end{array} \right)
 \end{gather*}
 
-and the stoichiometry matrix $\stoichmat$ is:
+and the stoichiometry matrix $\stoichmatx{}$ is:
 
 \begin{gather*}
-    \stoichmat = 
+    \stoichmatx{} = 
 %
     \left[
         \left( \begin{array}{ccc}
@@ -285,7 +286,7 @@ Solving\footnote{The complete details of solving a system of ODEs is outside of 
 \end{gather}
 where $\markmat_\spsi$ is the initial marking (\ie quantity) of species $\spsi$. For any given marking $\markmat$ and set of rate constants $\condet$, the expressions of \eqref{eq:simple_expression_ode_solution} can be used to find the quantity of each species at any given time $t$.
 
-Often, a modeler is not concerned with the initial behavior of a system\footnote{As far as reproducing experimental results go, the initial behavior of a system is usually irrelevant. When studying biological systems, it is typical for the system to preexist any experimental observation (though an obvious exception would be any stop-flow experiment).}, but only with the behavior of the system over long periods of time. In these cases, solutions such as those found in \eqref{eq:simple_expression_ode_solution} can be simplified by considering their value in the limit $t \rightarrow \infty$, also called the steady state limit. The only terms in \eqref{eq:simple_expression_ode_solution} that explicitly depend on time are exponential decay terms of the form $e^{-t x}$. These exponential decay terms quickly approach $0$ as $t$ increases, yielding:
+Often, a modeler is not concerned with the initial behavior of a system\footnote{As far as reproducing experimental results go, the initial behavior of a system is often irrelevant. When studying biological systems, it is typical for the system to preexist any experimental observation (though an obvious exception would be any stop-flow experiment).}, but only with the behavior of the system over long periods of time. In these cases, solutions such as those found in \eqref{eq:simple_expression_ode_solution} can be simplified by considering their value in the limit $t \rightarrow \infty$, also called the steady state limit. The only terms in \eqref{eq:simple_expression_ode_solution} that explicitly depend on time are exponential decay terms of the form $e^{-t x}$. These exponential decay terms quickly approach $0$ as $t$ increases, yielding:
 \begin{gather*}\label{eq:simple_expression_ode_solution_ss}
     \left( \begin{array}{c}
         \con{g_p} \\
@@ -331,7 +332,7 @@ Stochastic simulation is a particularly robust method for recreating the behavio
 
 \subsection{The theory of stochastic simulation}
 
-The essential assumption of stochastic chemical kinetics is that for every reaction $\rxn$ there exists a constant $\constoch$ such that:
+The essential assumption of stochastic chemical kinetics is that for every reaction $\rxn$ there exists a constant $\constoch$ such that\supercite{Gillespie:1976bj}:
 \begin{align}\label{eq:stoch_essential_assumption}
     \constoch \dt \equiv&\, \parbox[t]{0.63\linewidth}{average probability that any set of competent\footnote{A set of molecules is ``competent" \wrt{} $\rxn$ if is equivalent to the minimum set of reactants.} molecules react per $\rxn$ during the time interval $\timeint$.}
 \end{align}
@@ -339,7 +340,7 @@ It can be shown\supercite{Gillespie:1992gb} that for any well stirred system tha
 
 The continuum chemical kinetics used in deterministic simulations assumes that each chemical species is homogeneously distributed across the reaction volume under study. In this view, each substance is in some sense spread infinitely finely over the volume. In stochastic kinetics, this homogeneity assumption is recast as the well-stirred assumption, in order to account for the existence of discrete molecules. Now it is assumed that only the probability distribution of each species is uniformly distributed over the volume. This means that in the stochastic view, at any given moment each particle of each species in a volume is equally likely to be anywhere within that volume. It is reasonable to assume that a system is well-stirred if it is small enough and if non-reactive collisions greatly outnumber collisions that result in a reaction. This description happens to describe most cellular compartments reasonably well. The fact that water molecules tend to vastly outnumber all other kinds within a cell is enough to satisfy the "non-reactive collisions" assumption\supercite{Gillespie:1976bj}.
 
-Building on \eqref{eq:stoch_essential_assumption}, a propensity function (referred to by some sources as a hazard equation\supercite{Wilkinson:2012tt}) can be defined for each reaction $\rxn$:
+Building on \eqref{eq:stoch_essential_assumption}, a propensity function (referred to by some sources as a hazard equation\supercite{Wilkinson:2012tt}) can be defined\supercite{Gillespie:1976bj} for each reaction $\rxn$:
 \begin{align}\label{eq:hazard_definition}
     \haz \dt \equiv&\, \parbox[t]{0.63\linewidth}{probability that during the time interval $\timeint$ an $\rxn$ reaction will take place,}
 \end{align}
@@ -385,7 +386,7 @@ Technically, any reaction not in \eqref{eq:hazard_elementary} should be consider
 
 The Gillespie algorithm, or (as Gillespie himself refers to it\supercite{Gillespie:2013kk}) the \abr{SSA}, was first proposed by Gillespie in 1976\supercite{Gillespie:1976bj}. Though there have been many improvements developed for the implementation\supercite{Gibson:2000jqa,Cao:2004cua,Lok:2005ii,McCollum:2006hj} of the algorithm, the basic algorithm (specifically the \abr{DM} variant) itself remains (40 plus years later) the gold standard of stochastic simulation method.\todo{add something here about matrices and constructing the vector of hazards.}
 
-\abr{SSA} treats the underlying chemical system as a Markov process. This means that the next state that a system occupies is determined (in a probabilistic sense) solely by its present state\footnote{Although the framework is also flexible enough to allow for the presence of explicitly time-dependent factors, such as externally applied chemical driving forces}. The probability of each possible next state can be calculated by means of probability expressions of the form:
+\abr{SSA} treats the underlying chemical system as a Markov process. This means that the next state that a system occupies is determined (in a probabilistic sense) solely by its present state\footnote{Although the framework is also flexible enough to allow for the presence of explicitly time-dependent factors, such as externally applied chemical driving forces}. The probability of each possible next state can be calculated by means of probability expressions of the form\supercite{Gillespie:1976bj}:
 \begin{align}\label{eq:stoch_transition_dist}
     \transp \dt \equiv&\, \parbox[t]{0.63\linewidth}{probability that the next reaction in the system takes place in the instantaneous interval $\timeintp$ and is of the type $\rxn$.}
 \end{align}
@@ -409,24 +410,28 @@ where
         \hazshortsum &= \sum_{\rxni=1}^{\rxnI}\haz,
     \end{split}
 \end{align*}
-The actual \abr{DM} algorithm can be though of as a ``kinetic" Monte Carlo method\supercite{Gillespie:2007bx} that works based on the generation of two uniform random numbers in each loop:
+The actual \abr{DM} algorithm can be though of as a ``kinetic" Monte Carlo method\supercite{Gillespie:2007bx} that iteratively chooses the next time and reaction based on the generation of two uniform random numbers in a loop:
 \begin{enumerate}
     \item\label{it:ds_update_state} Calculate the current value of the propensity functions $\haz$ and their sum $\hazsum$, given the current state $\cstateall$ where $t$ is the current time and $X$ is a vector of the current species counts.
     \item Sample $\transpx{1}$ and $\transpx{2}$ by drawing two uniform random numbers $\urandx{1}$ and $\urandx{2}$ from the unit interval:
     \begin{enumerate}
-        \item Calculate $t'$ as:
+        \item Calculate the time until the next reaction $t'$ as:
         \begin{equation*}
             t' = \frac{1}{\hazshortsum} \loge{\frac{1}{\urandx{1}}}
         \end{equation*}
-        \item Calculate $\rxni$ as:
+        \item Calculate the index of the next reaction $\rxni$ as:
         \begin{equation*}
             \rxni = \textrm{the first value of $\rxni$ such that } \sum_{\rxnj=1}^{\rxni} \hazshortx{\rxnj} > \urandx{2} \hazshortsum
         \end{equation*} 
     \end{enumerate}
-    \item Update the current time as $t + t'$, update the current species counts as $\spsx{} + \stoichmatx{\rxni}$, where $\stoichmatx{\rxni}$ is the $\rxni$th column of the stoichiometry matrix $\stoichmat$ (see \secrefTwo{sec:quant_models}{sec:ode_models}).
+    \item Update the current time as $t + t'$, update the current species counts as $\spsx{} + \stoichmat$, where $\stoichmat$ is the $\rxni$th column of the stoichiometry matrix $\stoichmat$ (see \secrefTwo{sec:quant_models}{sec:ode_models}).
     \item Write out any desired information about the state, then either terminate the simulation (given that an appropriate condition has been met), or continue by returning to step \ref{it:ds_update_state}.
 \end{enumerate}
-After running (and recording) many such iterations, the data collected can be thought of as an exact realization of one replicate from the ensemble of the modeled system. In real computational experiments, typically many such replicates are run and the data from them are combined to produce a final analysis. For example, the epigenetic landscape of a system can be calculated by simply binning (\ie into a histogram) the species count data of one or more replicates.
+After running (and recording) many such iterations, the data collected can be thought of as an exact realization of one replicate from the ensemble of the modeled system. In real computational experiments, typically many such replicates are run and the data from them are combined to produce a final analysis. For example, the epigenetic landscape of a system can be calculated by simply binning (\ie into a histogram) the species count data of one or more replicates\footnote{Technically, binning the species counts only gives one part of the epigenetic landscape, the steady state probability distribution $\steadypx{} \cstate$. The other component of the landscape, the steady state fluxes, can be calculated by binning the number of times each reaction occurs. Alternatively, the steady state flux $\steadyfluxab$ from state $\statea$ to state $\stateb$ can be calculated directly from the propensities, weighted by the steady state probability distribution:
+\begin{equation*}
+    \steadyfluxab = - \sum_{\ix} \hazshortx{\ix} ( \statea ) \steadypx{} ( \statea ) + \sum_{\jx} \hazshortx{\jx} ( \stateb ) \steadypx{} ( \stateb )
+\end{equation*}
+where the first sum is over the reactions that can transition $\atob$, and the second sum is over the reactions that can transition $\btoa$. In the language of \secref{sec:epigenetic_landscapes}, the distribution and fluxes can be likened to a rugged terrain and the winds that blow over it, respectively.}.
 
 %Further, stochastic simulation does not directly compute the quantities of substances. At every time point the probability of each possible reaction (including no reaction) is calculated. The next reaction that happens is then chosen based on those probabilities. Once that reaction "fires", it's reactants and products are increased or decreased (in whole number increments) as appropriate.
 
@@ -503,7 +508,7 @@ So begins the first paper ever written on the topic of enhanced sampling\footnot
 
 Given that a researcher is interested in a rare event, stochastic simulation, though potentially more rigorous and accurate than the alternatives, is grossly inefficient. The trajectories of stochastic simulations are bound to follow the probability distributions of their underlying systems, and so by definition waste all but a slim minority of their time fluctuating around the high-likelihood regions of state space. Many researchers (both in systems biology and in many related fields\supercite{Huber:1996dn,Dellago:1998kw,vanErp:2005jua,Bernardi:2015ij}) over the years have asked themselves, ``why can't I just confine my simulations to the part of state space I actually want to see?"
 
-The typical goal of running a stochastic simulation is to collect samples, and then use those samples to estimate the value of some system property that cannot be calculated directly. Certainly it is technically feasible to simply bias or confine a simulation so that it remains within a region of interest, producing more relevant samples more quickly. However, any artificial bias added to the simulation will also bias the samples, and thereby distort the statistics of the estimation process. It is possible to both have your cake (confine your simulation to a region) and eat it too (produce an unbiased sample) by applying bias in a controlled fashion, while at the same time keeping track of any distortion you cause via bookkeeping. With the right information the collected samples can then be unbiased, producing the desired result. This is the essence of the enhanced sampling methods.
+The typical goal of running a stochastic simulation is to collect samples, and then use those samples to estimate the value of some system property that cannot be calculated directly. Certainly it is technically feasible to simply bias or confine a simulation so that it remains within a region of interest, producing more relevant samples more quickly. However, a naive attempt at placing one's thumb on the scales of a simulation will inevitably create a distorting bias; that bias will pass on to the samples taken during the simulation and ruin the statistical validity of any result. It is possible to both have your cake (confine your simulation to a region) and eat it too (produce an unbiased sample) by applying bias in a controlled fashion, while at the same time keeping track of any distortion you cause via bookkeeping. With the right information the collected samples can then be unbiased, producing the desired result. This is the essence of the enhanced sampling methods.
 
 In the broadest terms, all enhanced sampling methods follow the same basic script:
 \begin{enumerate}
@@ -582,7 +587,7 @@ On the surface, there are also many differences between the two methods. In cont
     \end{equation*}
     where the sum is over all of the states $\beta$ that are adjacent to $\alpha$ but outside $\region$, $n_{\alpha \beta}$ is the observed count of crossings from $\beta$ into $\alpha$, $w_{\beta}$ is the weight of the region that contains $\beta$, and $T_{\beta}$ is the total simulation time of all trajectories run in the region containing $\beta$.
 \end{enumerate}
-Over time, the weight terms $w_i$ will converge\supercite{Dickson:2010gf}. At the end of a \abr{NEUS} simulation, the epigenetic landscape (\ie the steady state probability distribution) of a system can be easily calculated as:
+Over time, the weight terms $w_i$ will converge\supercite{Dickson:2010gf}. At the end of a \abr{NEUS} simulation, the steady state probability distribution of a system can be easily calculated as:
 \begin{equation*}
     P(\alpha) = \sum_{\phase} P_{\region} (\alpha) w_i,
 \end{equation*}
@@ -599,10 +604,25 @@ On the other hand, \abr{NEUS} originally could not be used to calculate \abr{MFP
 In a later treatment\supercite{Dickson:2010gf} Dinner built on this convergence, and demonstrated that the differences between \abr{FFS} and \abr{NEUS} may be more superficial than they appear. He showed that, given appropriately defined regions, \abr{NEUS} will actually completely reproduce the behavior, results, and statistics of \abr{FFS}. From the viewpoint of Dinner's mathematical framework, \abr{FFS} can in fact be thought of as a subset of the nonequilibrium umbrella approach.
 
 \subsection{Weighted ensemble}
-\abr{WE} is a method that originated\supercite{Huber:1996dn} in the molecular dynamics community. More than a decade after it was first proposed, a paper\supercite{Bhatt:2010df} was published that showed how \abr{WE} could be adapted for use with stochastic biochemical simulations.
-\supercite{Donovan:2013gz,Donovan:2016bi,Zuckerman:2017eq}
 
-\figref{fig:donovan_2013_fig1}
+\begin{chapquote}{Kahn and Harris, \textit{Estimation of particle transmission by random sampling}\supercite{Kahn:1951es}}
+...one defines regions of importance in the space being studied, and, when the sampled particle goes form a less important to a more important region, itis split into two independent particles, each one-half the weight of the original. If you go from a more important to a less important region you double the weight... The purpose of this is to spend most of the time studying the important rather than the typical particles, but to do it in unbiased fashion.
+\end{chapquote}
+
+Though the above quote is about Von Neumann's splitting technique, it could be to said to equally well describe the contemporary weighted ensemble \abr{WE} method. As has been pointed out by several prominent \abr{WE} researchers\supercite{Zuckerman:2017eq,Chong:2017bv}, \abr{WE} is a strong echo of the earliest enhanced sampling work; it can be thought of as a rediscovery of the approach taken by Kahn, Von Neumann, and others during the 1950's.
+
+Thus, half a century after its initial proposal, the splitting technique was reborn in the molecular dynamics community\supercite{Huber:1996dn} as \abr{WE}. More than a decade after it was first proposed, a paper\supercite{Bhatt:2010df} was published that showed how \abr{WE} could be adapted for use with stochastic biochemical simulations. Like \abr{FFS} and \abr{NEUS}, while at first the values that \abr{WE} could be used to calculate were limited\footnote{In the case of early \abr{WE}, it could initially only be used to find the steady state probability distribution of a system.}, but over time the method was further developed and refined. Eventually, a version of \abr{WE} was published that could be used to calculate both the \abr{MFPT} and the steady state distribution\supercite{Donovan:2013gz}. First, two states of interest $\statea$ and $\stateb$ are chosen; between these states the system is split into a user-defined set of bins along an order parameter (which, like in \abr{NEUS} can be multi-dimensional). Next, the actual simulations begin:
+\begin{enumerate}
+    \item $\samplecountx{}$ trajectories are initialized in $\statea$. Each is assigned a weight of $1/\samplecountx{}$ and is allowed to run unconstrained.
+    \item\label{item:we_loop} Once a fixed time interval $\tau$ has passed, all trajectories are temporarily paused and each bin is visited (see \figref{fig:donovan_2013_fig1}):
+        \item If a bin has $0 < \ix < \samplecount{}$ current trajectories, duplicate a (randomly chosen) trajectory until there are $\samplecountx{}$ trajectories. When duplicated, each resulting "daughter" trajectories will inherit one half of the weight of the original.
+        \item If a bin has $\ix > \samplecount{}$ current trajectories, 
+\end{enumerate}
+
+
+\supercite{Donovan:2016bi,Zuckerman:2017eq}
+
+
 
 Interestingly, \abr{WE} turns out to be nearly identical to the ``splitting technique" attributed to von Neumann in the first enhanced sampling paper\supercite{Kahn:1951es}. Thus, \abr{WE} can be thought of as an accidental rediscovery of the splitting method\supercite{Chong:2017bv}.
 
@@ -633,7 +653,7 @@ In the next chapter we present a new analysis of the error in the output of \abr
 
 Next, we derive an equation that gives the optimal (in terms of computational cost) number of trajectories to run in each phase, given a user-defined desired maximum level of error in the simulation results, which we call an error goal. Based on this optimizing equation, we develop a novel variant of the \abr{FFS} enhanced sampling method which we call \abr{FFPilot}. \abr{FFPilot} replaces the $T$ and the entire set of $\samplecount$ parameters of standard \abr{FFS} (\ie the parameters that determine the computational effort expended during each phase) with a single error goal parameter. Given that error goal, \abr{FFPilot} will plan out and run the fastest possible \abr{FFS} simulation. Thus, \abr{FFPilot} is both a simplification and an optimization of the \abr{FFS} approach. We wrote an optimized, fully parallelized implementation of the \abr{FFPilot} alogorithm in C++. This implementation of \abr{FFPilot} was added to Lattice Microbes\supercite{Roberts:2013cu}, a stochastic simulation software package published by the Roberts Lab.
 
-The remainder of the chapter is dedicated to a thorough validation and exploration of \abr{FFPilot}. In simulations of 1D biochemical systems (\ie systems with only a single chemical species), we show that \abr{FFPilot} is indeed able to control error in the final simulation results as expected. In fact, \abr{FFPilot} controls error so well that it is able to uncover a previously invisible problem in all existing analyses of \abr{FFS} error, including my own. The published error analyses\supercite{Allen:2006ch,Borrero:2008il,Allen:2009kb} all assume that sampling error (\ie error due to running too few trajectories) is the sole source of simulation error. However, when using \abr{FFS} to simulate a complex system with a rough, multidimensional epigenetic landscape, it turns out that other sources of error can become significant. Results from \abr{FFPilot} simulations of multidimensional systems show that while sampling error is still the dominant source of error, there is an anomalous extra error that \abr{FFPilot} is unable to control. We demonstrate that the anomalous error is due to correlations between the trajectory starting point distributions along different interfaces.
+The remainder of the chapter is dedicated to a thorough validation and exploration of \abr{FFPilot}. In simulations of 1D biochemical systems (\ie systems with only a single chemical species), we show that \abr{FFPilot} is indeed able to control error in the final simulation results as expected. In fact, \abr{FFPilot} controls error so well that it is able to uncover a previously invisible problem in all existing analyses of \abr{FFS} error, including my own. The published error analyses\supercite{Allen:2006ch,Borrero:2008il,Allen:2009kb} all assume that sampling error (\ie error due to running too few trajectories) is the sole non-negligible source of simulation error. However, when using \abr{FFS} to simulate a complex system with a rough, multidimensional epigenetic landscape, it turns out that other sources of error can become significant. Results from \abr{FFPilot} simulations of multidimensional systems show that while sampling error is still the dominant source of error, there is an anomalous extra error that \abr{FFPilot} is unable to control. During each phase, a list of trajectory end states is built up and then used to initialize new trajectories during the next phase. We show that correlations exist between these lists, and we demonstrate that these correlations are a necessary and sufficient cause for the anomalous error.
 
 The final chapter of the thesis is a tutorial that explains in detail how to use the \abr{FFPilot} implementation in Lattice Microbes. Complete examples are given that show how to use \abr{FFPilot} to calculate both the \abr{MFPT} and the epigenetic landscape of a system.
 

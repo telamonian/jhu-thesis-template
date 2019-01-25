@@ -1,3 +1,8 @@
+% symbols for subscript indices of indeterminate value
+\newcommand{\ix}{i}
+\newcommand{\jx}{j}
+\newcommand{\kx}{k}
+
 % with respect to
 \newcommand{\wrt}{w.r.t.}
 
@@ -45,6 +50,10 @@
 \newcommand{\cstatesymb}{ \spsmat }
 \newcommand{\cstate}{\left( \cstatesymb \right)}
 
+% previous state -> (X - S_{i})
+\newcommand{\prevstatex}[1]{\left( \cstatesymb - \stoichmatx{#1} \right)}
+\newcommand{\prevstate}{\prevstatex{\rxni}}
+
 % notation for the 5 matrices of a Petri net
 \newcommand{\placemat}{P}
 \newcommand{\transitionmat}{T}
@@ -60,10 +69,13 @@
 \newcommand{\postshort}{o}
 
 % notation for the derived stoichiometry matrix
-\newcommand{\stoichmat}{S}
-\newcommand{\stoichmatxj}[2]{\stoichmat_{#1 #2}}
-\newcommand{\stoichmatx}[1]{\stoichmatxj{#1}{*}}
-\newcommand{\stoichmatj}[1]{\stoichmatxj{*}{#1}}
+\newcommand{\stoichmatsymb}{S}
+\newcommand{\stoichmatx}[1]{\stoichmatsymb_{#1}}
+\newcommand{\stoichmat}{\stoichmatx{\rxni}}
+
+\newcommand{\stoichmatxy}[2]{\stoichmatsymb_{#1 #2}}
+\newcommand{\stoichmatrowx}[1]{\stoichmatxy{#1}{*}}
+\newcommand{\stoichmatcoly}[1]{\stoichmatxy{*}{#1}}
 
 % notation for deterministic rate laws
 \newcommand{\rlawsymb}{r}
@@ -89,6 +101,13 @@
 \newcommand{\hazsymb}{a}
 \newcommand{\hazx}[1]{\hazsymb_{#1} \cstate}
 \newcommand{\haz}{\hazx{\rxni}}
+
+\newcommand{\hazxy}[2]{\hazsymb_{#1 #2} \cstate}
+\newcommand{\hazab}[2]{\hazxy{\rxni}{\rxnj} \cstate}
+\newcommand{\hazba}[2]{\hazxy{\rxnj}{\rxni} \cstate}
+
+% previous propensity
+\newcommand{\prevhazxy}[2]{\hazsymb_{#1 #2} \cstate}
 
 % propensity short
 \newcommand{\hazshortx}[1]{\hazsymb_{#1}}
@@ -118,3 +137,28 @@
 \newcommand{\transpone}{\transpx{1} \left( t' | \cstatesymb \right)}
 \newcommand{\transptwo}{\transpx{2} \left( \rxni | t', \cstatesymb \right)}
 
+% steady state
+\newcommand{\sssymb}{\textrm{SS}}
+
+% steady state probability
+\newcommand{\steadypsymb}{p^\sssymb}
+\newcommand{\steadypx}[1]{\steadypsymb_{#1}}
+\newcommand{\steadypi}{\steadypx{\ix}}
+
+\newcommand{\steadypxy}[2]{\steadypsymb_{#1, #2}}
+\newcommand{\steadypij}{\steadypxy{\ix}{\jx}}
+\newcommand{\steadypji}{\steadypxy{\jx}{\ix}}
+
+% fluxes
+\newcommand{\fluxsymb}{\Phi}
+\newcommand{\fluxx}[1]{\fluxsymb_{#1}}
+\newcommand{\fluxi}{\fluxx{\ix}}
+
+\newcommand{\fluxxy}[2]{\fluxsymb_{#1, #2}}
+
+% steady state fluxes
+\newcommand{\steadyfluxsymb}{\Phi^\sssymb}
+\newcommand{\steadyfluxx}[1]{\steadyfluxsymb_{#1}}
+\newcommand{\steadyfluxi}{\steadyfluxx{\ix}}
+
+\newcommand{\steadyfluxxy}[2]{\steadyfluxsymb_{#1, #2}}
