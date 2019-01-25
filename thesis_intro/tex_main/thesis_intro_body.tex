@@ -616,12 +616,13 @@ Thus, half a century after its initial proposal, the splitting technique was reb
 Eventually, a version of \abr{WE} was published that could be used to calculate both the \abr{MFPT} and the steady state distribution\supercite{Donovan:2013gz}. First, two states of interest $\statea$ and $\stateb$ are chosen; between these states the system is split into a user-defined set of bins along an order parameter (which, like in \abr{NEUS} can be multi-dimensional). Next, the actual simulations begin:
 \begin{enumerate}
     \item $\samplecountx{}$ trajectories are initialized in $\statea$. Each is assigned a weight of $1/\samplecountx{}$ and is allowed to run unconstrained.
-    \item\label{item:we_loop} Once a fixed time interval $\tau$ has passed, all trajectories are temporarily paused and each bin is visited (see \figref{fig:donovan_2013_fig1}):
+    \item\label{item:we_loop_one} Once a fixed time interval $\tau$ has passed, all trajectories are temporarily paused and each bin is visited (see \figref{fig:donovan_2013_fig1}):
     \begin{enumerate}
         \item Skip the bins that currently have no trajectories in them.
         \item While a bin has $0 < \ix < \samplecountx{}$ current trajectories, pick a trajectory and duplicate it. When duplicated, each resulting "daughter" trajectories will inherit one half of the weight of the original.
         \item While a bin has $\ix > \samplecountx{}$ current trajectories, pick 2 trajectories, then terminate one of them. The surviving trajectory inherits the sum of the weights.
     \end{enumerate}
+    \item\label{item:we_loop_two} The trajectories are then resumed, and the simulations continue. Steps \ref{item:we_loop_one} and \ref{item:we_loop_two} are repeated until some termination condition is met.
 \end{enumerate}
 At every simulation step, the total sum of trajectories weights will be 1. Over time, the \abr{WE} algorithm will populate every bin with $\samplecountx{}$ trajectories, and the bin weights (\ie the sum of the trajectory weights in each bin) will converge to a steady state. Ideally, a \abr{WE} simulation would terminate upon convergence of the bin weights, though in practice it is typical to end a simulation after a fixed time.
 

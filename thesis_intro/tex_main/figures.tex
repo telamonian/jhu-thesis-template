@@ -143,7 +143,7 @@
     \begin{center}
     \includegraphics[width=1\textwidth,center]{{thesis_intro/figures/donovan_2013_fig1}.pdf}
     \end{center}
-    \caption[An explainer schematic demonstrating the inner workings of weighted ensemble (WE) simulation]{An explainer schematic demonstrating the inner workings of weighted ensemble (WE) simulation. Reprinted from Donovan et al., 2013\supercite{Donovan:2013gz}.}
+    \caption[An explainer schematic demonstrating the inner workings of weighted ensemble (WE) simulation]{An explainer schematic demonstrating the inner workings of weighted ensemble (WE) simulation. The above \abr{WE} kicks off by initializing a target count, $\samplecountx{} = 2$, of unconstrained trajectories in the starting bin. Each trajectory is assigned an equal weight, and the weight all together sum to 1. After a certain time $\tau$ has passed, the trajectories are paused and the occupied bins are checked. If a bin has only 1 trajectory, it is split into two identical "daughters", each with half the weight. While there are more than 2 trajectories in a bin, they will be "merged" by terminating one and then adding its weight to one of the remaining trajectories. This cycle of unconstrained simulation followed by reweighting is then repeated iteratively. Reprinted from Donovan et al., 2013\supercite{Donovan:2013gz}.}
     \label{fig:donovan_2013_fig1}
 \end{figure}
 \clearpage
