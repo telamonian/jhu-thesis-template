@@ -46,7 +46,7 @@
     \begin{center}
     \includegraphics[width=1\textwidth,center]{{thesis_intro/figures/simple_expression_petri_net}.pdf}
     \end{center}
-    \caption[A petri net representation of the simple genetic expression model]{A petri net representation of the simple genetic expression model from \eqref{eq:simple_expression}. Arrows starting at places (round nodes) and ending at transitions (rectangular nodes) imply that the connected species is a reactant in the connected reaction. Arrows starting at transitions and ending at places imply that the connected reaction produces the connected species. Above each arrow is a weight that gives its stoichiometry. The marking (the count of each species) is shown underneath the name of each species. Transitions that have no arrows leaving them imply a decay reaction.}
+    \caption[A Petri net representation of the simple genetic expression model]{A Petri net representation of the simple genetic expression model from \eqref{eq:simple_expression}. Arrows starting at places (round nodes) and ending at transitions (rectangular nodes) imply that the connected species is a reactant in the connected reaction. Arrows starting at transitions and ending at places imply that the connected reaction produces the connected species. Above each arrow is a weight that gives its stoichiometry. The marking (the count of each species) is shown underneath the name of each species. Transitions that have no arrows leaving them imply a decay reaction.}
     \label{fig:simple_expression_petri_net}
 \end{figure}
 \clearpage
@@ -55,7 +55,7 @@
     \begin{center}
     \includegraphics[width=1.2\textwidth,center]{{thesis_intro/figures/self_regulating_expression_petri_net}.pdf}
     \end{center}
-    \caption[A petri net representation of the self regulating expression model]{A petri net representation of the self regulating expression model from \eqref{eq:self_regulating_expression}. The network is represented as described in \figref{fig:simple_expression_petri_net}. The self regulating model extends the simple model (formally, the set of nodes and edges that describe the self regulating model are a proper superset of the nodes and edges of the simple model), and adds a set of reactions that combine to exert a negative feedback on the production of protein $p$. The reactions that directly drive this negative feedback are illustrated above in the 4 edges that encircle the graph and connect the $g_p$ and $p_{2}g_{2}$ species.}
+    \caption[A Petri net representation of the self regulating expression model]{A Petri net representation of the self regulating expression model from \eqref{eq:self_regulating_expression}. The network is represented as described in \figref{fig:simple_expression_petri_net}. The self regulating model extends the simple model (formally, the set of nodes and edges that describe the self regulating model are a proper superset of the nodes and edges of the simple model), and adds a set of reactions that combine to exert a negative feedback on the production of protein $p$. The reactions that directly drive this negative feedback are illustrated above in the 4 edges that encircle the graph and connect the $g_p$ and $p_{2}g_{2}$ species.}
     \label{fig:self_regulating_expression_petri_net}
 \end{figure}
 \clearpage
@@ -97,6 +97,15 @@
 %\clearpage
 
 \begin{figure}[h]
+    \begin{center}
+    \includegraphics[keepaspectratio]{{thesis_intro/figures/sampling_error_mean_of_exponential}.pdf}
+    \end{center}
+    \caption[The margin of error vs sample count when using stochastic simulation to calculate the \abr{MFPT} of a rare state switching event]{The margin of error ($95\%$ confidence) vs sample count when using stochastic simulation to calculate the \abr{MFPT} of a rare state switching event. The x-axis begins at $100$ in order to emphasize that the relationship is only valid in the limit of large sample size. See \secref{sec:moe_from_simulation_params} for derivation and details.}
+    \label{fig:sampling_error_mean_of_exponential}
+\end{figure}
+\clearpage
+
+\begin{figure}[h]
     \includegraphics[width=1.2\textwidth,center]{{thesis_intro/figures/gts_theta_1en1_landscape_2d_comparison_samples}.pdf}
     \caption[Two dimensional epigenetic landscapes generated from the $\GTSSLOWEST$ system]{Two dimensional epigenetic landscapes generated from the $\GTSSLOWEST$ system (described in \secref{sec:gts}\todo{format in ECES paper so the preceeding secref works}). From left to right, the subplots show versions of the same landscape calculated using an increasing number of species count samples. The total sample count used in each landscape, and the CPU time used to collect those samples, is shown above each subplot. The samples were taken from 20 trajectories, each of which was generated using several thousand CPU cores running a parallelized implementation of \abr{SSA}\supercite{Roberts:2013cu}.}
     \label{fig:gts_theta_1en1_landscape_2d_comparison_samples}
@@ -111,15 +120,6 @@
 %    \label{fig:gts_theta_1en1_landscape_1d_comparison_samples}
 %\end{figure}
 %\clearpage
-
-\begin{figure}[h]
-    \begin{center}
-    \includegraphics[keepaspectratio]{{thesis_intro/figures/sampling_error_mean_of_exponential}.pdf}
-    \end{center}
-    \caption[The margin of error vs sample count when using stochastic simulation to calculate the \abr{MFPT} of a rare state switching event]{The margin of error ($95\%$ confidence) vs sample count when using stochastic simulation to calculate the \abr{MFPT} of a rare state switching event. The x-axis begins at $100$ in order to emphasize that the relationship is only valid in the limit of large sample size. See \secref{sec:moe_from_simulation_params} for derivation and details.}
-    \label{fig:sampling_error_mean_of_exponential}
-\end{figure}
-\clearpage
 
 \begin{figure}[h]
     \begin{center}
