@@ -15,9 +15,11 @@ Instead of using the delta method as in \secref{sec:phase_weight_moments} of the
             \V{\prod_i X_i} = \prod_i \left(\V{X_i} + \E{X_i}^2\right) - \prod_i \E{X_i}^2.
         \end{equation}
 The righthand side of the above \eqref{eq:product_variance_compact} can be rewritten in terms of a generalized variance $\gvarsymb$\supercite{Goodman:1962uc}:
-        \begin{equation}
-        \label{eq:product_variance_gvar_grouped}
-            \V{\prod_i X_i} = \prod_i \E{X_i}^2 \left( \sum_i \GVAR{X_i} + \sum_{i_0 < i_1} \GVAR{X_{i_0}} \GVAR{X_{i_1}} + \sum_{i_0 < i_1 < i_2} \GVAR{X_{i_0}} \GVAR{X_{i_1}} \GVAR{X_{i_2}} + \cdots, \right)
+        \begin{equation}\label{eq:product_variance_gvar_grouped}
+        \begin{split}
+            \V{\prod_i X_i} = \prod_i \E{X_i}^2  &\left( \sum_i \GVAR{X_i} + \sum_{i_0 < i_1} \GVAR{X_{i_0}} \GVAR{X_{i_1}} \right. \\
+             + & \left. \sum_{i_0 < i_1 < i_2} \GVAR{X_{i_0}} \GVAR{X_{i_1}} \GVAR{X_{i_2}} + \cdots, \right)
+        \end{split}
         \end{equation}
 where $\GVAR{X} = \frac{\V{X}}{\E{X}^2}$. If the expected values are much larger than the variances, the higher order terms of $\V{\prod_i X_i}$ can be ignored without a large loss of accuracy. The condition:
     \begin{equation}
@@ -28,7 +30,7 @@ implies that:
     \begin{align*}
         \GVAR{X_{i_0}} &>> \GVAR{X_{i_0}}\GVAR{X_{i_1}} &\quad &\forall X_{i_0}, X_{i_1}, \\
         \GVAR{X_{i_0}} &>> \GVAR{X_{i_0}}\GVAR{X_{i_1}}\GVAR{X_{i_2}} &\quad &\forall X_{i_0}, X_{i_1}, X_{i_2},\\
-        \vdots
+        & \vdots & \quad & \vdots
     \end{align*}
 This regime yields an easy to work with approximation of \eqref{eq:product_variance_gvar_grouped} as a series of of independent terms that only depend on a single $X_i$:
     \begin{equation}
