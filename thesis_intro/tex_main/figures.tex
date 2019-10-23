@@ -71,7 +71,7 @@
 
 \begin{figure}[h]
     \begin{center}
-    \includegraphics[keepaspectratio]{{thesis_intro/figures/simple_expression_timeseries_stochastic}.pdf}
+    \includegraphics[keepaspectratio]{{thesis_intro/figures/simple_expression_timeseries_stochastic_-_fixed}.pdf}
     \end{center}
     \caption[Time series from stochastic simulations of the simple expression system]{(Black lines) time series from stochastic simulations of the simple expression system (see \eqref{eq:simple_expression}). The subplots along the left side show the epigenetic landscape of each variant (as calculated via a histogram of data from 10 simulation days, including the adjacent stochastic time series). (Red lines) the deterministic simulation of the same system, for comparison purposes. (Top panel) simple expression system with ${ \condetx{1}=10, \condetx{2}=.1, \condetx{3}=.1, \condetx{4}=2 \cdot 10^{-3} }$ (Middle panel) same, with ${ \condetx{1}=.1, \condetx{2}=.1, \condetx{3}=.1, \condetx{4}=2 \cdot 10^{-3} }$. (Bottom panel) same, with ${ \condetx{1}=.01, \condetx{2}=1, \condetx{3}=.1, \condetx{4}=2 \cdot 10^{-3} }$. The same constants were used in the deterministic and stochastic simulations (\ie $\constoch = \condet$). The mean expression level of the system simulated in the top panel is 100x that of the systems in the bottom two panels.}
     \label{fig:simple_expression_timeseries_stochastic}
@@ -81,7 +81,7 @@
 
 \begin{figure}[h]
     \begin{center}
-    \includegraphics[keepaspectratio]{{thesis_intro/figures/self_regulating_expression_timeseries_stochastic}.pdf}
+    \includegraphics[keepaspectratio]{{thesis_intro/figures/self_regulating_expression_timeseries_stochastic_-_fixed}.pdf}
     \end{center}
     \caption[Time series from a stochastic simulation of the self regulating expression system]{(Black line) time series from a stochastic simulation of the self regulating expression system (see \eqref{eq:self_regulating_expression}). (Red line) the deterministic simulation of the same system. The subplot along the left side shows the epigenetic landscape. (Black and red dashed lines)  the mean protein expression value as calculated by stochastic and deterministic simulation, at $28.7$ and $33.0$ respectively ($15\%$ divergence). The deterministic rate constants used were ${ \condetx{1}=.1, \condetx{2}=.1, \condetx{3}=.1, \condetx{4}=2 \cdot 10^{-3}, \condetx{5}=10^{-6}, \condetx{6}=1, \condetx{7}=1, \condetx{8}=2 \cdot 10^{-3} }$. The stochastic rate constants were the same (\ie $\constoch = \condet$), except for $\constochx{5} = 2 \cdot \condetx{5} = 2 \cdot 10^{-6}$ (as per \eqref{eq:deterministic_second_order_self}).}
     \label{fig:self_regulating_expression_timeseries_stochastic}
@@ -99,7 +99,7 @@
 
 \begin{figure}[h]
     \begin{center}
-    \includegraphics[keepaspectratio]{{thesis_intro/figures/sampling_error_mean_of_exponential}.pdf}
+    \includegraphics[keepaspectratio]{{thesis_intro/figures/sampling_error_mean_of_exponential_-_fixed}.pdf}
     \end{center}
     \caption[The margin of error vs sample count when using stochastic simulation to calculate the \abr{MFPT} of a rare state switching event]{The margin of error ($95\%$ confidence) vs sample count when using stochastic simulation to calculate the \abr{MFPT} of a rare state switching event. The x-axis begins at $100$ in order to emphasize that the relationship is only valid in the limit of large sample size. See \secref{sec:moe_from_simulation_params} for derivation and details.}
     \label{fig:sampling_error_mean_of_exponential}
@@ -107,7 +107,7 @@
 \clearpage
 
 \begin{figure}[h]
-    \includegraphics[width=1.2\textwidth,center]{{thesis_intro/figures/gts_theta_1en1_landscape_2d_comparison_samples}.pdf}
+    \includegraphics[width=1.2\textwidth,center]{{thesis_intro/figures/gts_theta_1en1_landscape_2d_comparison_samples_-_fixed}.pdf}
     \caption[Two dimensional epigenetic landscapes generated from the $\GTSSLOWEST$ system]{Two dimensional epigenetic landscapes generated from the $\GTSSLOWEST$ system (described in \secref{sec:gts}\todo{format in ECES paper so the preceeding secref works}). From left to right, the subplots show versions of the same landscape calculated using an increasing number of species count samples. The total sample count used in each landscape, and the CPU time used to collect those samples, is shown above each subplot. The samples were taken from 20 trajectories, each of which was generated using several thousand CPU cores running a parallelized implementation of \abr{SSA}\supercite{Roberts:2013cu}.}
     \label{fig:gts_theta_1en1_landscape_2d_comparison_samples}
 \end{figure}
