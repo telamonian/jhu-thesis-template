@@ -120,7 +120,8 @@ These 4 functions are general histogram operations:
             \overline{x_{\kx}} = \frac{x_{\kx}}{\sum_{\kx} x_{\kx}}
         \end{equation}
         where $x_{\kx}$ is the $\kx$th unnormalized observation value. The values of the normalized histogram are gauranteed to sum to 1.0, meaning that a normalized histogram represents a formal probability distribution.
-    \item[\code{sparseToDense1D}] Given that \code{h} is a 1D sparse histogram (for example, any histogram returned by \code{calcOParamHist} when a 1D order parameter is passed in), this function will convert it to a dense histogram. This dense histogram takes the form of two 1D arrays, one for the observations and one for the values.
+    \item[\code{sparseToDense1D}] Given that \code{h} is a 1D sparse histogram (for example, any histogram returned by \\
+    \code{calcOParamHist} when a 1D order parameter is passed in), this function will convert it to a dense histogram. This dense histogram takes the form of two 1D arrays, one for the observations and one for the values.
 \end{description}
 
 We will also define a Python version of the 1D order parameter $\oparama$:

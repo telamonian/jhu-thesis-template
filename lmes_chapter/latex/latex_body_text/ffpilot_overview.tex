@@ -33,12 +33,11 @@ FFPilot uses an order parameter to distinguish one stable state from another, an
 An order parameter is a function $\oparam: \left\{ \intnonnegs^\Speciescount \comma \realnonnegs \rightarrow \reals^\Oparamval \right\}$ of the species counts  and time of a system:
 \begin{equation*}
     \oparamfunc{\speciescountx{0} \comma \cdots \comma \speciescountx{\Speciescount} \comma t} = \nseq{\oparamvalsymb}{\Oparamval}
-\end{equation*}
-
-An order parameters can thought of as a quantitative, mathematically defined version of a reaction coordinate.
+\end{equation*}. 
+Order parameters can thought of as a quantitative, mathematically defined version of a reaction coordinate.
 
 \subsection{Tilings}
-A tiling is a set of bins that spans the state space of a system. A tiling is defined in terms of an order parameter, a set of edges, and one or more initial basins (from which to start trajectories during phase zero). Multiple basins can be defined in order to carry out both forward and reverse simulation in a single run of \abr{LMES}.
+A tiling is a set of bins that spans the state space of a system. A tiling is defined in terms of an order parameter, a set of edges, and one or more initial states. For every initial state specified an in (from which to start trajectories during phase zero). Multiple basins can be defined in order to carry out both forward and reverse simulation in a single run of \abr{LMES}.
 
 Tilings can be defined in terms of a set of bin edges (also sometimes referred to as a set of interfaces). An FFPilot simulation will have as many 
 
@@ -48,9 +47,6 @@ Tilings can be defined in terms of a set of bin edges (also sometimes referred t
     - Each row in Basins represents a different basin, and each column in Basins holds the count of one particular chemical species in the model.
         - In other words, a basin is a single coordinate in the state space of the model.
     - Each initial basin should either be in front of the zeroth edge or behind the last edge.
-        - Mathemtically, this means that one of $$ \mathscr{O}(\text{basin}) < \mathscr{O}(\text{Edges}[0]) $$ or $$ \mathscr{O}(\text{basin}) > \mathscr{O}(\text{Edges}[-1]) $$ should be true, where $\mathscr{O}$ is the order parameter of the tiling.
+        - Mathematically, this means that one of $$ \mathscr{O}(\text{basin}) < \mathscr{O}(\text{Edges}[0]) $$ or $$ \mathscr{O}(\text{basin}) > \mathscr{O}(\text{Edges}[-1]) $$ should be true, where $\mathscr{O}$ is the order parameter of the tiling.
 
 The rows in the `Basins` array determine where trajectories are started from during phase zero. A separate pilot and production stage (ie a whole separate FFPilot simulation) is run for each row in `Basins`. Thus, setting two different basins is a convenient way to run the simulations required to calculate the MFPT of both the forward switch (low A $\rightarrow$ high A) and the reverse switch (high A $\rightarrow$ low A) of the self regulating gene.
-
-%\section{Error and error goal}
-%An FFPilot simulation run at a 10\% error goal is mathematically guaranteed to produce MFPT estimates that are within 10\% of the true value 95\% (default value, this confidence level can be set as the user desires) of the time. This means that the MFPT estimates produced by two identical 10\% FFPilot simulations, or by the two symmetrical halves of a single 10\% error goal GTS simulation, should differ by no more than ${\sim}20\%$ relative to each other. However, FFPilot only directly controls for sampling error, so if there are other large sources of error

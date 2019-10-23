@@ -42,6 +42,11 @@
 *.snm
 *.vrb
 
+# general
+~$*
+*.bak
+.DS_Store
+
 # glossaries
 *.acn
 *.acr
@@ -75,6 +80,9 @@
 # nomencl
 *.nlo
 
+# python
+.ipynb_checkpoints
+
 # sagetex
 *.sagetex.sage
 *.sagetex.py
@@ -96,3 +104,4 @@ _minted*
 
 # texpad
 .texpadtmp/
+

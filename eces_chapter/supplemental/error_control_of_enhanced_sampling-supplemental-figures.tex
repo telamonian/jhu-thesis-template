@@ -12,7 +12,7 @@
 
 \begin{figure}[h]
     \begin{center}
-    \includegraphics{{model_schematics/ffpilot_pilot_stage}.pdf}
+    \includegraphics{{model_schematics/ffpilot_pilot_stage_-_fixed}.pdf}
     \end{center}
     \caption[Schematic example of a pilot stage from a FFPilot simulation]{Schematic example of a pilot stage from a FFPilot simulation, with total phase count $\Phase = 3$ and $\samplecountpilot = 2$. Trajectories from phases (blue) 0, (red) 1, and (green) 2 shown in different colors.}
     \label{fig:ffpilot_pilot_stage}
@@ -57,7 +57,7 @@
 
 \begin{figure}[h]
     \begin{center}
-        \includegraphics{{supplemental/figures/name_gts_-_stage_fpt_percent_error_-_landscape_fudge_pzs_multiplier_10_-_error_goal_1.0e-01_-_theta_1.0e+01}.pdf}
+        \includegraphics{{supplemental/figures/name_gts_-_stage_fpt_percent_error_-_landscape_fudge_pzs_multiplier_10_-_error_goal_1.0e-01_-_theta_1.0e+01_-_fixed}.pdf}
     \end{center}
     \caption[\abr{FFPilot} simulations of \abr{GTS} executed with various oversampling schemes]{More results from simulations executed with various oversampling schemes. Aside from the use of 10X phase 0 oversampling instead of 20X, these simulations were equivalent to those presented in \figref{fig:name_gts_-_stage_fpt_percent_error_-_landscape_fudge_several_-_error_goal_1.0e-01_-_theta_1.0e+01} in the main paper. As can be seen in the righthand column, 10X oversampling in every phase from 0 to 4 is almost, but not quite, enough to eliminate landscape error. The extent of oversampling in each separate scheme is indicated beneath each column of results. 1X sampling implies that standard number of FFPilot trajectories were sampled in that phase. For purposes of comparison, results from simulations run with no oversampling are included in the first column, and results from simulations run with 10X phase 0, 10X phase 1-4 oversampling are also shown. All simulations were of $\GTSSLOW$ at an error goal of 10\%.}
     \label{fig:name_gts_-_stage_fpt_percent_error_-_landscape_fudge_pzs_multiplier_10_-_error_goal_1.0e-01_-_theta_1.0e+01}
@@ -66,7 +66,7 @@
 
 \begin{figure}[h]
     \begin{center}
-        \includegraphics{{Figures/name_gts_-_stage_fpt_percent_error_-_landscape_fudge_skips_-_error_goal_1.0e-01_-_theta_1.0e+01}.pdf}
+        \includegraphics{{supplemental/figures/name_gts_-_stage_fpt_percent_error_-_landscape_fudge_skips_-_error_goal_1.0e-01_-_theta_1.0e+01_-_fixed}.pdf}
     \end{center}
     \caption[\abr{FFPilot} simulations of \abr{GTS} executed with various oversampling schemes, cont]{More results from simulations executed with various oversampling schemes. We wanted to investigate the effects of skipping oversampling in a single phase. Starting at the second column, results are shown from simulations in which we skipped oversampling in phase 0, then in the next column from simulations in which we skipped oversampling in phase 1, and so forth.     The extent of oversampling in each separate scheme is indicated beneath each column of results. 1X sampling implies that standard number of FFPilot trajectories were sampled in that phase. For purposes of comparison, results from simulations run with no oversampling are included in the first column, and results from simulations run with 20X phase 0, 10X phase 1-4 oversampling (which is enough to eliminate landscape error) are also shown. All simulations were of $\GTSSLOW$ at an error goal of 10\%.}
     \label{fig:name_gts_-_stage_fpt_percent_error_-_landscape_fudge_skips_-_error_goal_1.0e-01_-_theta_1.0e+01}

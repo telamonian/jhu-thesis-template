@@ -19,6 +19,8 @@
 
 \usepackage{pdfpages}
 
+\RequirePackage{filecontents}
+
 %\pagestyle{myheadings}
 %\topmargin=0.25in
 %\topmargin=0.05in
@@ -26,6 +28,9 @@
 %\textwidth=5.6in
 %\oddsidemargin=0.7in
 %\raggedbottom
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 
 \usepackage{fontspec}
 \setmainfont{Helvetica}
@@ -39,7 +44,7 @@
 
  \include{thesis_header}
  
-\RequirePackage[pdfa]{hyperref}
+\RequirePackage{hyperref}
 
 % Dark blue colour for all links
 \usepackage{color}
@@ -101,57 +106,57 @@
 \usepackage{color}
 %% maxwidth is the original width if it is less than linewidth
 %% otherwise use linewidth (to make sure the graphics do not exceed the margin)
-\makeatletter
-\def\maxwidth{ %
-  \ifdim\Gin@nat@width>\linewidth
-    \linewidth
-  \else
-    \Gin@nat@width
-  \fi
-}
-\makeatother
-
-\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
-\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
-\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
-\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
-\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
-\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
-\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
-\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%l
-\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
-\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
-
-\usepackage{framed}
-\makeatletter
-\newenvironment{kframe}{%
- \def\at@end@of@kframe{}%
- \ifinner\ifhmode%
-  \def\at@end@of@kframe{\end{minipage}}%
-  \begin{minipage}{\columnwidth}%
- \fi\fi%
- \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
- \colorbox{shadecolor}{##1}\hskip-\fboxsep
-     % There is no \\@totalrightmargin, so:
-     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
- \MakeFramed {\advance\hsize-\width
-   \@totalleftmargin\z@ \linewidth\hsize
-   \@setminipage}}%
- {\par\unskip\endMakeFramed%
- \at@end@of@kframe}
-\makeatother
-
-\definecolor{shadecolor}{rgb}{.97, .97, .97}
-\definecolor{messagecolor}{rgb}{0, 0, 0}
-\definecolor{warningcolor}{rgb}{1, 0, 1}
-\definecolor{errorcolor}{rgb}{1, 0, 0}
-\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
-\makeatletter
-\newcommand\gobblepars{%
-    \@ifnextchar\par%
-        {\expandafter\gobblepars\@gobble}%
-        {}}
-\makeatother
+%\makeatletter
+%\def\maxwidth{ %
+%  \ifdim\Gin@nat@width>\linewidth
+%    \linewidth
+%  \else
+%    \Gin@nat@width
+%  \fi
+%}
+%\makeatother
+%
+%\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+%\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+%\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+%\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+%\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+%\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+%\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+%\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%l
+%\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+%\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+%
+%\usepackage{framed}
+%\makeatletter
+%\newenvironment{kframe}{%
+% \def\at@end@of@kframe{}%
+% \ifinner\ifhmode%
+%  \def\at@end@of@kframe{\end{minipage}}%
+%  \begin{minipage}{\columnwidth}%
+% \fi\fi%
+% \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+% \colorbox{shadecolor}{##1}\hskip-\fboxsep
+%     % There is no \\@totalrightmargin, so:
+%     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+% \MakeFramed {\advance\hsize-\width
+%   \@totalleftmargin\z@ \linewidth\hsize
+%   \@setminipage}}%
+% {\par\unskip\endMakeFramed%
+% \at@end@of@kframe}
+%\makeatother
+%
+%\definecolor{shadecolor}{rgb}{.97, .97, .97}
+%\definecolor{messagecolor}{rgb}{0, 0, 0}
+%\definecolor{warningcolor}{rgb}{1, 0, 1}
+%\definecolor{errorcolor}{rgb}{1, 0, 0}
+%\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+%\makeatletter
+%\newcommand\gobblepars{%
+%    \@ifnextchar\par%
+%        {\expandafter\gobblepars\@gobble}%
+%        {}}
+%\makeatother
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % End KNITR STUFF
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -199,6 +204,13 @@ backend = bibtex,
 
 \begin{document}
 
+\begin{filecontents*}{\jobname.xmpdata}
+\Title{Simplifying and optimizing the stochastic simulation of rare biochemical events}
+\Author{Max C Klein}
+\Subject{The mechanics of complex biochemical systems, such as those responsible for genetic regulation in cells, can be understood by mapping their epigenetic landscapes. However, traditional deterministic simulation methods cannot be used to build these maps, while stochastic simulation methods are too slow, owing to the presence of rare events. Enhanced sampling methods, such as forward flux sampling (FFS), hold a great deal of promise for accelerating stochastic simulations of nonequilibrium biochemical systems involving rare events. However, the description of the tradeoffs between simulation efficiency and error in FFS remains incomplete. We present a mathematically rigorous analysis of the errors in FFS that, for the first time, covers the contribution of every phase of the simulation. We derive a closed form expression for the optimally efficient count of samples to take in each FFS phase in terms of a fixed constraint on sampling error. We introduce a new method, forward flux pilot sampling (FFPilot), that is designed to take full advantage of our optimizing equation without prior information or assumptions about the phase weights and costs along the transition path. In simulations of both single- and multi-dimensional gene regulatory networks, FFPilot is able to perfectly control error due to under-sampling. Once sampling error was controlled, we discovered that multidimensional systems have an additional source of error. We show that this extra error can be traced to correlations between phases due to roughness on the probability landscape. Finally, we show that in sets of  simulations with matched error, FFPilot is on the order of tens-to-hundreds of times faster than direct sampling, in a fashion that scales with the rarity of the events.}
+\Keywords{Biophysics\sep Computational Biophysics\sep Systems Biology\sep Stochastic Simulation\sep SSA\sep Rare Events\sep Enhanced Sampling\sep Forward Flux\sep Biochemical Networks\sep Genetic Regulatory Networks}
+\end{filecontents*}
+
 \newcommand{\bm}[1]{ \mbox{\boldmath $ #1 $} }
 \newcommand{\bin}[2]{\left(\begin{array}{@{}c@{}} #1 \\ #2
              \end{array}\right) }
@@ -223,7 +235,7 @@ in conformity with the requirements for the degree of\\
 Doctor of Philosophy }\\
 \vspace*{.75in}
 {\bf Baltimore, Maryland} \\
-{\bf January, 2019} \\     % change it accordingly!
+{\bf October, 2019} \\     % change it accordingly!
 \vspace*{.5in}
 \begin{small}
 {\bf \copyright{ }2019 by Max C Klein} \\ % change the year if needed!
@@ -272,12 +284,16 @@ Doctor of Philosophy }\\
 
 \chapter*{Tutorial - enhanced sampling using Lattice Microbes and FFPilot}
 \addcontentsline{toc}{chapter}{Tutorial - enhanced sampling using Lattice Microbes and FFPilot}
-\includepdf[pages={-}]{lmes_chapter/latex/lmes_enhanced_sampling.pdf}
+%\includepdf[pages={-}]{lmes_chapter/latex/lmes_enhanced_sampling.pdf}
 %, pagecommand={\thispagestyle{plain}}
-%\cleardoublepage
+\cleardoublepage
 
 % CV PDF file downloaded from the moderncv template available at Overleaf
 % https://www.overleaf.com/latex/templates/modern-cv-and-cover-letter-2015-version/sttkgjcysttn#.Vw6PFRMrL65
 %\includepdf[pages={-}, pagecommand={\thispagestyle{plain}}]{moderncv-2015.pdf}
+
+\chapter*{Curriculum vitae}
+\addcontentsline{toc}{chapter}{Curriculum vitae}
+%\includepdf[pages={-}, pagecommand={}]{cv/cv_max_klein.pdf}
 
 \end{document}

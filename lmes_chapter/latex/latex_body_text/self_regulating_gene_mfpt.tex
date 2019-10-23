@@ -40,7 +40,8 @@ In this section I'll go over how to use FFPilot to calculate the \abr{MFPT} of t
     \includegraphics[width=5.0in]{{../Figures/model_schematics/self_regulating_gene}.pdf}
 \end{center}
 
-Starting from a \abr{SRG} model file included with this tutorial, \pth{\sbmlpath}, I'll show you how to set up the simulation input file, execute the simulation, and analyze the output. If you execute the example commands and code exactly as written, you should end up with a new directory \pth{\datapath} that contains \pth{\lm}, the simulation input file, and \pth{\out}, the simulation output file. Pre-made example input and output files can be found in \pth{\datawpath}.
+Starting from a \abr{SRG} model file included with this tutorial,\\
+\pth{\sbmlpath}, I'll show you how to set up the simulation input file, execute the simulation, and analyze the output. If you execute the example commands and code exactly as written, you should end up with a new directory \pth{\datapath} that contains \pth{\lm}, the simulation input file, and \pth{\out}, the simulation output file. Pre-made example input and output files can be found in \pth{\datawpath}.
 
 \section{Input file setup}\label{sec:srg_mfpt_input_setup}
 The input file for an FFPilot simulation is the same as for standard (\ie direct sampling) simulation. However, some extra information is required, in the form of an order parameter and a tiling. %Input can be prepared in a few steps:
@@ -133,6 +134,7 @@ Inside of group \code{0} are two 1D arrays (by convention, \keyword{hdf5} tools 
 where \code{\counts} is a 1D array containing the present count of each species in the system being simulated. \eqref{eq:oparam_linear} can be simplified considerably for $\oparama$:
 \begin{align}
     \oparama &= \mcode{\counts[\oparamspecids[0]]} * \mcode{\oparamcoeffs[0]} \nonumber \\
+    \oparama &= \mcode{\counts[0]} * \mcode{1} \nonumber \\
     \oparama &= \mcode{\counts[0]} \nonumber
 \end{align}
 
@@ -249,7 +251,8 @@ As shown above, running an FFPilot simulation requires two flags to be passed to
     \item[\code{-f <input-path>}] Tells \abr{LMES} that the simulation input file can be found at \code{<input-path>}.
 \end{description}
 
-The path at which the simulation output will be saved is automatically determined from the input path. In this case, that means the simulation output will be saved to \pth{\outpathrel}. Alternatively, you can explicitly set the simulation output path by specifying the \code{-fo <output-path>} flag on the command line when you execute \abr{LMES}.
+The path at which the simulation output will be saved is automatically determined from the input path. In this case, that means the simulation output will be saved to\\
+\pth{\outpathrel}. Alternatively, you can explicitly set the simulation output path by specifying the \code{-fo <output-path>} flag on the command line when you execute \abr{LMES}.
 
 Since this simulation is set up using a relatively loose 10\% error goal, it should run to completion fairly quickly. When run on my laptop (3.1 GHz, 4 CPU cores), the simulation finishes in about 30 seconds.
 
@@ -318,7 +321,8 @@ The \code{phase_limit} term means the same thing in the phases $i>0$ progress me
 Every time a pilot stage finishes, some of the highlights from its output are added to the log file:
 \begin{minted}{text}
 The phase costs are:
-[4.62, 0.151, 1.61, 2.41, 2.72, 2.09, 1.65, 1.22, 0.967, 1.01, 0.951, 1.25, 1.5]
+[4.62, 0.151, 1.61, 2.41, 2.72, 2.09, 1.65, 1.22, 0.967, 1.01, 0.951, \
+    1.25, 1.5]
 The phase weight sample variances are:
 [152, 0.018, 0.12, 0.228, 0.245, 0.155, 0.0665, 0.0211, 0.00473, 0.00296, \
     0.000693, 0.000495, 0.000396]
@@ -327,7 +331,8 @@ Conservative estimates of the phase weights are:
     0.998, 0.999]
 Attempting to achieve error goal 0.05 (confidence level 0.95) \
     with the following optimized trajectory counts:
-[32385, 497266, 51746, 23142, 14016, 9022, 5917, 3830, 2210, 1792, 1148, 1000, 1000]
+[32385, 497266, 51746, 23142, 14016, 9022, 5917, 3830, 2210, 1792, 1148, \
+    1000, 1000]
 \end{minted}
 \begin{description}[style=nextline]
     \item[phase costs] The $i$th entry of this array holds the average cost, in terms of the internal simulation time, of collecting a single sample (\ie observation of a forward flux event) during phase $i$.  
@@ -342,19 +347,23 @@ The reason why the weight estimates shown above are referred to as "conservative
 The last array in the pilot stage output log message contains the prediction of the FFPilot optimizing equation, given the values in the first 3 arrays:
 \begin{description}[style=nextline]
     \item[optimized trajectory counts]
-    The trajectory counts in this array are used to set up the \code{phase_limits} during the pilot stage. In other words, each phase $i>0$ of the production stage will be run until the count of trajectories that have run to completion reaches \code{optimized_trajectory_counts[i]}.
+    The trajectory counts in this array are used to set up the \code{phase_limits} during the pilot stage. In other words, each phase $i>0$ of the production stage will be run until the count of trajectories that have run to completion reaches \\
+    \code{optimized_trajectory_counts[i]}.
 \end{description}
 
 Each production stage also adds some the highlights from its results to the log once it finishes:
 \begin{minted}{text}
 The phase costs are:
-[4.72, 0.151, 1.58, 2.42, 2.71, 2.08, 1.66, 1.28, 1.02, 1.03, 0.974, 1.24, 1.49]
+[4.72, 0.151, 1.58, 2.42, 2.71, 2.08, 1.66, 1.28, 1.02, 1.03, 0.974, \
+    1.24, 1.49]
 The phase weights are:
-[4.72, 0.0186, 0.145, 0.353, 0.573, 0.814, 0.926, 0.977, 0.993, 0.998, 1, 1, 1]
+[4.72, 0.0186, 0.145, 0.353, 0.573, 0.814, 0.926, 0.977, 0.993, 0.998, \
+    1, 1, 1]
 The first passage times to each tile edge are:
-[4.72, 254, 1.76e+03, 4.97e+03, 8.67e+03, 1.07e+04, 1.15e+04, 1.18e+04, 1.19e+04, \
-    1.19e+04, 1.19e+04, 1.19e+04, 1.19e+04]
-The overall first passage time from the starting basin to the last tile edge is:
+[4.72, 254, 1.76e+03, 4.97e+03, 8.67e+03, 1.07e+04, 1.15e+04, 1.18e+04, \
+    1.19e+04, 1.19e+04, 1.19e+04, 1.19e+04, 1.19e+04]
+The overall first passage time from the starting basin to the \
+    last tile edge is:
 1.19e+04
 \end{minted}
 

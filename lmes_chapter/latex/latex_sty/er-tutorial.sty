@@ -15,7 +15,7 @@
 %\usepackage[T1]{fontenc}
 
 % Set the page size.
-\usepackage[left=1.0in,top=1.0in,right=1.0in,bottom=1.0in,nohead,foot=0.5in]{geometry}
+\usepackage[left=1.5in,top=1.0in,right=1.0in,bottom=1.0in,nohead,foot=0.5in]{geometry}
 \usepackage{setspace}
 
 % Turn off paragraph indentation.
@@ -136,8 +136,16 @@
 
 % Import hyperref package.
 \usepackage{hyperref}
-\hypersetup{colorlinks=true,
-            urlcolor=blue}
+\definecolor{link}{rgb}{0.45,0.51,0.67}
+\hypersetup{
+    unicode,%
+    linktocpage,%
+    colorlinks=true,%
+    citecolor=link,%
+    filecolor=link,%
+    linkcolor=link,%
+    urlcolor=link
+}
 
 \usepackage{array}
 

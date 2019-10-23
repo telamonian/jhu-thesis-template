@@ -1,62 +1,61 @@
 \chapter{Calculating values of interest from FFPilot output: theory}
 \section{Mean first passage time}
 The mean first passage time $MFPT_i$ to each edge $i$ of the tiling is calculated in terms of the weights $w_i$ as:
-
 \begin{equation}
     MFPT_i = 
         \begin{cases}
-            w_0 & \text{for}\ i=0 \\
+            w_0 & \text{for}\ i=0, \\
             \\
-            \frac{w_0}{\prod_{j=1}^{i} w_i} & \text{for}\ i>0
+            \frac{w_0}{\prod_{j=1}^{i} w_i} & \text{for}\ i>0.
         \end{cases}
 \end{equation}
-
 Thus, the overall $MFPT$ from the low A state to the high A state can be calculated as:
-
 \begin{equation}\label{eq:mfpt_from_weights}
-    MFPT = MFPT_N = \frac{w_0}{\prod_{j=1}^{N} w_i}
+    MFPT = MFPT_N = \frac{w_0}{\prod_{j=1}^{N} w_i}.
 \end{equation}
-
 where N is the index of the final edge.
 
 In terms of the phase weights $w_i$, the formula for the mean first passage time to the $j$th edge is:
 \begin{equation*}
-    \frac{w_0}{\prod_{i=1}^{j} w_i}
+    \frac{w_0}{\prod_{i=1}^{j} w_i}.
 \end{equation*}
 
 \section{Landscapes produced by FFPilot}\label{sec:landscape_theory}
 
 One of the primary goals of stochastic simulation of biological systems is to calculate the probability landscapes of those systems. For nonequilibrium steady-state systems, calculating the landscape is equivalent to solving the system's master equation. From it you can obtain complete information about the occupancies and fluxes of the system.
 
-When working with FFPilot simulation output, the calculation of the complete unbiased probability landscape of a system can be thought of as the recursive process of building up larger histograms (in terms of their information content) from smaller ones. Of course the final, complete landscape is the one of primary interest, but the phase, stage, and transition region landscapes that you build in the process can be helpful for investigating the fine details of a system or of the simulation process itself.
+When working with FFPilot simulation output, the calculation of the complete unbiased probability landscape of a system can be thought of as the recursive process of building up larger histograms (in terms of the information content in each) from smaller ones. Of course the final, complete landscape is the primary interest, but the phase, stage, and transition region landscapes that you build in the process can be helpful for investigating the fine details of a system or of the simulation process itself.
 
 \subsection{FFPilot phase landscapes}\label{sec:landscape_phase}
 The first step in assembling the complete landscape hist is also the simplest. You just take the state samples collected during the FFPilot simulation and group them by phase. You then just bin them together into sparse histograms, one per phase run during a production stage.
 
 \subsection{FFPilot stage landscapes}\label{sec:landscape_stage}
-All of the phase $\ix>0$ hists (the phase 0 hists are dealt with later) are separated into groups based on their originating stage. Next, the phase hists in each group are combined via a simple weighted sum of their values. The weights, which we'll call the landscape weights $\landweight$, are calculated by the following formula:
+All of the phase $\ix>0$ hists (the phase 0 hists are dealt with later) are separated into groups based on their originating stage. Next, the phase hists in each group are combined via a simple weighted sum of their values. The weights, which we'll call the landscape weights $\landweight$, are calculated by the following piecewise formula:
 \begin{equation}
 \label{eq:landweight}
     \landweight =
     \begin{cases}
-        \frac{1.0}{n_1} & \text{for}\ \ix=1 \\
+        \frac{1.0}{n_1} & \text{for}\ \ix=1, \\
         \\
-        \frac{ \prod_{\jx=1}^{\ix - 1} w_{\jx}}{n_{\ix}} & \text{for}\ \ix>1
+        \frac{ \prod_{\jx=1}^{\ix - 1} w_{\jx}}{n_{\ix}} & \text{for}\ \ix>1,
     \end{cases}
 \end{equation}
 where $w_{\ix}$ is the phase $\ix$ weight and $n_{\ix}$ is the total count of trajectories run in phase $\ix$\footnote{\eqref{eq:landweight} only applies if you're taking state samples at a constant interval. Though discussion of a variable sampling time step is outside of the scope of this tutorial, the landscape weight formula can be modified\cite{Valeriani:2007hv} to allow for one.}.
 
-The indices in eqref{eq:landweight} are a bit confusing, so to give you a concrete example say that you ran a simulation that had 4 phases per stage. Phase 0 doesn't get a landscape weight, so your three $\landweight$ values would be:
+The indices in \eqref{eq:landweight} are a bit confusing, so to give you a concrete example say that you ran a simulation that had 4 phases per stage. Phase 0 doesn't get a landscape weight, so your three $\landweight$ values would be:
 \begin{align*}
-    \landweightx{1} &= \frac{1.0}{n_1}\\
-    \landweightx{2} &= \frac{w_1}{n_2}\\
-    \landweightx{3} &= \frac{w_1 w_2}{n_3}\\
+    \landweightx{1} &= \frac{1.0}{n_1},\\
+    \landweightx{2} &= \frac{w_1}{n_2},\\
+    \landweightx{3} &= \frac{w_1 w_2}{n_3}.\\
 \end{align*}
 
-Due to the boundary conditions imposed in phases $\ix>0$, the stage hist will only cover the region of state space that was spanned by the tiling\footnote{Technically, what we mean by spanned region is all points $x$ in state space such that $\lambda_0 <= \oparam(x) < \lambda_N$} used to setup the FFPilot simulation. We will refer to this span as the transition region, since by construction it will lie in-between two stable fixed points. The $\ix$th stage hist can be thought of as the conditional probability landscape of the transition region, given that the $\ix$th basin was the most recently visited. In other words, if a trajectory is in (or was most recently in) basin $\ix$, the $\ix$th stage hist will be effectively the instantaneous probability landscape for that trajectory.
+
+
+\subsubsection{The transition region and the span of the stage landscapes}
+Due to the boundary conditions imposed in phases $\ix>0$, the stage hist will only cover the region of state space that was spanned by the tiling\footnote{Technically, what we mean by spanned region is all points $x$ in state space such that $\lambda_0 <= \oparam(x) < \lambda_N$} used to setup the FFPilot simulation. We will refer to this span as the transition region, since by construction it will lie in-between two (meta-)stable fixed points. The $\ix$th stage hist can be thought of as the conditional probability landscape of the transition region, given that the $\ix$th basin was the most recently visited. In other words, if a trajectory is in (or was most recently in) basin $\ix$, the $\ix$th stage hist will be effectively the instantaneous probability landscape for that trajectory.
 
 %\subsection{Transition region landscape}\label{sec:landscape_transition}
-%The stage hists calculated in step \ref{item:landscape_step_two} are then combined into a single transition region hist. Before they are combined, each stage hist is weighted. The stage weight factor $\stageweight$ of the $\mx$th stage is calculated as:
+%The stage hists calculated in the previous step are then weighted and combined into a single transition region hist. The stage weight factor $\stageweight$ of the $\mx$th stage is calculated as:
 %\begin{itemize}
 %    \item The flux across the initial interface $\ifacez$, which is calculated according to:
 %    \begin{equation}
@@ -68,5 +67,11 @@ Due to the boundary conditions imposed in phases $\ix>0$, the stage hist will on
 %
 %\subsection{The complete unbiased landscape}\label{sec:landscape_complete}
 %
-%The last step of building up the landscape is also the most complicated one.  The protocol described here has proven robust across a variety of model system, but it is by no means guaranteed to work for every landscape. 
-    
+%The last step of building up the landscape is also the most complicated one.  The protocol described here has proven robust across a variety of model system, but it is by no means guaranteed to work for every landscape.
+%
+%\section{The error goal, and how it relates to error in simulation outputs}
+%
+%\subsection{}
+%
+%\subsection{FFPilot }
+%An FFPilot simulation run at a 10\% error goal is mathematically guaranteed to produce MFPT estimates that are within 10\% of the true value 95\% (default value, this confidence level can be set as the user desires) of the time. This means that the MFPT estimates produced by two identical 10\% FFPilot simulations, or by the two symmetrical halves of a single 10\% error goal GTS simulation, should differ by no more than ${\sim}20\%$ relative to each other. However, FFPilot only directly controls for sampling error, so if there are other large sources of error

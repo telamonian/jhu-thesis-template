@@ -36,7 +36,7 @@
 In this chapter, we'll be working with the genetic toggle switch (GTS). \abr{GTS} is to the study of genetic regulatory systems what the hydrogen atom was to the study of quantum mechanics. It is one of the simplest truly biphasic systems that has actually been experimentally instantiated in living cells\cite{Gardner:2000bm}. \abr{GTS} models come in many different variants, and we will work with one called the exclusive genetic toggle swtich. It consists of 7 distinct chemical species that participate in 14 separate reactions.
 
 \begin{center}
-    \includegraphics[width=6.5in]{{../Figures/model_schematics/genetic_toggle_switch}.pdf}
+    \includegraphics[width=6in]{{../Figures/model_schematics/genetic_toggle_switch}.pdf}
 \end{center}
 
 Protein A and protein B are both produced from a single piece of operator DNA. A and B can both dimerize, and each dimer can bind back to the operator DNA. Only one dimer can bind to the DNA at a time. When the DNA is unbound, it will produce both A and B at an equal rate. However, when a dimer of one of the proteins is bound, the DNA will only produce more of that same protein. This means that \abr{GTS} spends the vast majority of its time in either a high A, low B state (state $\statea$), or a high B, low A state (state $\stateb$).
@@ -174,7 +174,8 @@ This version of the genetic toggle switch is completely symmetric in terms of A 
 
 In the direct sampling data we show above, the height of the state $\mathcal{A}$ and state $\mathcal{B}$ peeks differ by about ${\sim}4.5\%$ relative to one another. Whether FFPilot under- or out-performs this figure depends on the error goal with which a simulation is run. Error goal is expressed in terms of a desired level of error in the estimated MFPT from a simulation, but a lower error goal also tends to reduce error in other measures as well, including this landscape symmetry measure.
 
-In landscapes produced from FFPilot simulations run at an error goal of 10\%, the two peeks can differ by 10\% or more. However, the difference in the peeks decreases dramatically for FFPilot simulations run with a 1\% error goal. The landscape shown below was produced from the example data included with the notebook (in the \code{data_example/landscape_ffpilot_basin_\%d.npz} files), which was obtained from an FFPilot simulation run with a 1\% error goal:
+In landscapes produced from FFPilot simulations run at an error goal of 10\%, the two peeks can differ by 10\% or more. However, the difference in the peeks decreases dramatically for FFPilot simulations run with a 1\% error goal. The landscape shown below was produced from the example data included with the notebook (in the \\
+\code{data_example/landscape_ffpilot_basin_\%d.npz} files), which was obtained from an FFPilot simulation run with a 1\% error goal:
 
 \begin{center}
     \includegraphics[width=6.0in]{{../Figures/gts_land_1d_err_01_linear}.pdf}

@@ -15,7 +15,7 @@
 %\tracingmacros=1
 \begin{figure}[h]
     \begin{center}
-    \includegraphics[width=8.45cm,height=\textheight,keepaspectratio]{{eces_chapter/model_schematics/schematic_composite_vertical}.pdf}
+    \includegraphics[width=8.45cm,height=\textheight,keepaspectratio]{{eces_chapter/model_schematics/schematic_composite_vertical_-_fixed}.pdf}
     \end{center}
 %    \tracingmacros=1
     \caption[Schematics of the model systems investigated]{Schematics of the model systems investigated. \subplotcap{top} The \remname{} (\remabbrev{}, see \secref{sec:rem} and \tableref{tab:rem} for complete details). \subplotcap{middle} \srgname{} (\srgabbrev{}, see \secref{sec:srg} and \tablerefTwo{tab:srg_reactions}{tab:srg}). \subplotcap{bottom} \gtsname{} (\gtsabbrev{}, see \secref{sec:gts} and \stableref{tab:gts_odes}.}
@@ -54,7 +54,7 @@
 
 \begin{figure}[h]
     \begin{center}
-        \includegraphics{{eces_chapter/Figures/toy_model_acutal_error_vs_predicted_error_-_cropped}.pdf}
+        \includegraphics{{eces_chapter/Figures/toy_model_acutal_error_vs_predicted_error_-_cropped_-_fixed}.pdf}
     \end{center}
     \caption[Actual error vs error goal of \abr{FFPilot} simulations of the \abr{REM}]{Actual error vs error goal of \abr{FFPilot} simulations of the \abr{REM}. Each strip shows the \abr{MFPT} estimation error from (blue dots) 1000 independent \abr{FFPilot} simulations and (red lines) the 95th percentiles of the errors. Jitter was added to the x-position of the dots for visualization.}
     \label{fig:toy_model_actual_error_vs_predicted_error}
@@ -101,7 +101,7 @@
 
 \begin{figure}[h]
     \begin{center}
-        \includegraphics{{eces_chapter/Figures/name_h_-_stage_percent_error_-_error_goal_all_-_h_all}.pdf}
+        \includegraphics{{eces_chapter/Figures/name_h_-_stage_percent_error_-_error_goal_all_-_h_all_-_fixed}.pdf}
     \end{center}
     \caption[Actual error vs error goal of \abr{FFPilot} simulations of \abr{SRG}]{Actual error vs error goal of \abr{FFPilot} simulations for (top) $\SRGSLOWEST$, (middle) $\SRGSLOWER$, and (bottom) $\SRGSLOW$. Each strip shows (blue dots) 1000 independent \abr{FFPilot} simulations and (red lines) the 95th percentiles of the errors.}
     \label{fig:name_srg_-_error_goal_test_complete_-_h_all}
@@ -119,7 +119,7 @@
 
 \begin{figure}[h]
     \begin{center}
-        \includegraphics{{eces_chapter/Figures/name_theta_-_stage_percent_error_-_error_goal_all_-_theta_all}.pdf}
+        \includegraphics{{eces_chapter/Figures/name_theta_-_stage_percent_error_-_error_goal_all_-_theta_all_-_fixed}.pdf}
     \end{center}
     \caption[Actual error vs error goal of \abr{FFPilot} simulations of \abr{GTS}]{Actual error vs error goal of \abr{FFPilot} simulations for (top) $\GTSSLOWEST$, (middle) $\GTSSLOWER$, and (bottom) $\GTSSLOW$. Each strip shows (blue dots) 1000 independent \abr{FFPilot} simulations and (red lines) the 95th percentiles of the errors.}
     \label{fig:name_gts_-_error_goal_test_complete_-_theta_all}
@@ -128,7 +128,7 @@
 
 \begin{figure}[h]
     \begin{center}
-        \includegraphics{{eces_chapter/Figures/name_theta_-_phase_weight_percent_error_-_error_goal_1.0e-01_-_theta_1.0e+01_enlarged}.pdf}
+        \includegraphics{{eces_chapter/Figures/name_theta_-_phase_weight_percent_error_-_error_goal_1.0e-01_-_theta_1.0e+01_enlarged_-_fixed}.pdf}
     \end{center}
     \caption[$\GTSSLOW$ phase weight estimates and errors]{$\GTSSLOW$ phase weight estimates and errors. \subplotcap{top} The phase weights as estimated by (blue dots) 1000 independent \abr{FFPilot} simulations run to a 10\% error goal. The dashed black lines show the phase weights from an FFPilot simulation with a 0.1\% error goal. \subplotcap{bottom} The blue dots show the percent error of each phase weight estimate given in the top subplot, relative to the 0.1\% error goal simulation. Also shown are (red lines) the observed 95th error percentiles, and (dashed black lines) the expected 95th error percentiles.}
     \label{fig:name_gts_-_phase_weight_percent_error_-_error_goal_1.0e-01_-_theta_1.0e+01}
@@ -179,7 +179,7 @@
 
 \begin{figure}[h]
     \begin{center}
-        \includegraphics{{eces_chapter/Figures/name_gts_-_stage_fpt_percent_error_-_landscape_fudge_several_-_error_goal_1.0e-01_-_theta_1.0e+01_-_enlarged}.pdf}
+        \includegraphics{{eces_chapter/Figures/name_gts_-_stage_fpt_percent_error_-_landscape_fudge_several_-_error_goal_1.0e-01_-_theta_1.0e+01_-_fixed}.pdf}
     \end{center}
     \caption[Errors from \abr{FFPilot} simulations of \abr{GTS} executed with various oversampling schemes]{Errors from simulations executed with various oversampling schemes. The extent of oversampling in each phase for the separate schemes is indicated beneath each column of results. All simulations were of $\GTSSLOW$ run to an error goal of 10\%. Red lines show the 95th error percentiles.}
     \label{fig:name_gts_-_stage_fpt_percent_error_-_landscape_fudge_several_-_error_goal_1.0e-01_-_theta_1.0e+01}
